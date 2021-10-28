@@ -33,31 +33,33 @@ namespace oe {
 
 
 
+		OutdoorEditorInfo::editor = new OutdoorEditor();
+		auto voxelManager = OutdoorEditorInfo::editor->getVoxelManager();
 		std::cout << "Load Editor" << std::endl;
-
-		OutdoorEditorInfo::world = new World();
 		
-		OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(0,0,0));
 
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(1, 1, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(2, 1, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(1, 2, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(1, 1, 2), VoxelPoint(1.0f, 1));
+		voxelManager->addChunk(VoxelCoordinates(0,0,0));
 
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(2, 2, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(2, 1, 2), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(2, 2, 2), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(1, 2, 2), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(1, 1, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(2, 1, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(1, 2, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(1, 1, 2), VoxelPoint(1.0f, 1));
 
-		OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(1, 0, 0));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(3, 1, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(4, 1, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(5, 1, 1), VoxelPoint(1.0f, 1));
-		OutdoorEditorInfo::world->setVoxel(VoxelCoordinates(6, 1, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(2, 2, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(2, 1, 2), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(2, 2, 2), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(1, 2, 2), VoxelPoint(1.0f, 1));
+
+		voxelManager->addChunk(VoxelCoordinates(1, 0, 0));
+		voxelManager->setVoxel(VoxelCoordinates(3, 1, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(4, 1, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(5, 1, 1), VoxelPoint(1.0f, 1));
+		voxelManager->setVoxel(VoxelCoordinates(6, 1, 1), VoxelPoint(1.0f, 1));
+
+		OutdoorEditorInfo::editor->generateAll();
 		
-		OutdoorEditorInfo::world->generateAll();
-		
-		
+
+
 		/*
 		OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(0, 0, 0));
 
@@ -83,13 +85,13 @@ namespace oe {
 			for (auto y = 0; y < WORLD_CHUNKS_HEIGHT; ++y) {
 				for (auto z = 0; z < WORLD_CHUNKS_DEPTH; ++z) {
 					if ((y + offset.Y) < 0)
-						OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(x, y, z) + offset, VoxelPoint(1.0f, 0));
+						OutdoorEditorInfo::editor->getVoxelManager()->addChunk(VoxelCoordinates(x, y, z) + offset, VoxelPoint(1.0f, 0));
 					else
-						OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(x, y, z) + offset);
+						OutdoorEditorInfo::editor->getVoxelManager()->addChunk(VoxelCoordinates(x, y, z) + offset);
 				}
 			}
 		}
-		OutdoorEditorInfo::world->generateAll();
+		OutdoorEditorInfo::editor->generateAll();
 		*/
 	}
 }

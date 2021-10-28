@@ -69,6 +69,12 @@
     <Filter Include="Header Files\OutdoorEditor\Editing">
       <UniqueIdentifier>{3d711930-2788-45a3-8438-49e9bb145a75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\OutdoorEditor\Editor">
+      <UniqueIdentifier>{cf4c167d-d264-4c18-95ff-3b2f66ef5367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OutdoorEditor\Editor">
+      <UniqueIdentifier>{c2adbb63-0976-4f5e-9e97-9c70fbed61c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VEEngine.h">
@@ -179,9 +185,6 @@
     <ClInclude Include="MarchingCubes.h">
       <Filter>Header Files\OutdoorEditor\TerrainGenerator</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>Header Files\OutdoorEditor\VoxelData</Filter>
-    </ClInclude>
     <ClInclude Include="VoxelPoint.h">
       <Filter>Header Files\OutdoorEditor\VoxelData</Filter>
     </ClInclude>
@@ -190,6 +193,18 @@
     </ClInclude>
     <ClInclude Include="Ray.h">
       <Filter>Header Files\OutdoorEditor\Editing</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainMeshChunk.h">
+      <Filter>Header Files\OutdoorEditor\TerrainGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainManager.h">
+      <Filter>Header Files\OutdoorEditor\TerrainGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="VoxelManager.h">
+      <Filter>Header Files\OutdoorEditor\VoxelData</Filter>
+    </ClInclude>
+    <ClInclude Include="OutdoorEditor.h">
+      <Filter>Header Files\OutdoorEditor\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +316,6 @@
     <ClCompile Include="EventListenerGUI.cpp">
       <Filter>Source Files\OutdoorEditor\Engine\EventListener</Filter>
     </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>Source Files\OutdoorEditor\VoxelData</Filter>
-    </ClCompile>
     <ClCompile Include="VoxelCoordinates.cpp">
       <Filter>Source Files\OutdoorEditor\VoxelData</Filter>
     </ClCompile>
@@ -324,6 +336,18 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Source Files\OutdoorEditor\Editing</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainMeshChunk.cpp">
+      <Filter>Source Files\OutdoorEditor\TerrainGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainManager.cpp">
+      <Filter>Source Files\OutdoorEditor\TerrainGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="VoxelManager.cpp">
+      <Filter>Source Files\OutdoorEditor\VoxelData</Filter>
+    </ClCompile>
+    <ClCompile Include="OutdoorEditor.cpp">
+      <Filter>Source Files\OutdoorEditor\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

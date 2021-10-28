@@ -3,16 +3,13 @@
 #include "OEInclude.h"
 namespace oe {
 	
-	class World;
-	class MarchingCubes;
-
 	class TerrainGenerator
 	{
 	protected:
-		World* world;
+		VoxelManager* voxelManager;
 	public:
-		virtual void generate(const VoxelCoordinates& chunk) const = 0;
-		TerrainGenerator(World* const world) : world {world} {}
+		virtual TerrainMeshChunk* generate(const VoxelCoordinates& chunk) const = 0;
+		TerrainGenerator(VoxelManager* const voxelManager) : voxelManager{ voxelManager } {}
 		virtual ~TerrainGenerator() = default;
 	};
 }

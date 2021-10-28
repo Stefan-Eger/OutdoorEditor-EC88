@@ -9,9 +9,13 @@
 #include "VoxelCoordinates.h"
 #include "VoxelPoint.h"
 #include "VoxelChunkData.h"
+
+#include "VoxelManager.h"
+#include "TerrainMeshChunk.h"
 #include "TerrainGenerator.h"
 #include "MarchingCubes.h"
-#include "World.h"
+#include "TerrainManager.h"
+#include "OutdoorEditor.h"
 
 #include "OutdoorEditorInfo.h"
 #include "OutdoorEditorEngine.h"

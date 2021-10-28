@@ -2,6 +2,22 @@
 namespace oe {
 	VoxelCoordinates::VoxelCoordinates(const_reference x, const_reference y, const_reference z) : X{ x }, Y{ y }, Z{ z } {}
 
+	VoxelCoordinates::VoxelCoordinates(const VoxelCoordinates& vc)
+	{
+		X = vc.X;
+		Y = vc.Y;
+		Z = vc.Z;
+	}
+
+	VoxelCoordinates& VoxelCoordinates::operator=(const VoxelCoordinates& vc)
+	{
+		X = vc.X;
+		Y = vc.Y;
+		Z = vc.Z;
+
+		return *this;
+	}
+
 	bool VoxelCoordinates::operator==(const VoxelCoordinates& rhs) const
 	{
 		return  ((X == rhs.X) && (Y == rhs.Y) && (Z == rhs.Z));

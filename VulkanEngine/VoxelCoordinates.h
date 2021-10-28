@@ -13,6 +13,8 @@ namespace oe {
 		value_type X, Y, Z;
 
 		VoxelCoordinates(const_reference x, const_reference y, const_reference z);
+		VoxelCoordinates(const VoxelCoordinates& vc);
+		VoxelCoordinates& operator=(const VoxelCoordinates& vc);
 
 		bool operator==(const VoxelCoordinates& rhs) const;
 

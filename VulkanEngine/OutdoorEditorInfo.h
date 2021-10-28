@@ -5,7 +5,7 @@ namespace oe {
 	struct OutdoorEditorInfo
 	{
 		//World
-		static World* world;
+		static OutdoorEditor* editor;
 
 		//Camera
 		static constexpr glm::vec3 CAMERA_POS_ORIGIN{ 0.0f, 5.0f, -3.0f };

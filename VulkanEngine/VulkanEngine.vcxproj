@@ -179,6 +179,8 @@
     <ClInclude Include="EventListenerGUI.h" />
     <ClInclude Include="EventListenerUser.h" />
     <ClInclude Include="MarchingCubes.h" />
+    <ClInclude Include="TerrainManager.h" />
+    <ClInclude Include="TerrainMeshChunk.h" />
     <ClInclude Include="OEInclude.h" />
     <ClInclude Include="OutdoorEditorEngine.h" />
     <ClInclude Include="OutdoorEditorInfo.h" />
@@ -211,8 +213,9 @@
     <ClInclude Include="vk_mem_alloc.h" />
     <ClInclude Include="VoxelChunkData.h" />
     <ClInclude Include="VoxelCoordinates.h" />
+    <ClInclude Include="VoxelManager.h" />
     <ClInclude Include="VoxelPoint.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="OutdoorEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\threadpool\ThreadPool.cpp" />
@@ -221,6 +224,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CLIntersect.cpp" />
     <ClCompile Include="MarchingCubes.cpp" />
+    <ClCompile Include="TerrainManager.cpp" />
+    <ClCompile Include="TerrainMeshChunk.cpp" />
     <ClCompile Include="OutdoorEditorEngine.cpp" />
     <ClCompile Include="OutdoorEditorInfo.cpp" />
     <ClCompile Include="Ray.cpp" />
@@ -257,8 +262,9 @@
     <ClCompile Include="VHSwapchain.cpp" />
     <ClCompile Include="VoxelChunkData.cpp" />
     <ClCompile Include="VoxelCoordinates.cpp" />
+    <ClCompile Include="VoxelManager.cpp" />
     <ClCompile Include="VoxelPoint.cpp" />
-    <ClCompile Include="World.cpp" />
+    <ClCompile Include="OutdoorEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="VHFunctions.inl" />
