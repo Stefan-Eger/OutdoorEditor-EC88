@@ -5,7 +5,6 @@ namespace oe {
 
 		VkExtent2D window = getEnginePointer()->getWindow()->getExtent();
 		VECameraProjective* pCamera = dynamic_cast<VECameraProjective*> (getSceneManagerPointer()->getCamera());
-		VESceneNode* pParent = pCamera->getParent();
 
 		//Helper Variables
 		float aspectRatio = pCamera->m_aspectRatio;
@@ -25,17 +24,31 @@ namespace oe {
 		glm::vec3 camDir = pCamera->getWorldTransform() * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f);
 
 		//creating Ray
-		glm::vec3 cameraPos = pParent->getPosition();
+		glm::vec3 cameraPos = pCamera->getWorldTransform()[3];
 		glm::vec3 direction = u * xx + v * yy + camDir;
 
 		Ray r(cameraPos, direction);
-		std::cout << "XX: " << xx << ", YY: " << yy << std::endl;
-
-		std::cout << "Ray" << std::endl;
-		std::cout << "Origin: [" << r.getOrigin().x << ", " << r.getOrigin().y << ", " << r.getOrigin().z << "]" << std::endl; 
-		std::cout << "Direction : [" << r.getDirection().x << ", " << r.getDirection().y << ", " << r.getDirection().z << "]" << std::endl;
-
 		return r;
+	}
+	void EventListenerUser::addVoxel(const glm::vec3& hitPos, const glm::vec3& rayDir)
+	{
+		
+		glm::vec3 dir = rayDir * 0.3f;
+		std::cout << "NEW VOXEL: " << (int)round(hitPos.x - dir.x) << ", " << (int)round(hitPos.y - dir.y) << ", " << (int)round(hitPos.z - dir.z) << std::endl;
+
+		VoxelCoordinates voxelHitPos((int)round(hitPos.x - dir.x), (int)round(hitPos.y - dir.y), (int)round(hitPos.z - dir.z));
+		VoxelPoint voxel(1.0f, 1);
+		OutdoorEditorInfo::editor->getVoxelManager()->setVoxel(voxelHitPos, voxel);
+		OutdoorEditorInfo::editor->refresh();
+	}
+	void EventListenerUser::removeVoxel(const glm::vec3& hitPos, const glm::vec3& rayDir)
+	{
+		glm::vec3 dir = rayDir * 0.3f;
+		std::cout << "ERASE VOXEL: " << (int)round(hitPos.x) << ", " << (int)round(hitPos.y ) << ", " << (int)round(hitPos.z) << std::endl;
+
+		VoxelCoordinates voxelHitPos((int)round(hitPos.x), (int)round(hitPos.y), (int)round(hitPos.z));
+		OutdoorEditorInfo::editor->getVoxelManager()->setVoxel(voxelHitPos, VoxelPoint::Empty());
+		OutdoorEditorInfo::editor->refresh();
 	}
 	bool EventListenerUser::onMouseMove(veEvent event)
 	{
@@ -51,9 +64,6 @@ namespace oe {
 			m_usePrevCursorPosition = true;
 			return true;
 		}
-
-
-
 		return false;
 	}
 
@@ -72,7 +82,18 @@ namespace oe {
 				float cursorY = event.fdata2;
 
 				Ray r = createRayThroughPixel(cursorX, cursorY);
-				
+
+
+				//std::cout << "Ray" << std::endl;
+				//std::cout << "Origin: [" << r.getOrigin().x << ", " << r.getOrigin().y << ", " << r.getOrigin().z << "]" << std::endl;
+				//std::cout << "Direction : [" << r.getDirection().x << ", " << r.getDirection().y << ", " << r.getDirection().z << "]" << std::endl << std::endl;
+
+				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
+				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
+				if (isHit) {
+					//std::cout << "HIT SUCCESS: " << hitPos.x << ", " << hitPos.y << ", " << hitPos.z << std::endl;
+					addVoxel(hitPos, r.getDirection());
+				}
 
 				return true;
 			}
@@ -84,6 +105,19 @@ namespace oe {
 				std::cout << "Right Click Pressed" << std::endl;
 				std::cout << "MousePos: [" << "X: " << event.fdata1 << "Y: " << event.fdata2 << "]" << std::endl;
 				m_rightButtonClicked = true;
+
+
+				float cursorX = event.fdata1;
+				float cursorY = event.fdata2;
+
+				Ray r = createRayThroughPixel(cursorX, cursorY);
+
+				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
+				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
+				if (isHit) {
+					removeVoxel(hitPos, r.getDirection());
+				}
+
 				return true;
 			}
 		}

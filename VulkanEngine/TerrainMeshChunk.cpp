@@ -1,8 +1,13 @@
 #include "OEInclude.h"
 
 namespace oe {
-	TerrainMeshChunk::TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates) : chunkCoordinates{ chunkCoordinates }, verticeCount{0} {}
-	TerrainMeshChunk::~TerrainMeshChunk(){}
+	TerrainMeshChunk::TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates) : chunkCoordinates{chunkCoordinates}, verticeCount{ 0 } {
+		chunkName = "Chunk[" + std::to_string(chunkCoordinates.X) + "," + std::to_string(chunkCoordinates.Y) + "," + std::to_string(chunkCoordinates.Z) + "]";
+	}
+	TerrainMeshChunk::~TerrainMeshChunk(){
+		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
+		getSceneManagerPointer()->deleteMesh(chunkName + "_Mesh");
+	}
 
 	void TerrainMeshChunk::addVertice(const vh::vhVertex& vertice)
 	{
@@ -13,13 +18,15 @@ namespace oe {
 	{
 		vertices.clear();
 		indices.clear();
+		verticeCount = 0;
+		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
+		getSceneManagerPointer()->deleteMesh(chunkName + "_Mesh" );
 	}
-	void TerrainMeshChunk::createMesh()
+	void TerrainMeshChunk::createSceneNode()
 	{
 		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
 		VESceneNode* pChunkNodeParent;
-		std::string chunkName = "Chunk[" + std::to_string(chunkCoordinates.X) + "," + std::to_string(chunkCoordinates.Y) + "," + std::to_string(chunkCoordinates.Z) + "]";
-		pChunkNodeParent = getSceneManagerPointer()->createSceneNode(chunkName, pScene, glm::mat4(1.0));
+		VECHECKPOINTER(pChunkNodeParent = getSceneManagerPointer()->createSceneNode(chunkName, pScene, glm::mat4(1.0)));
 		glm::vec3 nextChunkPos = (chunkCoordinates * VoxelChunkData::CHUNK_SIZE).toVec3();
 		pChunkNodeParent->multiplyTransform(glm::translate(glm::mat4(1.0f), nextChunkPos));
 
@@ -34,8 +41,20 @@ namespace oe {
 		chunk_material->color = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
 
 		VEEntity* entity;
-		VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(chunkName, VEEntity::veEntityType::VE_ENTITY_TYPE_NORMAL, chunk_mesh, chunk_material, pChunkNodeParent));
+		VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(chunkName+"_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_NORMAL, chunk_mesh, chunk_material, pChunkNodeParent));
 		entity->m_castsShadow = false;
-
 	}
+	VoxelCoordinates TerrainMeshChunk::getChunkCoordinates() const
+	{
+		return chunkCoordinates;
+	}
+	const std::vector<vh::vhVertex> TerrainMeshChunk::getVertices() const
+	{
+		return vertices;
+	}
+	const std::vector<uint32_t> TerrainMeshChunk::getIndices() const {
+		return indices;
+	}
+
+
 }

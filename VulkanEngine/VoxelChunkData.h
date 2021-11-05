@@ -15,6 +15,7 @@ namespace oe {
 		std::size_t voxelCounter;
 
 	public:
+		bool hasChanged;
 		static const VoxelCoordinates CHUNK_SIZE;
 
 		VoxelChunkData();

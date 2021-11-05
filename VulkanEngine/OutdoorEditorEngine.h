@@ -15,6 +15,7 @@ namespace oe {
 		~OutdoorEditorEngine() {};
 		virtual void registerEventListeners() override;
 		virtual void loadLevel(uint32_t numLevel = 1) override;
+		virtual void end() override;
 	};
 }
 #endif

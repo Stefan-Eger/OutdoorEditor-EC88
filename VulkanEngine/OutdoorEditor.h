@@ -8,6 +8,10 @@ namespace oe {
 		VoxelManager* voxelManager;
 		TerrainManager* terrainManager;
 
+		const float RAY_EPSILON = 0.00001f;
+
+		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, glm::vec3& outPos) const;
+
 	public:
 		OutdoorEditor();
 		~OutdoorEditor();
@@ -22,10 +26,8 @@ namespace oe {
 
 		TerrainManager* getTerrainManager() const;
 		VoxelManager* getVoxelManager() const;
-		
 
-
-		void generateAll() const;
+		void refresh() const;
 
 	};
 }

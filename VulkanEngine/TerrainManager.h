@@ -16,11 +16,9 @@ namespace oe {
 		~TerrainManager();
 		
 		void setGenerator(TerrainGenerator* generator);
-		void createChunkMesh(const VoxelCoordinates& chunkCoordinates);
+		void addChunkMesh(const VoxelCoordinates& chunkCoordinates);
+		void updateChunkMesh(const VoxelCoordinates& chunkCoordinates);
 		TerrainMeshChunk* findChunk(const VoxelCoordinates& chunkCoordinates);
-		bool traceRay(const Ray& ray, glm::vec3& outPos) const;
-		void clear();
-		
 	};
 }
 #endif // !TERRAIN_MANAGER_H

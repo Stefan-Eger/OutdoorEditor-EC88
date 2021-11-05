@@ -8,7 +8,7 @@ namespace oe {
 	protected:
 		VoxelManager* voxelManager;
 	public:
-		virtual TerrainMeshChunk* generate(const VoxelCoordinates& chunk) const = 0;
+		virtual void generateMesh(TerrainMeshChunk* chunk) const = 0;
 		TerrainGenerator(VoxelManager* const voxelManager) : voxelManager{ voxelManager } {}
 		virtual ~TerrainGenerator() = default;
 	};

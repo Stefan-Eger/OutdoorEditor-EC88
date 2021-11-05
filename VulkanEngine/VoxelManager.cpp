@@ -75,12 +75,12 @@ namespace oe {
 		return nullptr;
 	}
 
-	std::vector<VoxelCoordinates> VoxelManager::getAllChunks2Generate() const
+	std::vector<VoxelCoordinates> VoxelManager::getAllChunks2Refresh() const
 	{
 		std::vector<VoxelCoordinates> ret;
 
 		for (auto const& chunk : chunks) {
-			if (!chunk.second->isAirChunk())
+			if (!chunk.second->isAirChunk() && chunk.second->hasChanged)
 				ret.push_back(chunk.first);
 		}
 		return ret;

@@ -73,11 +73,11 @@ namespace oe {
 	glm::vec3 MarchingCubes::interpolateVertices(const VoxelCoordinates& v1, const VoxelCoordinates& v2, const float& d1, const float& d2) const
 	{
 
-			if (std::abs(ISO_LEVEL - d1) < 0.00001)
+			if (std::abs(ISO_LEVEL - d1) < EPSILON)
 				return(v1.toVec3());
-			if (std::abs(ISO_LEVEL - d2) < 0.00001)
+			if (std::abs(ISO_LEVEL - d2) < EPSILON)
 				return(v2.toVec3());
-			if (std::abs(d1 - d2) < 0.00001)
+			if (std::abs(d1 - d2) < EPSILON)
 				return(v1.toVec3());
 
 		float mu = (ISO_LEVEL - d1) / (d2 - d1);
@@ -86,11 +86,11 @@ namespace oe {
 
 	glm::vec3 MarchingCubes::interpolateNormals(const glm::vec3& n1, const glm::vec3& n2, const float& d1, const float& d2) const
 	{
-		if (std::abs(ISO_LEVEL - d1) < 0.00001)
+		if (std::abs(ISO_LEVEL - d1) < EPSILON)
 			return(n1);
-		if (std::abs(ISO_LEVEL - d2) < 0.00001)
+		if (std::abs(ISO_LEVEL - d2) < EPSILON)
 			return(n2);
-		if (std::abs(d1 - d2) < 0.00001)
+		if (std::abs(d1 - d2) < EPSILON)
 			return(n1);
 
 		float mu = (ISO_LEVEL - d1) / (d2 - d1);
@@ -127,10 +127,10 @@ namespace oe {
 		return cube;
 	}
 	//https://paulbourke.net/geometry/polygonise/ (17.10.21)
-	TerrainMeshChunk* MarchingCubes::generate(const VoxelCoordinates& chunk) const
+	void MarchingCubes::generateMesh(TerrainMeshChunk* mc) const
 	{
+		if (mc == nullptr) return;
 
-		TerrainMeshChunk* mc = new TerrainMeshChunk(chunk);
 		//ChunkSize -1 because the grid value only allows per cube line Chunk Size -1
 		//Examüple 3x3 Grid has 4 cube and 2 cubes per line (3D same principle applies) 
 		//	y
@@ -149,7 +149,7 @@ namespace oe {
 			for (auto y = 0; y < VoxelChunkData::CHUNK_SIZE.Y; ++y) {
 				for (auto z = 0; z < VoxelChunkData::CHUNK_SIZE.Z; ++z) {
 					int cubeIndex = 0;
-					GridCube cube = nextCube(chunk, VoxelCoordinates(x, y, z));
+					GridCube cube = nextCube(mc->getChunkCoordinates(), VoxelCoordinates(x, y, z));
 
 					cubeIndex = determineCubeIndex(cube);
 
@@ -164,7 +164,7 @@ namespace oe {
 				}
 			}
 		}
-		return mc;
+		voxelManager->getChunk(mc->getChunkCoordinates())->hasChanged = false;
 	}
 
 	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, glm::vec3* normList, const glm::vec3& localVoxelPos, TerrainMeshChunk* mc) const
@@ -185,6 +185,7 @@ namespace oe {
 			mc->addVertice(vertice0);
 			mc->addVertice(vertice1);
 			mc->addVertice(vertice2);
+			
 
 			//mc.addIndices(i);
 			//mc.addIndices(i+1);

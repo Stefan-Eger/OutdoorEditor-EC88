@@ -9,6 +9,10 @@ namespace oe {
 	{
 
 		Ray createRayThroughPixel(const float& cursorX, const float& cursorY ) const;
+
+		void addVoxel(const glm::vec3& hitPos, const glm::vec3& rayDir);
+		void removeVoxel(const glm::vec3& hitPos, const glm::vec3& rayDir);
+		
 	protected:
 
 		virtual bool onMouseMove(veEvent event) override;

@@ -17,11 +17,27 @@ namespace oe {
 			this->generator = generator;
 		}
 	}
-	void TerrainManager::createChunkMesh(const VoxelCoordinates& chunkCoordinates)
+	void TerrainManager::addChunkMesh(const VoxelCoordinates& chunkCoordinates)
 	{
-		TerrainMeshChunk* chunk = generator->generate(chunkCoordinates);
-		chunk->createMesh();
+		TerrainMeshChunk* chunk = new TerrainMeshChunk(chunkCoordinates);
+		generator->generateMesh(chunk);
+		chunk->createSceneNode();
+
 		terrain.emplace(chunkCoordinates, chunk);
+	}
+	void TerrainManager::updateChunkMesh(const VoxelCoordinates& chunkCoordinates)
+	{
+		//if chunk already exists then update
+		TerrainMeshChunk* pOldChunk = findChunk(chunkCoordinates);
+		if (pOldChunk != nullptr) {
+			pOldChunk->clear();
+			generator->generateMesh(pOldChunk);
+			pOldChunk->createSceneNode();
+			return;
+		}
+
+		//if not then create a new chunk
+		addChunkMesh(chunkCoordinates);
 	}
 	TerrainMeshChunk* TerrainManager::findChunk(const VoxelCoordinates& chunkCoordinates)
 	{
@@ -31,17 +47,5 @@ namespace oe {
 			return chunk->second;
 
 		return nullptr;
-	}
-	bool TerrainManager::traceRay(const Ray& ray, glm::vec3& outPos) const
-	{
-		//TODO
-		return false;
-	}
-	void TerrainManager::clear()
-	{
-		for (const auto& chunk : terrain) {
-			delete chunk.second;
-		}
-		terrain.clear();
 	}
 }

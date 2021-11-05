@@ -37,7 +37,7 @@ namespace oe {
 
 		VoxelChunkData* getChunk(const VoxelCoordinates& chunkCoordinates) const;
 
-		std::vector<VoxelCoordinates> getAllChunks2Generate() const;
+		std::vector<VoxelCoordinates> getAllChunks2Refresh() const;
 	};
 }
 #endif // !VOXEL_MANAGER_H

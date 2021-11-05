@@ -1,9 +1,9 @@
 #include "OEInclude.h"
 
 namespace oe {
-	VoxelChunkData::VoxelChunkData() : voxels{}, voxelCounter{ 0 } {}
+	VoxelChunkData::VoxelChunkData() : voxels{}, voxelCounter{ 0 }, hasChanged{true} {}
 
-	VoxelChunkData::VoxelChunkData(const VoxelPoint& ref) : voxelCounter{ 0 }
+	VoxelChunkData::VoxelChunkData(const VoxelPoint& ref) : voxelCounter{ 0 }, hasChanged{true}
 	{
 		for (auto x = 0; x < CHUNK_SIZE_X; x++)
 		{
@@ -25,9 +25,10 @@ namespace oe {
 	void VoxelChunkData::setVoxel(const VoxelCoordinates& localCoordinates, const VoxelPoint& voxelValue){
 		VoxelPoint oldVal = voxels[localCoordinates.X][localCoordinates.Y][localCoordinates.Z];
 		voxels[localCoordinates.X][localCoordinates.Y][localCoordinates.Z] = voxelValue;
+		hasChanged = true;
 
 		//Check if there is a difference from the old value
-		if ((oldVal.density - voxelValue.density) != 0) {
+		if ((oldVal.density - voxelValue.density) != 0.0f) {
 			voxelCounter += 0.0f != voxelValue.density  ? 1 : -1;
 		}
    
@@ -38,8 +39,7 @@ namespace oe {
 	}
 
 
-	bool VoxelChunkData::isAirChunk() const
-	{
+	bool VoxelChunkData::isAirChunk() const{
 		return !voxelCounter;
 	}
 	

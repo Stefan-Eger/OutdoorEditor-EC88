@@ -306,6 +306,8 @@ namespace oe {
 
 		const float ISO_LEVEL = 0.5f;
 
+		const float EPSILON = 0.00001f;
+
 		/// <summary>
 		/// Gridcell is the Cube that marches through our space it has 8 vertices and 8 Voxel Values. The 
 		/// vertices are fixed since the parent Matrix will determine final position
@@ -344,7 +346,7 @@ namespace oe {
 	public:
 		MarchingCubes(VoxelManager* const voxelManager);
 		~MarchingCubes() override;
-		TerrainMeshChunk* generate(const VoxelCoordinates& chunk) const override;
+		void generateMesh(TerrainMeshChunk* chunk) const override;
 	};
 }
 #endif // !MARCHING_CUBES_H
