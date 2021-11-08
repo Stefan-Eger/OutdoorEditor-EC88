@@ -188,7 +188,8 @@ namespace ve {
 		enum veEntityType {	
 			VE_ENTITY_TYPE_NORMAL,				///<Normal object to be drawn
 			VE_ENTITY_TYPE_SKYPLANE,			///<A plane for sky boxes
-			VE_ENTITY_TYPE_TERRAIN_HEIGHTMAP	///<A heightmap for terrain modelling
+			VE_ENTITY_TYPE_TERRAIN_HEIGHTMAP,	///<A heightmap for terrain modelling
+			VE_ENTITY_TYPE_VOXEL_TERRAIN
 		};
 
 		///Data that is updated for each object

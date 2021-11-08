@@ -38,19 +38,26 @@ namespace oe {
 			if ((chunk != nullptr) && (chunk != oldMeshChunk)) {
 				std::cout << "Ray Chunk Coordinates: " << rayChunkCoordinates.X << ", " << rayChunkCoordinates.Y << ", " << rayChunkCoordinates.Z << std::endl;
 				oldMeshChunk = chunk;
-				const auto vertices = chunk->getVertices();
-				const auto indices = chunk->getIndices();
-				
-				//Trace All Triangles and if a Triangle is return
-				for (std::size_t i = 0; i < indices.size(); i += 3) {
-					auto chunkOffset = (VoxelChunkData::CHUNK_SIZE * chunk->getChunkCoordinates()).toVec3();
-					auto v0 = vertices.at(indices.at(i)).pos + chunkOffset;
-					auto v1 = vertices.at(indices.at(i+1)).pos + chunkOffset;
-					auto v2 = vertices.at(indices.at(i+2)).pos + chunkOffset;
+				const auto cubes = chunk->getCubes();
+				//Trace All Triangles and if a Triangle is hit return true
+				for (const auto& cube : cubes) {
+					const auto vertices = cube.vertices;
+					const auto indices = cube.indices;
+					
+					for (std::size_t i = 0, j = 0; i < indices.size(); i += 3, ++j) {
+						auto chunkOffset = (VoxelChunkData::CHUNK_SIZE * chunk->getChunkCoordinates()).toVec3();
+						auto cubePosOffset = cube.cubePos.toVec3();
 
-					bool hit = rayTriangleIntersection(ray, v0, v1, v2, outPos);
-					if (hit) {
-						return hit;
+						auto v0 = vertices.at(indices.at(i)).pos + chunkOffset + cubePosOffset;
+						auto v1 = vertices.at(indices.at(i + 1)).pos + chunkOffset + cubePosOffset;
+						auto v2 = vertices.at(indices.at(i + 2)).pos + chunkOffset + cubePosOffset;
+
+						auto surfaceNormal = cube.surfaceNormals.at(j);
+
+						bool hit = rayTriangleIntersection(ray, v0, v1, v2, surfaceNormal, outPos);
+						if (hit) {
+							return hit;
+						}
 					}
 				}
 			}
@@ -61,9 +68,8 @@ namespace oe {
 
 	//https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution (04.11.21)
 	//Implements and Explains the Geometric intersection algorithm with a plane equation and left right tests to ensure the hit point is in the triangle
-	bool OutdoorEditor::rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, glm::vec3& outPos) const
-	{
-		glm::vec3 surfaceNormal = glm::normalize(glm::cross((v2 - v0), (v1 - v0)));
+	bool OutdoorEditor::rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const
+	{			
 		float surfaceNormalDOTRayDirection = glm::dot(surfaceNormal, ray.getDirection());
 		//Check if Direction of Ray and Surface normal are perpendicular (Direction of ray is parallel to triangle)
 		if (std::abs(surfaceNormalDOTRayDirection) < RAY_EPSILON)

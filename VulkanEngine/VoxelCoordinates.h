@@ -9,9 +9,9 @@ namespace oe {
 		using const_reference = const value_type&;
 		using pointer = value_type*;
 		using const_pointer = const value_type*;
-
+			
 		value_type X, Y, Z;
-
+		VoxelCoordinates();
 		VoxelCoordinates(const_reference x, const_reference y, const_reference z);
 		VoxelCoordinates(const VoxelCoordinates& vc);
 		VoxelCoordinates& operator=(const VoxelCoordinates& vc);

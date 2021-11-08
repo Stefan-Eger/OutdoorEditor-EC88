@@ -1,60 +1,71 @@
 #include "OEInclude.h"
 
 namespace oe {
-	TerrainMeshChunk::TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates) : chunkCoordinates{chunkCoordinates}, verticeCount{ 0 } {
+	TerrainMeshChunk::TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates) : chunkCoordinates{chunkCoordinates} {
 		chunkName = "Chunk[" + std::to_string(chunkCoordinates.X) + "," + std::to_string(chunkCoordinates.Y) + "," + std::to_string(chunkCoordinates.Z) + "]";
 	}
 	TerrainMeshChunk::~TerrainMeshChunk(){
+
 		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
-		getSceneManagerPointer()->deleteMesh(chunkName + "_Mesh");
+		for (auto& cube : cubes) {
+			std::string cubeName = chunkName + "Cube[" + std::to_string(cube.cubePos.X) + "," + std::to_string(cube.cubePos.Y) + "," + std::to_string(cube.cubePos.Z) + "]";
+			getSceneManagerPointer()->deleteMesh(cubeName + "_Mesh");
+			getSceneManagerPointer()->deleteMaterial(chunkName + "_Material");
+		}
 	}
 
-	void TerrainMeshChunk::addVertice(const vh::vhVertex& vertice)
+	void TerrainMeshChunk::addCube(const MeshCube& cube)
 	{
-		vertices.push_back(vertice);
-		indices.push_back(verticeCount++);
+		cubes.push_back(cube);
 	}
-	void TerrainMeshChunk::clear()
-	{
-		vertices.clear();
-		indices.clear();
-		verticeCount = 0;
+	
+	void TerrainMeshChunk::clear(){
+		for (auto& cube : cubes) {
+			std::string cubeName = chunkName + "_Cube[" + std::to_string(cube.cubePos.X) + "," + std::to_string(cube.cubePos.Y) + "," + std::to_string(cube.cubePos.Z) + "]";
+			getSceneManagerPointer()->deleteMesh(cubeName + "_Mesh");
+		}
 		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
-		getSceneManagerPointer()->deleteMesh(chunkName + "_Mesh" );
+		cubes.clear();
+
 	}
-	void TerrainMeshChunk::createSceneNode()
-	{
+	void TerrainMeshChunk::renderChunk(){
+		//Create Chunk SceneNode
 		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
 		VESceneNode* pChunkNodeParent;
 		VECHECKPOINTER(pChunkNodeParent = getSceneManagerPointer()->createSceneNode(chunkName, pScene, glm::mat4(1.0)));
 		glm::vec3 nextChunkPos = (chunkCoordinates * VoxelChunkData::CHUNK_SIZE).toVec3();
 		pChunkNodeParent->multiplyTransform(glm::translate(glm::mat4(1.0f), nextChunkPos));
 
-		//Actual Engine Mesh generation
-		VEMesh* chunk_mesh;
-		VECHECKPOINTER(chunk_mesh = getSceneManagerPointer()->createMesh(chunkName + "_Mesh", vertices, indices));
+		//Create Mesh for each cube stored in cubes
+		for (auto& cube : cubes) {
+			std::string cubeName = chunkName + "_Cube[" + std::to_string(cube.cubePos.X) + "," + std::to_string(cube.cubePos.Y) + "," + std::to_string(cube.cubePos.Z) + "]";
 
-		//VESubrendererFW_D -> Texture is not rendered yet only to test vertex normals
- 		VEMaterial* chunk_material;
-		VECHECKPOINTER(chunk_material = getSceneManagerPointer()->createMaterial(chunkName + "_Material"));
-		chunk_material->mapDiffuse = getSceneManagerPointer()->createTexture(chunkName + "_Texture_1", "media/models/editor/TerrainTextures", "grass.png");
-		chunk_material->color = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
+			//Actual Engine Mesh generation (Creates only a mesh if there are vertices)
+			VEMesh* cube_mesh = nullptr;
+			if (cube.vertices.size() > 0) {
+				VECHECKPOINTER(cube_mesh = getSceneManagerPointer()->createMesh(cubeName + "_Mesh", cube.vertices, cube.indices));
+			}
+			//VEMaterial* cube_material = cube->material;
 
-		VEEntity* entity;
-		VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(chunkName+"_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_NORMAL, chunk_mesh, chunk_material, pChunkNodeParent));
-		entity->m_castsShadow = false;
+			//TODO Make small Material Database
+			//VESubrendererFW_D -> Texture is not rendered yet only to test vertex normals
+			VEMaterial* cube_material;
+			VECHECKPOINTER(cube_material = getSceneManagerPointer()->createMaterial("_Material"));
+			VECHECKPOINTER(cube_material->mapDiffuse = getSceneManagerPointer()->createTexture("_Texture_1", "media/models/editor/TerrainTextures", "grass.png"));
+			cube_material->color = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
+
+			//CreateCube Entity
+			VEEntity* entity;
+			VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(cubeName + "_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_VOXEL_TERRAIN, cube_mesh, cube_material, pChunkNodeParent));
+			entity->multiplyTransform(glm::translate(glm::mat4(1.0f), cube.cubePos.toVec3()));
+		}
+
 	}
-	VoxelCoordinates TerrainMeshChunk::getChunkCoordinates() const
-	{
+	VoxelCoordinates TerrainMeshChunk::getChunkCoordinates() const{
 		return chunkCoordinates;
 	}
-	const std::vector<vh::vhVertex> TerrainMeshChunk::getVertices() const
-	{
-		return vertices;
+	const std::vector<MeshCube>& TerrainMeshChunk::getCubes() const {
+		return cubes;
 	}
-	const std::vector<uint32_t> TerrainMeshChunk::getIndices() const {
-		return indices;
-	}
-
 
 }

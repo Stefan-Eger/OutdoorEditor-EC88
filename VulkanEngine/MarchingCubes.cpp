@@ -160,37 +160,47 @@ namespace oe {
 
 					edgeTableLookup(cubeIndex, cube, vertList, normList);
 
-					generateTriangles(cubeIndex, vertList, normList, glm::vec3(x, y, z), mc);
+					generateTriangles(cubeIndex, vertList, normList, VoxelCoordinates(x, y, z), mc);
 				}
 			}
 		}
 		voxelManager->getChunk(mc->getChunkCoordinates())->hasChanged = false;
 	}
 
-	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, glm::vec3* normList, const glm::vec3& localVoxelPos, TerrainMeshChunk* mc) const
+	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& localVoxelPos, TerrainMeshChunk* mc) const
 	{
+
+		std::vector<vh::vhVertex> vertices;
+		std::vector<uint32_t> indices;
+		std::vector<glm::vec3> surfaceNormals;
 
 		for(int i = 0; TRI_TABLE[cubeIndex][i] != -1; i += 3) {
 			vh::vhVertex vertice0, vertice1, vertice2;
 
-			vertice0.pos = *(vertList + TRI_TABLE[cubeIndex][i]) + localVoxelPos;
+			vertice0.pos = *(vertList + TRI_TABLE[cubeIndex][i]);
 			vertice0.normal = *(normList + TRI_TABLE[cubeIndex][i]);
 
-			vertice1.pos = *(vertList + TRI_TABLE[cubeIndex][i+1]) + localVoxelPos;
+			vertice1.pos = *(vertList + TRI_TABLE[cubeIndex][i+1]);
 			vertice1.normal = *(normList + TRI_TABLE[cubeIndex][i+1]);
 
-			vertice2.pos = *(vertList + TRI_TABLE[cubeIndex][i+2]) + localVoxelPos;
+			vertice2.pos = *(vertList + TRI_TABLE[cubeIndex][i+2]);
 			vertice2.normal = *(normList + TRI_TABLE[cubeIndex][i+2]);
 
-			mc->addVertice(vertice0);
-			mc->addVertice(vertice1);
-			mc->addVertice(vertice2);
-			
 
-			//mc.addIndices(i);
-			//mc.addIndices(i+1);
-			//mc.addIndices(i+2);
+			glm::vec3 surfaceNormal = glm::normalize(glm::cross((vertice2.pos - vertice0.pos), (vertice1.pos - vertice0.pos)));
+
+			vertices.push_back(vertice0);
+			vertices.push_back(vertice1);
+			vertices.push_back(vertice2);
+			
+			indices.push_back(i);
+			indices.push_back(i+1);
+			indices.push_back(i+2);
+
+			surfaceNormals.push_back(surfaceNormal);
 		}
+
+		mc->addCube(MeshCube{localVoxelPos, vertices, indices, surfaceNormals, nullptr});
 	}
 	MarchingCubes::MarchingCubes(VoxelManager* const voxelManager) : TerrainGenerator(voxelManager) {}
 	MarchingCubes::~MarchingCubes() {}

@@ -206,6 +206,7 @@
     <ClInclude Include="VESubrender.h" />
     <ClInclude Include="VESubrenderFW_D.h" />
     <ClInclude Include="VESubrenderFW_Shadow.h" />
+    <ClInclude Include="VESubrenderFW_Trilinear.h" />
     <ClInclude Include="VEWindow.h" />
     <ClInclude Include="VEWindowGLFW.h" />
     <ClInclude Include="VHFunctions.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="OutdoorEditorEngine.cpp" />
     <ClCompile Include="OutdoorEditorInfo.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="VESubrenderFW_Trilinear.cpp" />
     <ClCompile Include="VHFunctions.cpp" />
     <ClCompile Include="VEDocumentation.cpp" />
     <ClCompile Include="VEEngine.cpp" />

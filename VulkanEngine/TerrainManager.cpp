@@ -21,7 +21,7 @@ namespace oe {
 	{
 		TerrainMeshChunk* chunk = new TerrainMeshChunk(chunkCoordinates);
 		generator->generateMesh(chunk);
-		chunk->createSceneNode();
+		chunk->renderChunk();
 
 		terrain.emplace(chunkCoordinates, chunk);
 	}
@@ -32,7 +32,7 @@ namespace oe {
 		if (pOldChunk != nullptr) {
 			pOldChunk->clear();
 			generator->generateMesh(pOldChunk);
-			pOldChunk->createSceneNode();
+			pOldChunk->renderChunk();
 			return;
 		}
 

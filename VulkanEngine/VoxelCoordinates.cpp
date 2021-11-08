@@ -1,5 +1,6 @@
 #include "OEInclude.h"
 namespace oe {
+	VoxelCoordinates::VoxelCoordinates() : X{ 0 }, Y{ 0 }, Z{ 0 }{}
 	VoxelCoordinates::VoxelCoordinates(const_reference x, const_reference y, const_reference z) : X{ x }, Y{ y }, Z{ z } {}
 
 	VoxelCoordinates::VoxelCoordinates(const VoxelCoordinates& vc)

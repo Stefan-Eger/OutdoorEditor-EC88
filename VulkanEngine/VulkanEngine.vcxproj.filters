@@ -200,6 +200,9 @@
     <ClInclude Include="OutdoorEditor.h">
       <Filter>Header Files\OutdoorEditor\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="VESubrenderFW_Trilinear.h">
+      <Filter>Header Files\VESubrender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VEEngine.cpp">
@@ -342,6 +345,9 @@
     </ClCompile>
     <ClCompile Include="OutdoorEditor.cpp">
       <Filter>Source Files\OutdoorEditor\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="VESubrenderFW_Trilinear.cpp">
+      <Filter>Source Files\VESubrender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

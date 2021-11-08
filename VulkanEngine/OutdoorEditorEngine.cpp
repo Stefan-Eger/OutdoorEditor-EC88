@@ -40,6 +40,7 @@ namespace oe {
 
 		voxelManager->addChunk(VoxelCoordinates(0,0,0));
 		voxelManager->setVoxel(VoxelCoordinates(1, 1, 1), VoxelPoint(1.0f, 1));
+
 		voxelManager->setVoxel(VoxelCoordinates(2, 1, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(1, 2, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(1, 1, 2), VoxelPoint(1.0f, 1));
@@ -47,13 +48,13 @@ namespace oe {
 		voxelManager->setVoxel(VoxelCoordinates(2, 1, 2), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(2, 2, 2), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(1, 2, 2), VoxelPoint(1.0f, 1));
-
-		voxelManager->addChunk(VoxelCoordinates(1, 0, 0));
 		voxelManager->setVoxel(VoxelCoordinates(3, 1, 1), VoxelPoint(1.0f, 1));
+		
+		voxelManager->addChunk(VoxelCoordinates(1, 0, 0));
 		voxelManager->setVoxel(VoxelCoordinates(4, 1, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(5, 1, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(6, 1, 1), VoxelPoint(1.0f, 1));
-
+		
 		OutdoorEditorInfo::editor->refresh();
 		
 

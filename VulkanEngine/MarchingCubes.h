@@ -341,7 +341,7 @@ namespace oe {
 		glm::vec3 interpolateVertices(const VoxelCoordinates& v1, const VoxelCoordinates& v2, const float& d1, const float& d2) const;
 		glm::vec3 interpolateNormals(const glm::vec3& n1, const glm::vec3& n2, const float& d1, const float& d2) const;
 
-		void generateTriangles(const int& cubeIndex, glm::vec3* vertList, glm::vec3* normList, const glm::vec3& localVoxelPos, TerrainMeshChunk* chunk) const;
+		void generateTriangles(const int& cubeIndex, glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& localVoxelPos, TerrainMeshChunk* chunk) const;
 
 	public:
 		MarchingCubes(VoxelManager* const voxelManager);

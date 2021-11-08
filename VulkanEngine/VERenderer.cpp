@@ -113,6 +113,9 @@ namespace ve {
 			break;
 		case VEEntity::VE_ENTITY_TYPE_TERRAIN_HEIGHTMAP:
 			break;
+		case VEEntity::VE_ENTITY_TYPE_VOXEL_TERRAIN:
+			type = VESubrender::VE_SUBRENDERER_TYPE_TRILINEAR_MAPPING;
+			break;
 		default: return;
 		}
 

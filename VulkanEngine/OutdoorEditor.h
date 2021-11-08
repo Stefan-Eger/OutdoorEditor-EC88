@@ -10,7 +10,7 @@ namespace oe {
 
 		const float RAY_EPSILON = 0.00001f;
 
-		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, glm::vec3& outPos) const;
+		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;
 
 	public:
 		OutdoorEditor();
