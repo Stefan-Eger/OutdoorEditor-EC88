@@ -36,7 +36,7 @@ namespace oe {
 			TerrainMeshChunk* chunk = terrainManager->findChunk(rayChunkCoordinates);
 
 			if ((chunk != nullptr) && (chunk != oldMeshChunk)) {
-				std::cout << "Ray Chunk Coordinates: " << rayChunkCoordinates.X << ", " << rayChunkCoordinates.Y << ", " << rayChunkCoordinates.Z << std::endl;
+				//std::cout << "Ray Chunk Coordinates: " << rayChunkCoordinates.X << ", " << rayChunkCoordinates.Y << ", " << rayChunkCoordinates.Z << std::endl;
 				oldMeshChunk = chunk;
 				const auto cubes = chunk->getCubes();
 				//Trace All Triangles and if a Triangle is hit return true

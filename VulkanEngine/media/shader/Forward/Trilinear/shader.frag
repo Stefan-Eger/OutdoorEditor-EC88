@@ -33,6 +33,11 @@ layout(set = 3, binding = 0) uniform objectUBO_t {
 
 layout(set = 4, binding = 0) uniform sampler2D texSamplerArray[RESOURCEARRAYLENGTH];
 
+layout(push_constant) uniform brushCircle_t{
+    vec3 mouseHitPos;
+    float radius;
+    bool isActive;
+} brushCircle;
 
 void main() {
 
@@ -59,19 +64,37 @@ void main() {
     //Trilinear Blending
     vec3 blending = abs(normalW);
     //Just care about if something is on the axis not if it is minus or plus
-    blending = normalize(max(blending, 0.00001));
+    blending = normalize(max(blending, 0.00001f));
     //Force blending to be between 0 and 1
     float b = (blending.x + blending.y + blending.z);
     blending = blending / vec3(b,b,b);
 
     float texScale = 0.5f;
+    
 
+    vec3 fragColor;
     //Sampling the Texture 3 times in each direction with the current position of the vert
     vec3 Xdir = texture(texSamplerArray[resIdx], fragPosW.yz * texScale).rgb;
     vec3 Ydir = texture(texSamplerArray[resIdx], fragPosW.xz * texScale).rgb;
     vec3 Zdir = texture(texSamplerArray[resIdx], fragPosW.xy * texScale).rgb;
+    fragColor = Xdir * blending.x + Ydir * blending.y + Zdir * blending.z;
+    
 
-    vec3 fragColor = Xdir * blending.x + Ydir * blending.y + Zdir * blending.z;
+    
+
+    if(brushCircle.isActive){
+        vec3 circleColor = vec3(0.8f, 0.0f, 0.0f);
+        float circleThickness = (1.0f / 16);
+
+        float hitDistance = length(fragPosW - brushCircle.mouseHitPos);
+        
+        float upperBound = brushCircle.radius + circleThickness / 2.0f;
+        float lowerBound = brushCircle.radius - circleThickness / 2.0f;
+
+        if(lowerBound < hitDistance && hitDistance < upperBound){
+            fragColor += circleColor;    
+        }
+    }
 
 
 

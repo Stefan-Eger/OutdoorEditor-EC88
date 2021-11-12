@@ -324,7 +324,7 @@ namespace vh {
 	VkResult vhPipeCreateGraphicsShadowPipeline(VkDevice device, std::string verShaderFilename,
 												VkExtent2D shadowMapExtent, VkPipelineLayout pipelineLayout,
 												VkRenderPass renderPass, VkPipeline *graphicsPipeline);
-
+	VkShaderModule vhPipeCreateShaderModule(VkDevice device, const std::vector<char>& code);
 	//--------------------------------------------------------------------------------------------------------------------------------
 	//file
 	std::vector<char> vhFileRead(const std::string& filename);

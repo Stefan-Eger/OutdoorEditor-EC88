@@ -36,8 +36,7 @@ namespace oe {
 		OutdoorEditorInfo::editor = new OutdoorEditor();
 		auto voxelManager = OutdoorEditorInfo::editor->getVoxelManager();
 		std::cout << "Load Editor" << std::endl;
-		
-
+		/*
 		voxelManager->addChunk(VoxelCoordinates(0,0,0));
 		voxelManager->setVoxel(VoxelCoordinates(1, 1, 1), VoxelPoint(1.0f, 1));
 
@@ -56,42 +55,24 @@ namespace oe {
 		voxelManager->setVoxel(VoxelCoordinates(6, 1, 1), VoxelPoint(1.0f, 1));
 		
 		OutdoorEditorInfo::editor->refresh();
-		
+		*/
 
-
-		/*
-		OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(0, 0, 0));
+		voxelManager->addChunk(VoxelCoordinates(0, 0, 0));
 
 		for (auto x = 0; x < WORLD_CHUNKS_WIDTH; ++x) {
 			for (auto y = 0; y < WORLD_CHUNKS_HEIGHT; ++y) {
 				for (auto z = 0; z < WORLD_CHUNKS_DEPTH; ++z) {
 					if (y - 1 < 0) {
-						OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(x, y - 1, z), VoxelPoint(1.0f, 1));
+						voxelManager->addChunk(VoxelCoordinates(x, y - 1, z), VoxelPoint(1.0f, 1));
 					}
 					else {
-						OutdoorEditorInfo::world->setChunkAt(VoxelCoordinates(x, y - 1, z));
+						voxelManager->addChunk(VoxelCoordinates(x, y - 1, z));
 					}
 				}
 			}
 		}
-		OutdoorEditorInfo::world->generateAll();
-		*/
-
-		/*
-		VoxelCoordinates offset(-1, -1, 0);
-
-		for (auto x = 0; x < WORLD_CHUNKS_WIDTH; ++x) {
-			for (auto y = 0; y < WORLD_CHUNKS_HEIGHT; ++y) {
-				for (auto z = 0; z < WORLD_CHUNKS_DEPTH; ++z) {
-					if ((y + offset.Y) < 0)
-						OutdoorEditorInfo::editor->getVoxelManager()->addChunk(VoxelCoordinates(x, y, z) + offset, VoxelPoint(1.0f, 0));
-					else
-						OutdoorEditorInfo::editor->getVoxelManager()->addChunk(VoxelCoordinates(x, y, z) + offset);
-				}
-			}
-		}
-		OutdoorEditorInfo::editor->generateAll();
-		*/
+		OutdoorEditorInfo::editor->refresh();
+		
 	}
 	void OutdoorEditorEngine::end()
 	{

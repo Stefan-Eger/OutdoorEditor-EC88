@@ -52,19 +52,22 @@ namespace oe {
 	}
 	bool EventListenerUser::onMouseMove(veEvent event)
 	{
-
-		if (!m_rightButtonClicked) return false;		//only do something if left mouse button is pressed
+		if (VESubrenderFW_Trilinear::brushCircle.isActive == VK_FALSE) { return false; }
 
 		float x = event.fdata1;
 		float y = event.fdata2;
 
-		if (!m_usePrevCursorPosition) {				//can I use the previous cursor position ?
-			m_cursorPrevX = x;
-			m_cursorPrevY = y;
-			m_usePrevCursorPosition = true;
-			return true;
+
+		Ray r = createRayThroughPixel(x, y);
+
+		glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
+		bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
+		if (isHit) {
+			std::cout << "MouseMoved" << std::endl;
+			VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
+			getRendererForwardPointer()->updateCmdBuffers();
 		}
-		return false;
+		return true;
 	}
 
 
@@ -78,21 +81,20 @@ namespace oe {
 				std::cout << "Left Click Pressed: " << std::endl;
 				std::cout << "MousePos: [" << "X: " << event.fdata1 << "Y: " << event.fdata2 << "]" << std::endl;
 
+
 				float cursorX = event.fdata1;
 				float cursorY = event.fdata2;
 
 				Ray r = createRayThroughPixel(cursorX, cursorY);
 
 
-				//std::cout << "Ray" << std::endl;
-				//std::cout << "Origin: [" << r.getOrigin().x << ", " << r.getOrigin().y << ", " << r.getOrigin().z << "]" << std::endl;
-				//std::cout << "Direction : [" << r.getDirection().x << ", " << r.getDirection().y << ", " << r.getDirection().z << "]" << std::endl << std::endl;
-
 				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
 				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 				if (isHit) {
-					//std::cout << "HIT SUCCESS: " << hitPos.x << ", " << hitPos.y << ", " << hitPos.z << std::endl;
 					addVoxel(hitPos, r.getDirection());
+					VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
+					VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
+					getRendererForwardPointer()->updateCmdBuffers();
 				}
 
 				return true;
