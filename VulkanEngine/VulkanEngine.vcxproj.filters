@@ -63,11 +63,23 @@
     <Filter Include="Source Files\OutdoorEditor\Engine\EventListener">
       <UniqueIdentifier>{d64a73c9-326b-455b-b4ff-37279b7dcd26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\OutdoorEditor\Editing">
-      <UniqueIdentifier>{288d40e5-6bd1-4b50-a391-4b0d7707dff1}</UniqueIdentifier>
+    <Filter Include="Source Files\OutdoorEditor\EditingTools">
+      <UniqueIdentifier>{b80a207d-894e-4bdc-88ec-fdf3960358f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\OutdoorEditor\Editing">
-      <UniqueIdentifier>{3d711930-2788-45a3-8438-49e9bb145a75}</UniqueIdentifier>
+    <Filter Include="Header Files\OutdoorEditor\EditingTools">
+      <UniqueIdentifier>{6455a9fd-168a-4dc1-95e2-79706c994c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OutdoorEditor\EditingTools\Brushes">
+      <UniqueIdentifier>{5b1abe06-9c74-4bb7-8f5a-7119cefd341f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OutdoorEditor\EditingTools\Math">
+      <UniqueIdentifier>{52195f07-a676-40e6-8002-0a8f86738e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OutdoorEditor\EditingTools\Brushes">
+      <UniqueIdentifier>{fe9e4da9-32de-4bdb-8f24-5c11a67c8165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OutdoorEditor\EditingTools\Math">
+      <UniqueIdentifier>{d8884fce-8a74-4f54-ba97-a03059638aed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +197,6 @@
     <ClInclude Include="EventListenerUser.h">
       <Filter>Header Files\OutdoorEditor\Engine\EventListener</Filter>
     </ClInclude>
-    <ClInclude Include="Ray.h">
-      <Filter>Header Files\OutdoorEditor\Editing</Filter>
-    </ClInclude>
     <ClInclude Include="TerrainMeshChunk.h">
       <Filter>Header Files\OutdoorEditor\TerrainGenerator</Filter>
     </ClInclude>
@@ -202,6 +211,15 @@
     </ClInclude>
     <ClInclude Include="VESubrenderFW_Trilinear.h">
       <Filter>Header Files\VESubrender</Filter>
+    </ClInclude>
+    <ClInclude Include="EditingBrush.h">
+      <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Header Files\OutdoorEditor\EditingTools\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="EditingBrushSphereFull.h">
+      <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,9 +349,6 @@
     <ClCompile Include="EventListenerUser.cpp">
       <Filter>Source Files\OutdoorEditor\Engine\EventListener</Filter>
     </ClCompile>
-    <ClCompile Include="Ray.cpp">
-      <Filter>Source Files\OutdoorEditor\Editing</Filter>
-    </ClCompile>
     <ClCompile Include="TerrainMeshChunk.cpp">
       <Filter>Source Files\OutdoorEditor\TerrainGenerator</Filter>
     </ClCompile>
@@ -348,6 +363,15 @@
     </ClCompile>
     <ClCompile Include="VESubrenderFW_Trilinear.cpp">
       <Filter>Source Files\VESubrender</Filter>
+    </ClCompile>
+    <ClCompile Include="EditingBrush.cpp">
+      <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Source Files\OutdoorEditor\EditingTools\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="EditingBrushSphereFull.cpp">
+      <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

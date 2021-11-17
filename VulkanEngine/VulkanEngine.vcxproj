@@ -176,6 +176,8 @@
     <ClInclude Include="..\external\threadpool\ThreadPool.h" />
     <ClInclude Include="CLInclude.h" />
     <ClInclude Include="CLShape.h" />
+    <ClInclude Include="EditingBrush.h" />
+    <ClInclude Include="EditingBrushSphereFull.h" />
     <ClInclude Include="EventListenerGUI.h" />
     <ClInclude Include="EventListenerUser.h" />
     <ClInclude Include="MarchingCubes.h" />
@@ -220,6 +222,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\threadpool\ThreadPool.cpp" />
+    <ClCompile Include="EditingBrush.cpp" />
+    <ClCompile Include="EditingBrushSphereFull.cpp" />
     <ClCompile Include="EventListenerGUI.cpp" />
     <ClCompile Include="EventListenerUser.cpp" />
     <ClCompile Include="main.cpp" />

@@ -73,7 +73,7 @@ namespace oe {
 
 			//CreateCube Entity
 			VEEntity* entity;
-			VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(cubeName + "_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_NORMAL, cube_mesh, cube_material, pChunkNodeParent));
+			VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(cubeName + "_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_VOXEL_TERRAIN, cube_mesh, cube_material, pChunkNodeParent));
 			entity->multiplyTransform(glm::translate(glm::mat4(1.0f), cube.first.toVec3()));
 			
 		}

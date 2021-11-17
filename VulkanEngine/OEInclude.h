@@ -4,7 +4,6 @@
 #include "VEInclude.h"
 #include <unordered_set>
 #include "Ray.h"
-#include "EditingBrush.h"
 #include "EventListenerGUI.h"
 #include "EventListenerUser.h"
 #include "VoxelCoordinates.h"
@@ -16,6 +15,10 @@
 #include "TerrainGenerator.h"
 #include "MarchingCubes.h"
 #include "TerrainManager.h"
+
+#include "EditingBrush.h"
+#include "EditingBrushSphereFull.h"
+
 #include "OutdoorEditor.h"
 
 

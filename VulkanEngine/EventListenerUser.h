@@ -9,6 +9,7 @@ namespace oe {
 	{
 
 		Ray createRayThroughPixel(const float& cursorX, const float& cursorY ) const;
+
 		
 	protected:
 

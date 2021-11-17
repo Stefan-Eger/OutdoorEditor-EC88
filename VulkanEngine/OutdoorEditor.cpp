@@ -3,10 +3,20 @@ namespace oe {
 	OutdoorEditor::OutdoorEditor() {
 		voxelManager = new VoxelManager();
 		terrainManager = new TerrainManager(new MarchingCubes(voxelManager));
+
+		brushes.push_back(new EditingBrushSphereFull(2, 1.0f));
+
+		activeBrush = brushes.at(0);
+		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL;
 	}
 	OutdoorEditor::~OutdoorEditor(){
-		delete voxelManager;
+
+		for (const auto& b : brushes) {
+			delete b;
+		}
+		brushes.clear();
 		delete terrainManager;
+		delete voxelManager;
 	}
 
 	void OutdoorEditor::refresh() const
@@ -18,7 +28,7 @@ namespace oe {
 			auto changedVoxels = voxelChunk->getChangedVoxels();
 
 			//If too many Voxels have been changed than render the entire chunk
-			if (changedVoxels.size() > 10) {
+			if (changedVoxels.size() > CHUNKS_CHANGED_VOXELS_THRESHOLD) {
 				terrainManager->updateChunkMesh(chunkPos);
 				voxelChunk->clearChangedVoxels();
 				std::cout << "Chunk Update " << i++ << "\t[" << chunkPos.X << ", " << chunkPos.Y << ", " << chunkPos.Z << "] \t of " << chunkLoad << " has been generated" << std::endl;
@@ -41,11 +51,11 @@ namespace oe {
 
 	bool OutdoorEditor::traceRay(const Ray& ray, glm::vec3& outPos) const
 	{
-		//TODO Not implemented nicely find ways for speed up
+		//TODO Not very well implemented. find ways for speed up
 		//travel from chunk to chunk and test ray/TriangleIntersection
 		TerrainMeshChunk* oldMeshChunk = nullptr;
 		float distance = 0.0f;
-		while (distance < 20.0f) {
+		while (distance < RAY_DISTANCE_MAX) {
 			
 			auto rayPos = ray.getPositionOnRay(distance);
 			auto rayChunkCoordinates = VoxelManager::world2ChunkCoordinates(VoxelCoordinates((int)rayPos.x, (int)rayPos.y, (int)rayPos.z));
@@ -86,6 +96,19 @@ namespace oe {
 
 	void OutdoorEditor::modifyTerrain(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume)
 	{
+		float strength = subtractVolume ? 0.0f : 1.0f;
+		activeBrush->setStrength(strength);
+		
+		auto affected = activeBrush->getAffected(hitPos);
+
+		for (const auto& a : affected) {
+			VoxelPoint voxel = VoxelPoint(a.second, 0);
+
+			voxelManager->setVoxel(a.first, voxel);
+		}
+		refresh();
+		
+		/*
 		VoxelPoint voxel = subtractVolume ? VoxelPoint(0.0f,0) : VoxelPoint(1.0f, 0);
 		glm::vec3 newPos = subtractVolume ? glm::round(hitPos) : glm::round(hitPos - direction * 0.3f);
 
@@ -95,6 +118,7 @@ namespace oe {
 
 		voxelManager->setVoxel(modifyVoxel, voxel);
 		refresh();
+		*/
 	}
 
 	//https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution (04.11.21)
@@ -156,6 +180,48 @@ namespace oe {
 	VoxelManager* OutdoorEditor::getVoxelManager() const
 	{
 		return voxelManager;
+	}
+
+	OutdoorEditor::oeEditingModes OutdoorEditor::getEditingMode() const
+	{
+		return activeMode;
+	}
+
+	void OutdoorEditor::setEditingMode(const oeEditingModes& mode){
+		activeMode = mode;
+
+		const char* brushName = "";
+		switch (activeMode)
+		{
+			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL:
+				brushName = typeid(EditingBrushSphereFull).name();
+				break;
+			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
+				activeBrush = nullptr;
+				break;
+			case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
+				activeBrush = nullptr;
+				break;
+			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
+				activeBrush = nullptr;
+				break;
+			default:
+				std::cout << "Warning: Unknown Editing Mode" << std::endl;
+				break;
+		}
+
+		for (const auto& brush : brushes) {
+			if (typeid(*brush).name() == brushName) {
+				activeBrush = brush;
+				break;
+			}
+		}
+
+	}
+
+	EditingBrush* OutdoorEditor::getActiveBrush() const
+	{
+		return activeBrush;
 	}
 
 

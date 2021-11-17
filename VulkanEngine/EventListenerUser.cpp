@@ -33,24 +33,30 @@ namespace oe {
 	
 	bool EventListenerUser::onMouseScroll(veEvent event)
 	{
+		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
+		if (brush == nullptr) { return false; }
+
 		float xoffset = event.fdata1;
 		float yoffset = event.fdata2;
 
 		if (yoffset < 0) {
-			VESubrenderFW_Trilinear::brushCircle.radius += 0.5;
-			getRendererForwardPointer()->updateCmdBuffers();
+			brush->increaseRadius();
+			
 		}
 		if (0 < yoffset) {
-			VESubrenderFW_Trilinear::brushCircle.radius -= 0.5;
-			getRendererForwardPointer()->updateCmdBuffers();
+			brush->decreaseRadius();
 		}
 
+		VESubrenderFW_Trilinear::brushCircle.radius = brush->getRadius();
+		getRendererForwardPointer()->updateCmdBuffers();
 		
-		return false;
+		return true;
 	}
 	bool EventListenerUser::onMouseMove(veEvent event)
 	{
-		if (VESubrenderFW_Trilinear::brushCircle.isActive == VK_FALSE) { return false; }
+		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
+		if (brush == nullptr) { return false; }
+		
 
 		float x = event.fdata1;
 		float y = event.fdata2;
@@ -62,6 +68,8 @@ namespace oe {
 		bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 		if (isHit) {
 			VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
+
+			
 			getRendererForwardPointer()->updateCmdBuffers();
 		}
 		return true;
@@ -89,7 +97,6 @@ namespace oe {
 				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 				if (isHit) {
 					OutdoorEditorInfo::editor->modifyTerrain(hitPos, r.getDirection());
-					VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
 					VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
 					getRendererForwardPointer()->updateCmdBuffers();
 				}
@@ -195,10 +202,33 @@ namespace oe {
 		case GLFW_KEY_SPACE:						
 			translate = pCamera->getTransform() * glm::vec4(0.0, 1.0, 0.0, 1.0); //up
 			break;
+		case GLFW_KEY_1:
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL);
+			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL).name() << std::endl;
+			break;
+
+		case GLFW_KEY_2:
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL);
+			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL).name() << std::endl;
+			break;
+
+		case GLFW_KEY_3:
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
+			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH).name() << std::endl;
+			break;
+		
+		case GLFW_KEY_4:
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL);
+			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL).name() << std::endl;
+			break;
 
 		default:
 			return false;
 		};
+
+		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
+		VESubrenderFW_Trilinear::brushCircle.isActive = brush == nullptr ? VK_FALSE : VK_TRUE;
+	
 
 		if (pParent == nullptr) {
 			pParent = pCamera;

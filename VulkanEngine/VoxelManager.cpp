@@ -46,11 +46,9 @@ namespace oe {
 		VoxelCoordinates localCoordinates = world2Local(worldCoordinates);
 		VoxelCoordinates chunkCoordinates = world2ChunkCoordinates(worldCoordinates);
 
-		for (const auto& chunk : chunks) {
-			if (chunk.first == chunkCoordinates) {
-				chunk.second->setVoxel(localCoordinates, voxelValue);
-				return;
-			}
+		auto chunk = chunks.find(chunkCoordinates);
+		if (chunk != chunks.end()) {
+			chunk->second->setVoxel(localCoordinates, voxelValue);
 		}
 	}
 
@@ -58,11 +56,11 @@ namespace oe {
 		VoxelCoordinates localCoordinates = world2Local(worldCoordinates);
 		VoxelCoordinates chunkCoordinates = world2ChunkCoordinates(worldCoordinates);
 
-		for (const auto& chunk : chunks) {
-			if (chunk.first == chunkCoordinates) {
-				return chunk.second->getVoxel(localCoordinates);
-			}
+		auto chunk = chunks.find(chunkCoordinates);
+		if (chunk != chunks.end()) {
+			return chunk->second->getVoxel(localCoordinates);
 		}
+		
 		return VoxelPoint::Empty();
 	}
 
