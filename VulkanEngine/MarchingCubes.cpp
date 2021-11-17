@@ -127,7 +127,7 @@ namespace oe {
 		return cube;
 	}
 	//https://paulbourke.net/geometry/polygonise/ (17.10.21)
-	void MarchingCubes::generateMesh(TerrainMeshChunk* mc) const
+	void MarchingCubes::generateChunk(TerrainMeshChunk* mc) const
 	{
 		if (mc == nullptr) return;
 
@@ -164,10 +164,29 @@ namespace oe {
 				}
 			}
 		}
-		voxelManager->getChunk(mc->getChunkCoordinates())->hasChanged = false;
 	}
 
-	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& localVoxelPos, TerrainMeshChunk* mc) const
+	void MarchingCubes::generateCell(TerrainMeshChunk* mc, const VoxelCoordinates& cellCoordinates) const
+	{
+
+		if (mc == nullptr) return;
+		
+		//2 because a single voxel is surrounded by 8 voxel 
+		int cubeIndex = 0;	
+
+		GridCube cube = nextCube(mc->getChunkCoordinates(), cellCoordinates);
+
+		cubeIndex = determineCubeIndex(cube);
+
+		glm::vec3 vertList[12] = {};
+		glm::vec3 normList[12] = {};
+
+		edgeTableLookup(cubeIndex, cube, vertList, normList);
+
+		generateTriangles(cubeIndex, vertList, normList, cellCoordinates, mc);
+	}
+
+	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& cellCoordinates, TerrainMeshChunk* mc) const
 	{
 
 		std::vector<vh::vhVertex> vertices;
@@ -200,7 +219,7 @@ namespace oe {
 			surfaceNormals.push_back(surfaceNormal);
 		}
 
-		mc->addCube(MeshCube{localVoxelPos, vertices, indices, surfaceNormals, nullptr});
+		mc->insertOrAssignCube(cellCoordinates, new MeshCell{vertices, indices, surfaceNormals, nullptr});
 	}
 	MarchingCubes::MarchingCubes(VoxelManager* const voxelManager) : TerrainGenerator(voxelManager) {}
 	MarchingCubes::~MarchingCubes() {}

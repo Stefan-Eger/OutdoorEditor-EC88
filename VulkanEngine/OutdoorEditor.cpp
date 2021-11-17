@@ -13,11 +13,29 @@ namespace oe {
 	{
 		auto chunks2Generate = voxelManager->getAllChunks2Refresh();
 		std::size_t i = 0, chunkLoad = chunks2Generate.size();
-		for (const auto& chunk : chunks2Generate) {
-			terrainManager->updateChunkMesh(chunk);
-			std::cout << "Chunk "<< i++ << "\t[" << chunk.X << ", " << chunk.Y << ", " << chunk.Z << "] \t of " << chunkLoad << " has been generated" << std::endl;
+		for (const auto& chunkPos : chunks2Generate) {
+			VoxelChunkData* voxelChunk = voxelManager->findChunk(chunkPos);
+			auto changedVoxels = voxelChunk->getChangedVoxels();
+
+			//If too many Voxels have been changed than render the entire chunk
+			if (changedVoxels.size() > 10) {
+				terrainManager->updateChunkMesh(chunkPos);
+				voxelChunk->clearChangedVoxels();
+				std::cout << "Chunk Update " << i++ << "\t[" << chunkPos.X << ", " << chunkPos.Y << ", " << chunkPos.Z << "] \t of " << chunkLoad << " has been generated" << std::endl;
+				continue;
+			}
+			//iterate through each changed voxel and generate its mesh
+			for (const auto& voxelPos : changedVoxels) {
+				auto worldVoxelPos = VoxelManager::local2World(voxelPos, chunkPos);
+				terrainManager->updateCellsAroundVoxel(worldVoxelPos);
+			}
+			voxelChunk->clearChangedVoxels();
+
+			std::cout << "Chunk Cell Update "<< i++ << "\t[" << chunkPos.X << ", " << chunkPos.Y << ", " << chunkPos.Z << "] \t of " << chunkLoad << " has been generated" << std::endl;
 		}
+		terrainManager->renderChangedChunks();
 	}
+
 
 
 
@@ -38,21 +56,21 @@ namespace oe {
 			if ((chunk != nullptr) && (chunk != oldMeshChunk)) {
 				//std::cout << "Ray Chunk Coordinates: " << rayChunkCoordinates.X << ", " << rayChunkCoordinates.Y << ", " << rayChunkCoordinates.Z << std::endl;
 				oldMeshChunk = chunk;
-				const auto cubes = chunk->getCubes();
+				const auto cubes = chunk->getChunkMesh();
 				//Trace All Triangles and if a Triangle is hit return true
 				for (const auto& cube : cubes) {
-					const auto vertices = cube.vertices;
-					const auto indices = cube.indices;
+					const auto vertices = cube.second->vertices;
+					const auto indices = cube.second->indices;
 					
 					for (std::size_t i = 0, j = 0; i < indices.size(); i += 3, ++j) {
 						auto chunkOffset = (VoxelChunkData::CHUNK_SIZE * chunk->getChunkCoordinates()).toVec3();
-						auto cubePosOffset = cube.cubePos.toVec3();
+						auto cubePosOffset = cube.first.toVec3();
 
 						auto v0 = vertices.at(indices.at(i)).pos + chunkOffset + cubePosOffset;
 						auto v1 = vertices.at(indices.at(i + 1)).pos + chunkOffset + cubePosOffset;
 						auto v2 = vertices.at(indices.at(i + 2)).pos + chunkOffset + cubePosOffset;
 
-						auto surfaceNormal = cube.surfaceNormals.at(j);
+						auto surfaceNormal = cube.second->surfaceNormals.at(j);
 
 						bool hit = rayTriangleIntersection(ray, v0, v1, v2, surfaceNormal, outPos);
 						if (hit) {
@@ -64,6 +82,19 @@ namespace oe {
 			distance += 1.0f;
 		}	
 		return false;
+	}
+
+	void OutdoorEditor::modifyTerrain(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume)
+	{
+		VoxelPoint voxel = subtractVolume ? VoxelPoint(0.0f,0) : VoxelPoint(1.0f, 0);
+		glm::vec3 newPos = subtractVolume ? glm::round(hitPos) : glm::round(hitPos - direction * 0.3f);
+
+		VoxelCoordinates modifyVoxel(newPos.x, newPos.y, newPos.z);
+
+		std::cout << "MODIFY VOXEL: " << modifyVoxel.X << ", " << modifyVoxel.Y << ", " << modifyVoxel.Z << std::endl;
+
+		voxelManager->setVoxel(modifyVoxel, voxel);
+		refresh();
 	}
 
 	//https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution (04.11.21)
@@ -114,6 +145,8 @@ namespace oe {
 		outPos = hitPos;
 		return true;
 	}
+
+	
 
 	TerrainManager* OutdoorEditor::getTerrainManager() const
 	{

@@ -36,10 +36,12 @@ namespace oe {
 		OutdoorEditorInfo::editor = new OutdoorEditor();
 		auto voxelManager = OutdoorEditorInfo::editor->getVoxelManager();
 		std::cout << "Load Editor" << std::endl;
-		/*
+		
+		//Test 1
+		
 		voxelManager->addChunk(VoxelCoordinates(0,0,0));
 		voxelManager->setVoxel(VoxelCoordinates(1, 1, 1), VoxelPoint(1.0f, 1));
-
+		/*
 		voxelManager->setVoxel(VoxelCoordinates(2, 1, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(1, 2, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(1, 1, 2), VoxelPoint(1.0f, 1));
@@ -53,10 +55,12 @@ namespace oe {
 		voxelManager->setVoxel(VoxelCoordinates(4, 1, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(5, 1, 1), VoxelPoint(1.0f, 1));
 		voxelManager->setVoxel(VoxelCoordinates(6, 1, 1), VoxelPoint(1.0f, 1));
-		
-		OutdoorEditorInfo::editor->refresh();
 		*/
+		OutdoorEditorInfo::editor->refresh();
+		
 
+		//Test 2
+		/*
 		voxelManager->addChunk(VoxelCoordinates(0, 0, 0));
 
 		for (auto x = 0; x < WORLD_CHUNKS_WIDTH; ++x) {
@@ -72,7 +76,7 @@ namespace oe {
 			}
 		}
 		OutdoorEditorInfo::editor->refresh();
-		
+		*/
 	}
 	void OutdoorEditorEngine::end()
 	{

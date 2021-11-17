@@ -7,9 +7,7 @@ namespace oe {
 	/// It is build upon small marching cubes to ensure multiple materials instead of just one, 
 	/// which would be applied to the chunk
 	/// </summary>
-	struct MeshCube {
-		VoxelCoordinates cubePos;
-
+	struct MeshCell {
 		std::vector<vh::vhVertex> vertices;
 		std::vector<uint32_t> indices;
 		std::vector<glm::vec3> surfaceNormals;
@@ -20,21 +18,29 @@ namespace oe {
 	class TerrainMeshChunk
 	{
 		VoxelCoordinates chunkCoordinates;
-		std::string chunkName;
+		
+		//stores all cube coordinates to access the map
+		std::unordered_map<VoxelCoordinates, MeshCell*> cubes;
 
-		std::vector<MeshCube> cubes;
+		//for cleanup
+		std::string chunkName;
+		std::vector<std::string> meshNames;
+
 
 	public:
 		TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates);
 		~TerrainMeshChunk();
 		
-		void addCube(const MeshCube& cube);
+		void insertOrAssignCube(const VoxelCoordinates& cellPos, MeshCell* cell);
 
 
 		/// <summary>
 		/// Removes Mesh and node from the engine
 		/// </summary>
 		void clear();
+
+
+		void meshCleanup();
 
 		/// <summary>
 		/// Chunk that is stored is finally created with the VVE in this method.
@@ -44,7 +50,8 @@ namespace oe {
 
 		VoxelCoordinates getChunkCoordinates() const;
 
-		const std::vector<MeshCube>& getCubes() const;
+		std::vector<std::pair<VoxelCoordinates, MeshCell*>> getChunkMesh() const;
+
 	};
 }
 #endif // !MESH_CHUNK_H

@@ -346,7 +346,8 @@ namespace oe {
 	public:
 		MarchingCubes(VoxelManager* const voxelManager);
 		~MarchingCubes() override;
-		void generateMesh(TerrainMeshChunk* chunk) const override;
+		void generateChunk(TerrainMeshChunk* chunk) const override;
+		void generateCell(TerrainMeshChunk* chunk, const VoxelCoordinates& cellCoordinates) const override;
 	};
 }
 #endif // !MARCHING_CUBES_H

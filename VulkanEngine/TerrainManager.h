@@ -11,14 +11,22 @@ namespace oe {
 	{
 		std::unordered_map<VoxelCoordinates, TerrainMeshChunk*> terrain;
 		TerrainGenerator* generator;
+
+		std::unordered_set<VoxelCoordinates> changedChunks;
+
+
 	public:
 		TerrainManager(TerrainGenerator* generator);
 		~TerrainManager();
 		
 		void setGenerator(TerrainGenerator* generator);
-		void addChunkMesh(const VoxelCoordinates& chunkCoordinates);
-		void updateChunkMesh(const VoxelCoordinates& chunkCoordinates);
-		TerrainMeshChunk* findChunk(const VoxelCoordinates& chunkCoordinates);
+		void addChunkMesh(const VoxelCoordinates& chunkPos);
+		void updateChunkMesh(const VoxelCoordinates& chunkPos);
+		void updateCellsAroundVoxel(const VoxelCoordinates& voxelWorldPos);
+
+		void renderChangedChunks();	
+
+		TerrainMeshChunk* findChunk(const VoxelCoordinates& chunkPos);
 	};
 }
 #endif // !TERRAIN_MANAGER_H

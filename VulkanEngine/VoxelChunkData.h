@@ -10,12 +10,12 @@ namespace oe {
 		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_Z = 4;
 
 		VoxelPoint voxels[CHUNK_SIZE_X][CHUNK_SIZE_Y][CHUNK_SIZE_Z];
-		
+		std::vector<VoxelCoordinates> changedVoxels;
+
 		//0 is no block is above 0.0 density -> Airchunk
 		std::size_t voxelCounter;
 
 	public:
-		bool hasChanged;
 		static const VoxelCoordinates CHUNK_SIZE;
 
 		VoxelChunkData();
@@ -34,6 +34,9 @@ namespace oe {
 		/// </summary>
 		/// <returns></returns>
 		bool isAirChunk() const;
+
+		const std::vector<VoxelCoordinates>& getChangedVoxels() const;
+		void clearChangedVoxels();
 	};
 }
 #endif // !VOXEL_CHUNK_DATA_H

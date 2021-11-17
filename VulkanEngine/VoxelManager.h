@@ -35,7 +35,7 @@ namespace oe {
 		/// <returns>Voxel Value (Id)</returns>
 		VoxelPoint getVoxel(const VoxelCoordinates& worldCoordinates) const;
 
-		VoxelChunkData* getChunk(const VoxelCoordinates& chunkCoordinates) const;
+		VoxelChunkData* findChunk(const VoxelCoordinates& chunkCoordinates) const;
 
 		std::vector<VoxelCoordinates> getAllChunks2Refresh() const;
 	};

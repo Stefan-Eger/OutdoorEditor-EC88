@@ -2,8 +2,9 @@
 #define OUTDOOR_EDITOR_INCLUDE_H
 
 #include "VEInclude.h"
-
+#include <unordered_set>
 #include "Ray.h"
+#include "EditingBrush.h"
 #include "EventListenerGUI.h"
 #include "EventListenerUser.h"
 #include "VoxelCoordinates.h"

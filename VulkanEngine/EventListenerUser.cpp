@@ -30,25 +30,23 @@ namespace oe {
 		Ray r(cameraPos, direction);
 		return r;
 	}
-	void EventListenerUser::addVoxel(const glm::vec3& hitPos, const glm::vec3& rayDir)
+	
+	bool EventListenerUser::onMouseScroll(veEvent event)
 	{
+		float xoffset = event.fdata1;
+		float yoffset = event.fdata2;
+
+		if (yoffset < 0) {
+			VESubrenderFW_Trilinear::brushCircle.radius += 0.5;
+			getRendererForwardPointer()->updateCmdBuffers();
+		}
+		if (0 < yoffset) {
+			VESubrenderFW_Trilinear::brushCircle.radius -= 0.5;
+			getRendererForwardPointer()->updateCmdBuffers();
+		}
+
 		
-		glm::vec3 dir = rayDir * 0.3f;
-		std::cout << "NEW VOXEL: " << (int)round(hitPos.x - dir.x) << ", " << (int)round(hitPos.y - dir.y) << ", " << (int)round(hitPos.z - dir.z) << std::endl;
-
-		VoxelCoordinates voxelHitPos((int)round(hitPos.x - dir.x), (int)round(hitPos.y - dir.y), (int)round(hitPos.z - dir.z));
-		VoxelPoint voxel(1.0f, 1);
-		OutdoorEditorInfo::editor->getVoxelManager()->setVoxel(voxelHitPos, voxel);
-		OutdoorEditorInfo::editor->refresh();
-	}
-	void EventListenerUser::removeVoxel(const glm::vec3& hitPos, const glm::vec3& rayDir)
-	{
-		glm::vec3 dir = rayDir * 0.3f;
-		std::cout << "ERASE VOXEL: " << (int)round(hitPos.x) << ", " << (int)round(hitPos.y ) << ", " << (int)round(hitPos.z) << std::endl;
-
-		VoxelCoordinates voxelHitPos((int)round(hitPos.x), (int)round(hitPos.y), (int)round(hitPos.z));
-		OutdoorEditorInfo::editor->getVoxelManager()->setVoxel(voxelHitPos, VoxelPoint::Empty());
-		OutdoorEditorInfo::editor->refresh();
+		return false;
 	}
 	bool EventListenerUser::onMouseMove(veEvent event)
 	{
@@ -63,7 +61,6 @@ namespace oe {
 		glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
 		bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 		if (isHit) {
-			std::cout << "MouseMoved" << std::endl;
 			VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
 			getRendererForwardPointer()->updateCmdBuffers();
 		}
@@ -91,7 +88,7 @@ namespace oe {
 				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
 				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 				if (isHit) {
-					addVoxel(hitPos, r.getDirection());
+					OutdoorEditorInfo::editor->modifyTerrain(hitPos, r.getDirection());
 					VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
 					VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
 					getRendererForwardPointer()->updateCmdBuffers();
@@ -117,7 +114,7 @@ namespace oe {
 				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
 				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 				if (isHit) {
-					removeVoxel(hitPos, r.getDirection());
+					OutdoorEditorInfo::editor->modifyTerrain(hitPos, r.getDirection(), true);
 				}
 
 				return true;

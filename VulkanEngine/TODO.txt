@@ -16,7 +16,7 @@ V0.1:
 2.1) Cast Ray Through Pixel -> Done (26.10.21)
 2.2) Implement Raytracing of simple Objects -> (30.10.21)
 2.3) Implement simple Terrain editing (Add to Terrain, Take Away from Terrain) -> Done (30.10.21)
-2.4) Use Shader or other Methods to give the User Feedback what is going to be affected
+2.4) Use Shader or other Methods to give the User Feedback what is going to be affected -> Done(12.10.21)
 2.5) Implement different brushes/modes to change the Terrain
 
 3) Implement Save and Load (JSON) -> ChunkData and then Reconstruct with the Render Setting that was used at the time

@@ -10,7 +10,7 @@ namespace oe {
 
 		const float RAY_EPSILON = 0.00001f;
 
-		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;
+		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;	
 
 	public:
 		OutdoorEditor();
@@ -23,6 +23,11 @@ namespace oe {
 		/// <param name="outPos">Returns the hit Position of Ray if function return true</param>
 		/// <returns>True if it has hit something</returns>
 		bool traceRay(const Ray& ray, glm::vec3& outPos) const;
+
+		void modifyTerrain(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume = false);
+		//void changeBrush();
+		
+
 
 		TerrainManager* getTerrainManager() const;
 		VoxelManager* getVoxelManager() const;

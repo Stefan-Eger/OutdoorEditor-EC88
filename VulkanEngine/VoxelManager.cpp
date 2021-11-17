@@ -49,6 +49,7 @@ namespace oe {
 		for (const auto& chunk : chunks) {
 			if (chunk.first == chunkCoordinates) {
 				chunk.second->setVoxel(localCoordinates, voxelValue);
+				return;
 			}
 		}
 	}
@@ -66,7 +67,7 @@ namespace oe {
 	}
 
 
-	VoxelChunkData* VoxelManager::getChunk(const VoxelCoordinates& chunkCoordinates) const
+	VoxelChunkData* VoxelManager::findChunk(const VoxelCoordinates& chunkCoordinates) const
 	{
 		auto chunk = chunks.find(chunkCoordinates);
 		if (chunk != chunks.end()) {
@@ -80,7 +81,7 @@ namespace oe {
 		std::vector<VoxelCoordinates> ret;
 
 		for (auto const& chunk : chunks) {
-			if (!chunk.second->isAirChunk() && chunk.second->hasChanged)
+			if (!chunk.second->isAirChunk() && (chunk.second->getChangedVoxels().size() > 0))
 				ret.push_back(chunk.first);
 		}
 		return ret;

@@ -6,29 +6,46 @@ namespace oe {
 	}
 	TerrainMeshChunk::~TerrainMeshChunk(){
 
-		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
 		for (auto& cube : cubes) {
-			std::string cubeName = chunkName + "Cube[" + std::to_string(cube.cubePos.X) + "," + std::to_string(cube.cubePos.Y) + "," + std::to_string(cube.cubePos.Z) + "]";
+			std::string cubeName = chunkName + "_Cube[" + std::to_string(cube.first.X) + "," + std::to_string(cube.first.Y) + "," + std::to_string(cube.first.Z) + "]";
 			getSceneManagerPointer()->deleteMesh(cubeName + "_Mesh");
-			getSceneManagerPointer()->deleteMaterial(chunkName + "_Material");
+			delete cube.second;
 		}
+		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
 	}
 
-	void TerrainMeshChunk::addCube(const MeshCube& cube)
-	{
-		cubes.push_back(cube);
+	void TerrainMeshChunk::insertOrAssignCube(const VoxelCoordinates& cellPos, MeshCell* cell){
+		if (cubes.count(cellPos) > 0) {
+			MeshCell* pMesh = cubes.at(cellPos);
+			delete pMesh;
+
+			if (cell->vertices.size() <= 0) {
+				cubes.erase(cellPos);
+				return;
+			}
+		}
+
+		if (cell->vertices.size() <= 0) return;
+		
+		auto isAssigned = cubes.insert_or_assign(cellPos, cell);
 	}
 	
-	void TerrainMeshChunk::clear(){
-		for (auto& cube : cubes) {
-			std::string cubeName = chunkName + "_Cube[" + std::to_string(cube.cubePos.X) + "," + std::to_string(cube.cubePos.Y) + "," + std::to_string(cube.cubePos.Z) + "]";
-			getSceneManagerPointer()->deleteMesh(cubeName + "_Mesh");
+
+	void TerrainMeshChunk::meshCleanup() {
+		for (auto& name : meshNames) {
+			getSceneManagerPointer()->deleteMesh(name + "_Mesh");
 		}
 		getSceneManagerPointer()->deleteSceneNodeAndChildren(chunkName);
-		cubes.clear();
-
+		meshNames.clear();
 	}
+
+	void TerrainMeshChunk::clear(){
+		cubes.clear();
+	}
+
 	void TerrainMeshChunk::renderChunk(){
+		meshCleanup();
+
 		//Create Chunk SceneNode
 		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
 		VESceneNode* pChunkNodeParent;
@@ -36,15 +53,15 @@ namespace oe {
 		glm::vec3 nextChunkPos = (chunkCoordinates * VoxelChunkData::CHUNK_SIZE).toVec3();
 		pChunkNodeParent->multiplyTransform(glm::translate(glm::mat4(1.0f), nextChunkPos));
 
+
 		//Create Mesh for each cube stored in cubes
 		for (auto& cube : cubes) {
-			std::string cubeName = chunkName + "_Cube[" + std::to_string(cube.cubePos.X) + "," + std::to_string(cube.cubePos.Y) + "," + std::to_string(cube.cubePos.Z) + "]";
+			std::string cubeName = chunkName + "_Cube[" + std::to_string(cube.first.X) + "," + std::to_string(cube.first.Y) + "," + std::to_string(cube.first.Z) + "]";
+			meshNames.push_back(cubeName);
 
 			//Actual Engine Mesh generation (Creates only a mesh if there are vertices)
 			VEMesh* cube_mesh = nullptr;
-			if (cube.vertices.size() > 0) {
-				VECHECKPOINTER(cube_mesh = getSceneManagerPointer()->createMesh(cubeName + "_Mesh", cube.vertices, cube.indices));
-			}
+			VECHECKPOINTER(cube_mesh = getSceneManagerPointer()->createMesh(cubeName + "_Mesh", cube.second->vertices, cube.second->indices));
 			//VEMaterial* cube_material = cube->material;
 
 			//TODO Make small Material Database
@@ -56,16 +73,26 @@ namespace oe {
 
 			//CreateCube Entity
 			VEEntity* entity;
-			VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(cubeName + "_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_VOXEL_TERRAIN, cube_mesh, cube_material, pChunkNodeParent));
-			entity->multiplyTransform(glm::translate(glm::mat4(1.0f), cube.cubePos.toVec3()));
+			VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(cubeName + "_Entity", VEEntity::veEntityType::VE_ENTITY_TYPE_NORMAL, cube_mesh, cube_material, pChunkNodeParent));
+			entity->multiplyTransform(glm::translate(glm::mat4(1.0f), cube.first.toVec3()));
+			
 		}
 
 	}
 	VoxelCoordinates TerrainMeshChunk::getChunkCoordinates() const{
 		return chunkCoordinates;
 	}
-	const std::vector<MeshCube>& TerrainMeshChunk::getCubes() const {
-		return cubes;
+
+	std::vector<std::pair<VoxelCoordinates, MeshCell*>> TerrainMeshChunk::getChunkMesh() const
+	{
+		std::vector<std::pair<VoxelCoordinates, MeshCell*>> ret;
+
+		for (auto& cube : cubes) {
+			ret.push_back(cube);
+		}
+		
+		return ret;
 	}
+	
 
 }

@@ -211,7 +211,6 @@ namespace ve {
 	void VESubrenderFW_Trilinear::bindDescriptorSetsPerFrame(VkCommandBuffer commandBuffer, uint32_t imageIndex, VECamera* pCamera, VELight* pLight, std::vector<VkDescriptorSet> descriptorSetsShadow)
 	{
 		VESubrenderFW::bindDescriptorSetsPerFrame(commandBuffer, imageIndex, pCamera, pLight, descriptorSetsShadow);
-		std::cout << "Push Constants" << std::endl;
 		vkCmdPushConstants(commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(BrushCircle), &brushCircle);
 	}
 
