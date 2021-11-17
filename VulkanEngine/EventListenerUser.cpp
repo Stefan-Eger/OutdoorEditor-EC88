@@ -204,31 +204,27 @@ namespace oe {
 			break;
 		case GLFW_KEY_1:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL);
-			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL).name() << std::endl;
+			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_FULL" << std::endl;
 			break;
 
 		case GLFW_KEY_2:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL);
-			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL).name() << std::endl;
+			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_DRILL" << std::endl;
 			break;
 
 		case GLFW_KEY_3:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
-			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH).name() << std::endl;
+			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH" << std::endl;
 			break;
 		
 		case GLFW_KEY_4:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL);
-			std::cout << "Changed editing Mode to " << typeid(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL).name() << std::endl;
+			std::cout << "Changed editing Mode to TERRAIN_EDITING_TEXTURE_SPHERE_FULL "<< std::endl;
 			break;
 
 		default:
 			return false;
 		};
-
-		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
-		VESubrenderFW_Trilinear::brushCircle.isActive = brush == nullptr ? VK_FALSE : VK_TRUE;
-	
 
 		if (pParent == nullptr) {
 			pParent = pCamera;

@@ -5,12 +5,12 @@ namespace oe {
 	class EditingBrush
 	{
 	protected:
-		int radius; // Area affected
+		float radius; // Area affected
 		float strength; // how strong the brush is
 			
-		const int RADIUS_MAX = 40;
-		const int RADIUS_MIN = 0;
-		const int RADIUS_STEP = 2;
+		const float RADIUS_MAX = 5.0f;
+		const float RADIUS_MIN = 1.0f;
+		const float RADIUS_STEP = 0.5f;
 
 
 		const float STRENGTH_MIN = 0.0f;
@@ -21,7 +21,7 @@ namespace oe {
 
 	public:
 		EditingBrush();
-		EditingBrush(const int& radius, const float& strength);
+		EditingBrush(const float& radius, const float& strength);
 		
 		void increaseRadius();
 		void decreaseRadius();
@@ -29,7 +29,7 @@ namespace oe {
 		void setStrength(const float& strength);
 
 		float getStrength() const;
-		int getRadius() const;
+		float getRadius() const;
 
 		/// <summary>
 		/// This method calculates how much a position is affected by the brush

@@ -5,10 +5,11 @@ namespace oe {
 	{
 		std::vector<std::pair<VoxelCoordinates, float>> ret;
 		VoxelCoordinates midPoint(std::lround(pos.x), std::lround(pos.y), std::lround(pos.z));
-
-		for (auto x = -radius; x <= radius; ++x) {
-			for (auto y = -radius; y <= radius; ++y) {
-				for (auto z = -radius; z <= radius; ++z) {
+		long iRadius = lround(radius);
+		long invRadius = lround(-radius);
+		for (auto x = invRadius; x <= iRadius; ++x) {
+			for (auto y = invRadius; y <= iRadius; ++y) {
+				for (auto z = invRadius; z <= iRadius; ++z) {
 					/*
 					if ((x == 0) && (y == 0) && (z == 0)) {
 						ret.push_back(std::make_pair(VoxelCoordinates(midPoint.X, midPoint.Y, midPoint.Z), strength));

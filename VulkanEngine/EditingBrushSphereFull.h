@@ -6,7 +6,7 @@ namespace oe {
 	{
 	public:
 		EditingBrushSphereFull() : EditingBrush() {}
-		EditingBrushSphereFull(const int& radius, const float& strength) : EditingBrush(radius, strength){}
+		EditingBrushSphereFull(const float& radius, const float& strength) : EditingBrush(radius, strength){}
 
 		std::vector<std::pair<VoxelCoordinates, float>> getAffected(const glm::vec3& pos) const override;
 	};

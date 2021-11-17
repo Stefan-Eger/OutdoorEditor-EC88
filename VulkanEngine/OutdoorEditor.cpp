@@ -7,6 +7,7 @@ namespace oe {
 		brushes.push_back(new EditingBrushSphereFull(2, 1.0f));
 
 		activeBrush = brushes.at(0);
+		VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
 		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL;
 	}
 	OutdoorEditor::~OutdoorEditor(){
@@ -198,12 +199,15 @@ namespace oe {
 				break;
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
 				activeBrush = nullptr;
+				VESubrenderFW_Trilinear::brushCircle.isActive = VK_FALSE;
 				break;
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
 				activeBrush = nullptr;
+				VESubrenderFW_Trilinear::brushCircle.isActive = VK_FALSE;
 				break;
 			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
 				activeBrush = nullptr;
+				VESubrenderFW_Trilinear::brushCircle.isActive = VK_FALSE;
 				break;
 			default:
 				std::cout << "Warning: Unknown Editing Mode" << std::endl;
@@ -213,6 +217,7 @@ namespace oe {
 		for (const auto& brush : brushes) {
 			if (typeid(*brush).name() == brushName) {
 				activeBrush = brush;
+				VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
 				break;
 			}
 		}

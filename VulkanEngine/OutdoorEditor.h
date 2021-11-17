@@ -30,6 +30,7 @@ namespace oe {
 		const float RAY_EPSILON = 0.00001f;
 
 		const std::size_t CHUNKS_CHANGED_VOXELS_THRESHOLD = 10;
+		const int TERRAIN_BEDROCK_LEVEL = -10;
 
 		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;	
 
