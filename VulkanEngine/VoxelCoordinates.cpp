@@ -36,6 +36,11 @@ namespace oe {
 		return VoxelCoordinates(X * rhs.X, Y * rhs.Y, Z * rhs.Z);
 	}
 
+	VoxelCoordinates VoxelCoordinates::operator-() const
+	{
+		return VoxelCoordinates(-X, -Y, -Z);
+	}
+
 	VoxelCoordinates VoxelCoordinates::operator*(const_reference scalar) const{
 		return VoxelCoordinates(X * scalar, Y * scalar, Z * scalar);
 	}

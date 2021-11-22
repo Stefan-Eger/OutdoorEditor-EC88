@@ -21,6 +21,7 @@ namespace oe {
 	  VoxelCoordinates operator+(const VoxelCoordinates& rhs) const;
 		VoxelCoordinates operator-(const VoxelCoordinates& rhs) const;
 		VoxelCoordinates operator*(const VoxelCoordinates& rhs) const;
+		VoxelCoordinates operator-() const;
 
 		VoxelCoordinates operator*(const_reference scalar) const;
 		friend VoxelCoordinates operator*(const_reference scalar, const VoxelCoordinates& rhs);

@@ -37,7 +37,7 @@ namespace oe {
 		const std::size_t CHUNKS_CHANGED_VOXELS_THRESHOLD = 15;
 		const int TERRAIN_BEDROCK_LEVEL = -10;
 
-		const float RAY_DISTANCE_MAX = 20.0f;
+		const float RAY_DISTANCE_MAX = 40.0f;
 
 		void addEntityAt(const std::string& entityName, const glm::vec3& pos);
 

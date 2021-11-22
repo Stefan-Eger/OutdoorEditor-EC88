@@ -31,18 +31,37 @@ namespace oe {
 		auto leftNeighbor = chunkPos - VoxelCoordinates(1, 0, 0);
 		auto lowerNeighbor = chunkPos - VoxelCoordinates(0, 1, 0);
 		auto backNeighbor = chunkPos - VoxelCoordinates(0, 0, 1);
+
+		auto leftLowerNeighbor = chunkPos - VoxelCoordinates(1, 1, 0);
+		auto backLowerNeighbor = chunkPos - VoxelCoordinates(0, 1, 1);
+
 		auto leftBackNeighbor = chunkPos - VoxelCoordinates(1, 0, 1);
 		auto leftLowerBackNeighbor = chunkPos - VoxelCoordinates(1, 1, 1);
-		if(!changedChunks.contains(leftNeighbor))
+
+
+		//auto rightNeighbor = -leftNeighbor;
+		//auto upperNeighbor = -lowerNeighbor;
+		//auto frontNeighbor = -backNeighbor;
+		//auto rightFrontNeighbor = -leftBackNeighbor;
+		//auto rightUpperBackNeighbor = -leftLowerBackNeighbor;
+
+
+		//if(!changedChunks.contains(leftNeighbor))
 			updateSingleChunk(leftNeighbor);
-		if (!changedChunks.contains(lowerNeighbor))
+		//if (!changedChunks.contains(lowerNeighbor))
 			updateSingleChunk(lowerNeighbor);
-		if (!changedChunks.contains(backNeighbor))
+		//if (!changedChunks.contains(backNeighbor))
 			updateSingleChunk(backNeighbor);
-		if (!changedChunks.contains(leftBackNeighbor))
+		//if (!changedChunks.contains(leftLowerNeighbor))
+			updateSingleChunk(leftLowerNeighbor);
+		//if (!changedChunks.contains(backLowerNeighbor))
+			updateSingleChunk(backLowerNeighbor);
+
+		//if (!changedChunks.contains(leftBackNeighbor))
 			updateSingleChunk(leftBackNeighbor);
-		if (!changedChunks.contains(leftLowerBackNeighbor))
+		//if (!changedChunks.contains(leftLowerBackNeighbor))
 			updateSingleChunk(leftLowerBackNeighbor);
+		
 
 	}
 	void TerrainManager::updateSingleChunk(const VoxelCoordinates& chunkPos)
@@ -60,8 +79,10 @@ namespace oe {
 	void TerrainManager::updateChunkMesh(const VoxelCoordinates& chunkPos)
 	{
 		updateSingleChunk(chunkPos);
-		updateNeighborsOfChunk(chunkPos);
 
+		if (terrain.contains(chunkPos)) {
+			updateNeighborsOfChunk(chunkPos);
+		}
 
 		return;
 	}
