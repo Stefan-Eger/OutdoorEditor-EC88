@@ -221,8 +221,8 @@ namespace oe {
 			break;
 		
 		case GLFW_KEY_4:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL);
-			std::cout << "Changed editing Mode to TERRAIN_EDITING_TEXTURE_SPHERE_FULL "<< std::endl;
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
+			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH "<< std::endl;
 			getRendererForwardPointer()->updateCmdBuffers();
 			break;
 

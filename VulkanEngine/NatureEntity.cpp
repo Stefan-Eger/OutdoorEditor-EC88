@@ -4,13 +4,13 @@ namespace oe {
 	NatureEntity::NatureEntity(const glm::vec3& pos, NatureEntity_t* modelInfo) : pos{pos}, modelInfo{ modelInfo }
 	{
 	}
-	ve::VESceneNode* NatureEntity::createEntity(const std::string& entityName, VESceneNode* parent)
-	{
-		VESceneNode* entity;
-		VECHECKPOINTER(entity = getSceneManagerPointer()->loadModel(entityName, modelInfo->baseDirectory, modelInfo->modelFileName, modelInfo->aiFlags, parent));
-		return entity;
+	NatureEntity::~NatureEntity(){
+		getSceneManagerPointer()->deleteSceneNodeAndChildren(entity->getName());
 	}
-	NatureEntity::~NatureEntity(){}
+	void NatureEntity::createEntity(const std::string& entityName, VESceneNode* parent)
+	{
+		VECHECKPOINTER(entity = getSceneManagerPointer()->loadModel(entityName, modelInfo->baseDirectory, modelInfo->modelFileName, modelInfo->aiFlags, parent));
+	}
 	NatureEntity_t* NatureEntity::getModelInfo() const {
 		return modelInfo;
 	}

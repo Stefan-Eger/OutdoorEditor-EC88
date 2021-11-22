@@ -18,6 +18,7 @@
 
 #include "EditingBrush.h"
 #include "EditingBrushSphereFull.h"
+#include "EditingBrushSphereSmooth.h"
 #include "EditingBrushDrill.h"
 
 #include "NatureEntity_t.h"

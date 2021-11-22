@@ -245,6 +245,9 @@
     <ClInclude Include="EditingBrushDrill.h">
       <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClInclude>
+    <ClInclude Include="EditingBrushSphereSmooth.h">
+      <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VEEngine.cpp">
@@ -407,6 +410,9 @@
       <Filter>Source Files\OutdoorEditor\Models</Filter>
     </ClCompile>
     <ClCompile Include="EditingBrushDrill.cpp">
+      <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
+    </ClCompile>
+    <ClCompile Include="EditingBrushSphereSmooth.cpp">
       <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClCompile>
   </ItemGroup>

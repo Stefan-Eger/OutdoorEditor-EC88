@@ -7,12 +7,13 @@ namespace oe {
 		glm::vec3 pos;
 		NatureEntity_t* modelInfo;
 
+		VESceneNode* entity;
 		
 	public:
 		NatureEntity(const glm::vec3& pos, NatureEntity_t* modelInfo);
 		~NatureEntity();
 
-		virtual VESceneNode* createEntity(const std::string& entityName, VESceneNode* parent);
+		virtual void createEntity(const std::string& entityName, VESceneNode* parent);
 
 		NatureEntity_t* getModelInfo() const;
 		glm::vec3 getPos() const;

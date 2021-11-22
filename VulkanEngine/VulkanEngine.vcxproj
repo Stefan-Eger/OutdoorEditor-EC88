@@ -179,6 +179,7 @@
     <ClInclude Include="EditingBrush.h" />
     <ClInclude Include="EditingBrushDrill.h" />
     <ClInclude Include="EditingBrushSphereFull.h" />
+    <ClInclude Include="EditingBrushSphereSmooth.h" />
     <ClInclude Include="EventListenerGUI.h" />
     <ClInclude Include="EventListenerUser.h" />
     <ClInclude Include="MarchingCubes.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="EditingBrush.cpp" />
     <ClCompile Include="EditingBrushDrill.cpp" />
     <ClCompile Include="EditingBrushSphereFull.cpp" />
+    <ClCompile Include="EditingBrushSphereSmooth.cpp" />
     <ClCompile Include="EventListenerGUI.cpp" />
     <ClCompile Include="EventListenerUser.cpp" />
     <ClCompile Include="main.cpp" />

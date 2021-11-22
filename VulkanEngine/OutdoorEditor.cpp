@@ -12,7 +12,7 @@ namespace oe {
 
 		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
 		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
-		parentEntity = newEntity->createEntity(VEentityName, parentEntity);
+		newEntity->createEntity(VEentityName, parentEntity);
 		//parentEntity->multiplyTransform(glm::translate(pos));
 		parentEntity->setPosition(pos);
 
@@ -41,9 +41,16 @@ namespace oe {
 		auto affected = activeBrush->getAffected(hitPos);
 
 		for (const auto& a : affected) {
-			VoxelPoint voxel = VoxelPoint(a.second, 0);
+			VoxelPoint oldVoxel = voxelManager->getVoxel(a.first);
 
-			voxelManager->setVoxel(a.first, voxel);
+			if (!subtractVolume && (oldVoxel.density < a.second)) {
+				VoxelPoint voxel = VoxelPoint(a.second, 0);
+				voxelManager->setVoxel(a.first, voxel);
+			}
+			if (subtractVolume && (a.second < oldVoxel.density)) {
+				VoxelPoint voxel = VoxelPoint(a.second, 0);
+				voxelManager->setVoxel(a.first, voxel);
+			}
 		}
 		refresh();
 	}
@@ -54,7 +61,8 @@ namespace oe {
 		enitityDatabase = new NatureEntityDatabase();
 
 		brushes.push_back(new EditingBrushSphereFull(2.0f, 1.0f));
-		brushes.push_back(new EditingBrushDrill(1.0f));
+		brushes.push_back(new EditingBrushDrill(0.3f));
+		brushes.push_back(new EditingBrushSphereSmooth(3.0f, 1.0f));
 		entityCounter = 0;
 		activeBrush = brushes.at(0);
 		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL;
@@ -150,6 +158,8 @@ namespace oe {
 			addEntityAt("Pine_Tree", hitPos);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
+			removeEntitiesAt(hitPos);
+			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
 			break;
@@ -201,8 +211,8 @@ namespace oe {
 			case oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT:
 				brushName = typeid(EditingBrushDrill).name(); 
 				break;
-			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH: //TODO IMPLEMENT
-				activeBrush = nullptr;
+			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
+				brushName = typeid(EditingBrushSphereSmooth).name();
 				break;
 			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL: //TODO IMPLEMENT
 				activeBrush = nullptr;
