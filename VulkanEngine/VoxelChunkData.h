@@ -5,9 +5,9 @@
 namespace oe {
 	class VoxelChunkData
 	{
-		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_X = 4;
-		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_Y = 4;
-		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_Z = 4;
+		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_X = 5;
+		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_Y = 5;
+		static constexpr VoxelCoordinates::value_type CHUNK_SIZE_Z = 5;
 
 		VoxelPoint voxels[CHUNK_SIZE_X][CHUNK_SIZE_Y][CHUNK_SIZE_Z];
 		std::vector<VoxelCoordinates> changedVoxels;

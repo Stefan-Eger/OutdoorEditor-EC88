@@ -17,7 +17,7 @@ V0.1:
 2.2) Implement Raytracing of simple Objects -> (30.10.21)
 2.3) Implement simple Terrain editing (Add to Terrain, Take Away from Terrain) -> Done (30.10.21)
 2.4) Use Shader or other Methods to give the User Feedback what is going to be affected -> Done(12.10.21)
-2.5) Implement different brushes/modes to change the Terrain
+2.5) Implement different brushes/modes to change the Terrain -> Done (17.11.21)
 
 3) Implement Save and Load (JSON) -> ChunkData and then Reconstruct with the Render Setting that was used at the time
 3.1)Implement Search for Scene 
@@ -25,7 +25,7 @@ V0.1:
 3.3)Implement Load -> Reconstruct Scene from saved Data in the JSON file
 
 Bugfixing 
--> Notify neighbors if voxel is removed or added
+-> Notify neighbors if voxel is removed or added -> Done (16.11.21)
 -> add switching (textures) materials for voxels
 -> remove mesh artifacts if possible
 -> Refactor raytracing code
@@ -33,6 +33,10 @@ Bugfixing
 --------------------------------------------------------------------------------
 
 4) Place/Create Objects Like Trees, Stones, Bushes, Grass and so on (Models or Procedural Generation)
+4.1) Create a Tree Model -> Done (21.11.21)
+4.2) Implement Model Via VVE
+4.3) Place Model in Editor
+4.4) Create more models in blender
 
 5) Implement SurfaceNets
 

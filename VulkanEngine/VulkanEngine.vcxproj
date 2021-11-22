@@ -177,10 +177,14 @@
     <ClInclude Include="CLInclude.h" />
     <ClInclude Include="CLShape.h" />
     <ClInclude Include="EditingBrush.h" />
+    <ClInclude Include="EditingBrushDrill.h" />
     <ClInclude Include="EditingBrushSphereFull.h" />
     <ClInclude Include="EventListenerGUI.h" />
     <ClInclude Include="EventListenerUser.h" />
     <ClInclude Include="MarchingCubes.h" />
+    <ClInclude Include="NatureEntity.h" />
+    <ClInclude Include="NatureEntityDatabase.h" />
+    <ClInclude Include="NatureEntity_t.h" />
     <ClInclude Include="TerrainManager.h" />
     <ClInclude Include="TerrainMeshChunk.h" />
     <ClInclude Include="OEInclude.h" />
@@ -223,12 +227,16 @@
   <ItemGroup>
     <ClCompile Include="..\external\threadpool\ThreadPool.cpp" />
     <ClCompile Include="EditingBrush.cpp" />
+    <ClCompile Include="EditingBrushDrill.cpp" />
     <ClCompile Include="EditingBrushSphereFull.cpp" />
     <ClCompile Include="EventListenerGUI.cpp" />
     <ClCompile Include="EventListenerUser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CLIntersect.cpp" />
     <ClCompile Include="MarchingCubes.cpp" />
+    <ClCompile Include="NatureEntity.cpp" />
+    <ClCompile Include="NatureEntityDatabase.cpp" />
+    <ClCompile Include="NatureEntity_t.cpp" />
     <ClCompile Include="TerrainManager.cpp" />
     <ClCompile Include="TerrainMeshChunk.cpp" />
     <ClCompile Include="OutdoorEditorEngine.cpp" />

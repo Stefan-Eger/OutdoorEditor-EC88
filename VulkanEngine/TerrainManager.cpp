@@ -25,7 +25,27 @@ namespace oe {
 
 		changedChunks.emplace(chunkPos);
 	}
-	void TerrainManager::updateChunkMesh(const VoxelCoordinates& chunkPos)
+	void TerrainManager::updateNeighborsOfChunk(const VoxelCoordinates& chunkPos)
+	{
+
+		auto leftNeighbor = chunkPos - VoxelCoordinates(1, 0, 0);
+		auto lowerNeighbor = chunkPos - VoxelCoordinates(0, 1, 0);
+		auto backNeighbor = chunkPos - VoxelCoordinates(0, 0, 1);
+		auto leftBackNeighbor = chunkPos - VoxelCoordinates(1, 0, 1);
+		auto leftLowerBackNeighbor = chunkPos - VoxelCoordinates(1, 1, 1);
+		if(!changedChunks.contains(leftNeighbor))
+			updateSingleChunk(leftNeighbor);
+		if (!changedChunks.contains(lowerNeighbor))
+			updateSingleChunk(lowerNeighbor);
+		if (!changedChunks.contains(backNeighbor))
+			updateSingleChunk(backNeighbor);
+		if (!changedChunks.contains(leftBackNeighbor))
+			updateSingleChunk(leftBackNeighbor);
+		if (!changedChunks.contains(leftLowerBackNeighbor))
+			updateSingleChunk(leftLowerBackNeighbor);
+
+	}
+	void TerrainManager::updateSingleChunk(const VoxelCoordinates& chunkPos)
 	{
 		//if chunk already exists then update
 		TerrainMeshChunk* pChunk = findChunk(chunkPos);
@@ -33,34 +53,17 @@ namespace oe {
 			pChunk->clear();
 			generator->generateChunk(pChunk);
 			changedChunks.emplace(chunkPos);
-
-			auto leftNeighbor = chunkPos - VoxelCoordinates(1, 0, 0);
-			auto lowerNeighbor = chunkPos - VoxelCoordinates(0, 1, 0);
-			auto backNeighbor = chunkPos - VoxelCoordinates(0, 0, 1);
-
-			if (terrain.contains(leftNeighbor)) {
-				auto left = terrain.at(leftNeighbor);
-				left->clear();
-				generator->generateChunk(left);
-				changedChunks.emplace(leftNeighbor);
-			}
-			if (terrain.contains(lowerNeighbor)) {
-				auto lower = terrain.at(lowerNeighbor);
-				lower->clear();
-				generator->generateChunk(lower);
-				changedChunks.emplace(lowerNeighbor);
-			}
-			if (terrain.contains(backNeighbor)) {
-				auto back = terrain.at(backNeighbor);
-				back->clear();
-				generator->generateChunk(back);
-				changedChunks.emplace(backNeighbor);
-			}
-			return;
 		}
+		else
+			addChunkMesh(chunkPos); //or create a new Chunk
+	}
+	void TerrainManager::updateChunkMesh(const VoxelCoordinates& chunkPos)
+	{
+		updateSingleChunk(chunkPos);
+		updateNeighborsOfChunk(chunkPos);
 
-		//if not then create a new chunk
-		addChunkMesh(chunkPos);
+
+		return;
 	}
 	void TerrainManager::updateCellsAroundVoxel(const VoxelCoordinates& voxelWorldPos)
 	{

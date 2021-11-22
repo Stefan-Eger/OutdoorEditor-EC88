@@ -81,6 +81,18 @@
     <Filter Include="Source Files\OutdoorEditor\EditingTools\Math">
       <UniqueIdentifier>{d8884fce-8a74-4f54-ba97-a03059638aed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\OutdoorEditor\Engine\Editor">
+      <UniqueIdentifier>{f54a9cdd-ef53-4a51-85e4-a99077a7dda3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OutdoorEditor\Engine\Editor">
+      <UniqueIdentifier>{eb1608a8-d996-404d-813e-11c99c667d1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OutdoorEditor\Models">
+      <UniqueIdentifier>{d69e878b-e740-45ad-aa34-aeed0d20a6dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OutdoorEditor\Models">
+      <UniqueIdentifier>{f47badd4-5828-483e-87df-ca3ed602db6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VEEngine.h">
@@ -167,23 +179,14 @@
     <ClInclude Include="VHFunctions.h">
       <Filter>Header Files\VHelper</Filter>
     </ClInclude>
-    <ClInclude Include="OutdoorEditorEngine.h">
-      <Filter>Header Files\OutdoorEditor\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="EventListenerGUI.h">
       <Filter>Header Files\OutdoorEditor\Engine\EventListener</Filter>
-    </ClInclude>
-    <ClInclude Include="OutdoorEditorInfo.h">
-      <Filter>Header Files\OutdoorEditor\Engine</Filter>
     </ClInclude>
     <ClInclude Include="VoxelCoordinates.h">
       <Filter>Header Files\OutdoorEditor\VoxelData</Filter>
     </ClInclude>
     <ClInclude Include="VoxelChunkData.h">
       <Filter>Header Files\OutdoorEditor\VoxelData</Filter>
-    </ClInclude>
-    <ClInclude Include="OEInclude.h">
-      <Filter>Header Files\OutdoorEditor\Engine</Filter>
     </ClInclude>
     <ClInclude Include="TerrainGenerator.h">
       <Filter>Header Files\OutdoorEditor\TerrainGenerator</Filter>
@@ -206,9 +209,6 @@
     <ClInclude Include="VoxelManager.h">
       <Filter>Header Files\OutdoorEditor\VoxelData</Filter>
     </ClInclude>
-    <ClInclude Include="OutdoorEditor.h">
-      <Filter>Header Files\OutdoorEditor\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="VESubrenderFW_Trilinear.h">
       <Filter>Header Files\VESubrender</Filter>
     </ClInclude>
@@ -219,6 +219,30 @@
       <Filter>Header Files\OutdoorEditor\EditingTools\Math</Filter>
     </ClInclude>
     <ClInclude Include="EditingBrushSphereFull.h">
+      <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
+    </ClInclude>
+    <ClInclude Include="OutdoorEditorInfo.h">
+      <Filter>Header Files\OutdoorEditor\Engine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="OutdoorEditor.h">
+      <Filter>Header Files\OutdoorEditor\Engine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="OutdoorEditorEngine.h">
+      <Filter>Header Files\OutdoorEditor\Engine\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="OEInclude.h">
+      <Filter>Header Files\OutdoorEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NatureEntity.h">
+      <Filter>Header Files\OutdoorEditor\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="NatureEntity_t.h">
+      <Filter>Header Files\OutdoorEditor\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="NatureEntityDatabase.h">
+      <Filter>Header Files\OutdoorEditor\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="EditingBrushDrill.h">
       <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -322,12 +346,6 @@
     <ClCompile Include="VHFunctions.cpp">
       <Filter>Source Files\VHelper</Filter>
     </ClCompile>
-    <ClCompile Include="OutdoorEditorEngine.cpp">
-      <Filter>Source Files\OutdoorEditor\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="OutdoorEditorInfo.cpp">
-      <Filter>Source Files\OutdoorEditor\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="EventListenerGUI.cpp">
       <Filter>Source Files\OutdoorEditor\Engine\EventListener</Filter>
     </ClCompile>
@@ -358,9 +376,6 @@
     <ClCompile Include="VoxelManager.cpp">
       <Filter>Source Files\OutdoorEditor\VoxelData</Filter>
     </ClCompile>
-    <ClCompile Include="OutdoorEditor.cpp">
-      <Filter>Source Files\OutdoorEditor\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="VESubrenderFW_Trilinear.cpp">
       <Filter>Source Files\VESubrender</Filter>
     </ClCompile>
@@ -371,6 +386,27 @@
       <Filter>Source Files\OutdoorEditor\EditingTools\Math</Filter>
     </ClCompile>
     <ClCompile Include="EditingBrushSphereFull.cpp">
+      <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
+    </ClCompile>
+    <ClCompile Include="OutdoorEditorInfo.cpp">
+      <Filter>Source Files\OutdoorEditor\Engine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="OutdoorEditor.cpp">
+      <Filter>Source Files\OutdoorEditor\Engine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="OutdoorEditorEngine.cpp">
+      <Filter>Source Files\OutdoorEditor\Engine\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="NatureEntity.cpp">
+      <Filter>Source Files\OutdoorEditor\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="NatureEntity_t.cpp">
+      <Filter>Source Files\OutdoorEditor\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="NatureEntityDatabase.cpp">
+      <Filter>Source Files\OutdoorEditor\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="EditingBrushDrill.cpp">
       <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClCompile>
   </ItemGroup>

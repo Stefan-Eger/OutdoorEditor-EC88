@@ -1,13 +1,62 @@
 #include "OEInclude.h"
 namespace oe {
+	void OutdoorEditor::addEntityAt(const std::string& entityName, const glm::vec3& pos)
+	{
+		std::string VEentityName = entityName + '_' + std::to_string(entityCounter++);
+		if (entities.contains(VEentityName)) return;
+
+		NatureEntity_t* info = enitityDatabase->getEntity(entityName);
+		NatureEntity* newEntity = new NatureEntity(pos, info);
+
+		
+
+		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
+		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
+		parentEntity = newEntity->createEntity(VEentityName, parentEntity);
+		//parentEntity->multiplyTransform(glm::translate(pos));
+		parentEntity->setPosition(pos);
+
+		entities.emplace(VEentityName, newEntity);
+	}
+	void OutdoorEditor::removeEntitiesAt(const glm::vec3& pos)
+	{
+		for (auto it = entities.begin(); it != entities.end();) {
+			float currentDistance = glm::length(it->second->getPos() - pos);
+			float distance = activeBrush->getRadius();
+			if (currentDistance < distance) {
+				delete it->second;
+				it = entities.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+	}
+
+	void OutdoorEditor::modifyTerrainVolumeWithActiveBrush(const glm::vec3& hitPos, bool subtractVolume)
+	{
+		float strength = subtractVolume ? 0.0f : 1.0f;
+		activeBrush->setStrength(strength);
+
+		auto affected = activeBrush->getAffected(hitPos);
+
+		for (const auto& a : affected) {
+			VoxelPoint voxel = VoxelPoint(a.second, 0);
+
+			voxelManager->setVoxel(a.first, voxel);
+		}
+		refresh();
+	}
+
 	OutdoorEditor::OutdoorEditor() {
 		voxelManager = new VoxelManager();
 		terrainManager = new TerrainManager(new MarchingCubes(voxelManager));
+		enitityDatabase = new NatureEntityDatabase();
 
-		brushes.push_back(new EditingBrushSphereFull(2, 1.0f));
-
+		brushes.push_back(new EditingBrushSphereFull(2.0f, 1.0f));
+		brushes.push_back(new EditingBrushDrill(1.0f));
+		entityCounter = 0;
 		activeBrush = brushes.at(0);
-		VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
 		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL;
 	}
 	OutdoorEditor::~OutdoorEditor(){
@@ -16,6 +65,7 @@ namespace oe {
 			delete b;
 		}
 		brushes.clear();
+		delete enitityDatabase;
 		delete terrainManager;
 		delete voxelManager;
 	}
@@ -50,14 +100,17 @@ namespace oe {
 
 
 
+	
+
 	bool OutdoorEditor::traceRay(const Ray& ray, glm::vec3& outPos) const
 	{
+
 		//TODO Not very well implemented. find ways for speed up
 		//travel from chunk to chunk and test ray/TriangleIntersection
 		TerrainMeshChunk* oldMeshChunk = nullptr;
 		float distance = 0.0f;
 		while (distance < RAY_DISTANCE_MAX) {
-			
+
 			auto rayPos = ray.getPositionOnRay(distance);
 			auto rayChunkCoordinates = VoxelManager::world2ChunkCoordinates(VoxelCoordinates((int)rayPos.x, (int)rayPos.y, (int)rayPos.z));
 
@@ -65,49 +118,46 @@ namespace oe {
 			TerrainMeshChunk* chunk = terrainManager->findChunk(rayChunkCoordinates);
 
 			if ((chunk != nullptr) && (chunk != oldMeshChunk)) {
-				//std::cout << "Ray Chunk Coordinates: " << rayChunkCoordinates.X << ", " << rayChunkCoordinates.Y << ", " << rayChunkCoordinates.Z << std::endl;
 				oldMeshChunk = chunk;
-				const auto cubes = chunk->getChunkMesh();
-				//Trace All Triangles and if a Triangle is hit return true
-				for (const auto& cube : cubes) {
-					const auto vertices = cube.second->vertices;
-					const auto indices = cube.second->indices;
-					
-					for (std::size_t i = 0, j = 0; i < indices.size(); i += 3, ++j) {
-						auto chunkOffset = (VoxelChunkData::CHUNK_SIZE * chunk->getChunkCoordinates()).toVec3();
-						auto cubePosOffset = cube.first.toVec3();
 
-						auto v0 = vertices.at(indices.at(i)).pos + chunkOffset + cubePosOffset;
-						auto v1 = vertices.at(indices.at(i + 1)).pos + chunkOffset + cubePosOffset;
-						auto v2 = vertices.at(indices.at(i + 2)).pos + chunkOffset + cubePosOffset;
-
-						auto surfaceNormal = cube.second->surfaceNormals.at(j);
-
-						bool hit = rayTriangleIntersection(ray, v0, v1, v2, surfaceNormal, outPos);
-						if (hit) {
-							return hit;
-						}
-					}
+				bool hit = chunk->traceRay(ray, outPos);
+				if (hit) {
+					return hit;
 				}
 			}
 			distance += 1.0f;
-		}	
+		}
 		return false;
 	}
 
-	void OutdoorEditor::modifyTerrain(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume)
+	void OutdoorEditor::handleInput(const glm::vec3& hitPos, const glm::vec3& direction, bool invertOperation)
 	{
-		float strength = subtractVolume ? 0.0f : 1.0f;
-		activeBrush->setStrength(strength);
-		
-		auto affected = activeBrush->getAffected(hitPos);
-
-		for (const auto& a : affected) {
-			VoxelPoint voxel = VoxelPoint(a.second, 0);
-
-			voxelManager->setVoxel(a.first, voxel);
+		switch (activeMode)
+		{
+		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL:
+			removeEntitiesAt(hitPos);
+			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
+			break;
+		case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
+			removeEntitiesAt(hitPos);
+			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
+			break;
+		case oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT: //TODO different models -> create Enums
+			if (invertOperation) {
+				removeEntitiesAt(hitPos);
+				break;
+			}
+			addEntityAt("Pine_Tree", hitPos);
+			break;
+		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
+			break;
+		case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
+			break;
+		default:
+			std::cout << "Warning: Unknown Editing Mode" << std::endl;
+			break;
 		}
-		refresh();
+
 		
 		/*
 		VoxelPoint voxel = subtractVolume ? VoxelPoint(0.0f,0) : VoxelPoint(1.0f, 0);
@@ -121,58 +171,6 @@ namespace oe {
 		refresh();
 		*/
 	}
-
-	//https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution (04.11.21)
-	//Implements and Explains the Geometric intersection algorithm with a plane equation and left right tests to ensure the hit point is in the triangle
-	bool OutdoorEditor::rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const
-	{			
-		float surfaceNormalDOTRayDirection = glm::dot(surfaceNormal, ray.getDirection());
-		//Check if Direction of Ray and Surface normal are perpendicular (Direction of ray is parallel to triangle)
-		if (std::abs(surfaceNormalDOTRayDirection) < RAY_EPSILON)
-			return false;
-
-		//Direction and Surface normal should oppose each other so if it bigger than 0 then they point in the same direction
-		if (0.0f < surfaceNormalDOTRayDirection)
-			return false;
-
-		//Calculate alpha to determine if triangle was hit by the ray
-		//it uses the Ray Equation P = alpha * direction + origin and the plane Equation: A*x + B*y + C*z + D = 0 (x = Px, y = Py, z=Pz)  
-		float D = -glm::dot(surfaceNormal, v0);
-		float alpha = -(glm::dot(surfaceNormal, ray.getOrigin()) + D) / surfaceNormalDOTRayDirection;
-
-		//Ray hits a triangle behind the origin -> no hit
-		if (alpha < 0.0f)
-			return false;
-
-		//Successful hit (it has hit the plane not the triangle yet)
-		glm::vec3 hitPos = ray.getPositionOnRay(alpha);
-
-		//Test if hit was inside Triangle (right is below 0.0f so return false if left)
-		glm::vec3 e01 = v1 - v0;
-		glm::vec3 v0toHit = hitPos - v0;
-		glm::vec3 c0 = glm::cross(e01, v0toHit);
-		if (glm::dot(surfaceNormal, c0) > 0.0f)
-			return false;
-
-		glm::vec3 e12 = v2 - v1;
-		glm::vec3 v1toHit = hitPos - v1;
-		glm::vec3 c1 = glm::cross(e12, v1toHit);
-		if (glm::dot(surfaceNormal, c1) > 0.0f)
-			return false;
-
-		glm::vec3 e20 = v0 - v2;
-		glm::vec3 v2toHit = hitPos - v2;
-		glm::vec3 c2 = glm::cross(e20, v2toHit);
-		if (glm::dot(surfaceNormal, c2) > 0.0f)
-			return false;
-
-		//Hit is inside Triangle return hitPos and true for hit
-		outPos = hitPos;
-		return true;
-	}
-
-	
-
 	TerrainManager* OutdoorEditor::getTerrainManager() const
 	{
 		return terrainManager;
@@ -197,17 +195,17 @@ namespace oe {
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL:
 				brushName = typeid(EditingBrushSphereFull).name();
 				break;
-			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
-				activeBrush = nullptr;
-				VESubrenderFW_Trilinear::brushCircle.isActive = VK_FALSE;
-				break;
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
-				activeBrush = nullptr;
-				VESubrenderFW_Trilinear::brushCircle.isActive = VK_FALSE;
+				brushName = typeid(EditingBrushDrill).name();
 				break;
-			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
+			case oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT:
+				brushName = typeid(EditingBrushDrill).name(); 
+				break;
+			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH: //TODO IMPLEMENT
 				activeBrush = nullptr;
-				VESubrenderFW_Trilinear::brushCircle.isActive = VK_FALSE;
+				break;
+			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL: //TODO IMPLEMENT
+				activeBrush = nullptr;
 				break;
 			default:
 				std::cout << "Warning: Unknown Editing Mode" << std::endl;
@@ -217,7 +215,6 @@ namespace oe {
 		for (const auto& brush : brushes) {
 			if (typeid(*brush).name() == brushName) {
 				activeBrush = brush;
-				VESubrenderFW_Trilinear::brushCircle.isActive = VK_TRUE;
 				break;
 			}
 		}

@@ -14,57 +14,58 @@ namespace oe {
 			TERRAIN_EDITING_VOLUME_SPHERE_FULL,
 			TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH,
 			TERRAIN_EDITING_VOLUME_DRILL,
-			TERRAIN_EDITING_TEXTURE_SPHERE_FULL
+			TERRAIN_EDITING_TEXTURE_SPHERE_FULL,
+			ENTITY_PLACEMENT_SINGLE_PLACEMENT
 		};
 
 	private:
-		//ChunkCoordinates, Chunk
+		//Managers
 		VoxelManager* voxelManager;
 		TerrainManager* terrainManager;
+		NatureEntityDatabase* enitityDatabase;
+		
+		//Entity management
+		std::unordered_map<std::string, NatureEntity*> entities;
+		std::size_t entityCounter;
 
+		//Brushes
 		std::vector<EditingBrush*> brushes;
 		EditingBrush* activeBrush;
 		oeEditingModes activeMode;
 
-		const float RAY_DISTANCE_MAX = 20.0f;
-		const float RAY_EPSILON = 0.00001f;
-
-		const std::size_t CHUNKS_CHANGED_VOXELS_THRESHOLD = 10;
+		//Constants
+		const std::size_t CHUNKS_CHANGED_VOXELS_THRESHOLD = 15;
 		const int TERRAIN_BEDROCK_LEVEL = -10;
 
-		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;	
+		const float RAY_DISTANCE_MAX = 20.0f;
 
+		void addEntityAt(const std::string& entityName, const glm::vec3& pos);
+
+		void removeEntitiesAt(const glm::vec3& pos);
+
+		void modifyTerrainVolumeWithActiveBrush(const glm::vec3& hitPos, bool subtractVolume = false);
+		
 	public:
 		OutdoorEditor();
 		~OutdoorEditor();
 
-		
+		/////////////////////////////////////////////////////////////////////////
+		//Terrain manipulation
+		void refresh() const;
 
-
-
-		/// <summary>
-		/// Ray returns true if mesh was was hit.
-		/// </summary>
-		/// <param name="ray"></param>
-		/// <param name="outPos">Returns the hit Position of Ray if function return true</param>
-		/// <returns>True if it has hit something</returns>
 		bool traceRay(const Ray& ray, glm::vec3& outPos) const;
 
-		void modifyTerrain(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume = false);
-		//void changeBrush();
-		
+		void handleInput(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume = false);
 
-
+		/////////////////////////////////////////////////////////////////////////
+		//Editor-Components
 		TerrainManager* getTerrainManager() const;
 		VoxelManager* getVoxelManager() const;
 
-
 		oeEditingModes getEditingMode() const;
 		void setEditingMode(const oeEditingModes& mode);
-
 		EditingBrush* getActiveBrush() const;
 
-		void refresh() const;
 
 	};
 }

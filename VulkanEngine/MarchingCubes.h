@@ -329,8 +329,10 @@ namespace oe {
 			VoxelPoint voxelVal[8] {};
 		};
 
+
+		void generateTriangles(const int& cubeIndex, glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& localVoxelPos, TerrainMeshChunk* chunk) const;
 		GridCube nextCube(const VoxelCoordinates& chunk, const VoxelCoordinates& offset) const;
-		
+
 		//Helper to generate surface Normals at GridCube Vertices
 		float cubeGradientDir(const VoxelCoordinates& currentVertice, const VoxelCoordinates& direction) const;
 		int determineCubeIndex(const GridCube& cube) const;
@@ -340,8 +342,6 @@ namespace oe {
 		//Interpolating is implemented for future uses, but right now only 1/2 will be implemented since there are no isovalues involved
 		glm::vec3 interpolateVertices(const VoxelCoordinates& v1, const VoxelCoordinates& v2, const float& d1, const float& d2) const;
 		glm::vec3 interpolateNormals(const glm::vec3& n1, const glm::vec3& n2, const float& d1, const float& d2) const;
-
-		void generateTriangles(const int& cubeIndex, glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& localVoxelPos, TerrainMeshChunk* chunk) const;
 
 	public:
 		MarchingCubes(VoxelManager* const voxelManager);

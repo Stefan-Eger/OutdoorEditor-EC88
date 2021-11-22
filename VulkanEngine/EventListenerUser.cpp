@@ -96,7 +96,7 @@ namespace oe {
 				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
 				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 				if (isHit) {
-					OutdoorEditorInfo::editor->modifyTerrain(hitPos, r.getDirection());
+					OutdoorEditorInfo::editor->handleInput(hitPos, r.getDirection());
 					VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
 					getRendererForwardPointer()->updateCmdBuffers();
 				}
@@ -121,7 +121,7 @@ namespace oe {
 				glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
 				bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
 				if (isHit) {
-					OutdoorEditorInfo::editor->modifyTerrain(hitPos, r.getDirection(), true);
+					OutdoorEditorInfo::editor->handleInput(hitPos, r.getDirection(), true);
 				}
 
 				return true;
@@ -205,26 +205,36 @@ namespace oe {
 		case GLFW_KEY_1:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL);
 			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_FULL" << std::endl;
+			getRendererForwardPointer()->updateCmdBuffers();
 			break;
 
 		case GLFW_KEY_2:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL);
 			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_DRILL" << std::endl;
+			getRendererForwardPointer()->updateCmdBuffers();
 			break;
 
 		case GLFW_KEY_3:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
-			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH" << std::endl;
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT);
+			std::cout << "Changed editing Mode to ENTITY_PLACEMENT_SINGLE_PLACEMENT" << std::endl;
+			getRendererForwardPointer()->updateCmdBuffers();
 			break;
 		
 		case GLFW_KEY_4:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL);
 			std::cout << "Changed editing Mode to TERRAIN_EDITING_TEXTURE_SPHERE_FULL "<< std::endl;
+			getRendererForwardPointer()->updateCmdBuffers();
 			break;
 
 		default:
 			return false;
 		};
+		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
+		VESubrenderFW_Trilinear::brushCircle.isActive = brush == nullptr ? VK_FALSE : VK_TRUE;
+		if (brush != nullptr) {
+			VESubrenderFW_Trilinear::brushCircle.radius = brush->getRadius();
+		}
+		
 
 		if (pParent == nullptr) {
 			pParent = pCamera;

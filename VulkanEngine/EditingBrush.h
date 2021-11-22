@@ -23,8 +23,8 @@ namespace oe {
 		EditingBrush();
 		EditingBrush(const float& radius, const float& strength);
 		
-		void increaseRadius();
-		void decreaseRadius();
+		virtual void increaseRadius();
+		virtual void decreaseRadius();
 
 		void setStrength(const float& strength);
 

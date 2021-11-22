@@ -14,19 +14,21 @@ namespace oe {
 
 		std::unordered_set<VoxelCoordinates> changedChunks;
 
+		void addChunkMesh(const VoxelCoordinates& chunkPos);
+		void updateNeighborsOfChunk(const VoxelCoordinates& chunkPos);
+		void updateSingleChunk(const VoxelCoordinates& chunkPos);
+
 
 	public:
 		TerrainManager(TerrainGenerator* generator);
 		~TerrainManager();
 		
-		void setGenerator(TerrainGenerator* generator);
-		void addChunkMesh(const VoxelCoordinates& chunkPos);
 		void updateChunkMesh(const VoxelCoordinates& chunkPos);
 		void updateCellsAroundVoxel(const VoxelCoordinates& voxelWorldPos);
-
 		void renderChangedChunks();	
-
 		TerrainMeshChunk* findChunk(const VoxelCoordinates& chunkPos);
+
+		void setGenerator(TerrainGenerator* generator);
 	};
 }
 #endif // !TERRAIN_MANAGER_H

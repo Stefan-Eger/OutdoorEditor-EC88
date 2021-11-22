@@ -18,6 +18,11 @@
 
 #include "EditingBrush.h"
 #include "EditingBrushSphereFull.h"
+#include "EditingBrushDrill.h"
+
+#include "NatureEntity_t.h"
+#include "NatureEntity.h"
+#include "NatureEntityDatabase.h"
 
 #include "OutdoorEditor.h"
 

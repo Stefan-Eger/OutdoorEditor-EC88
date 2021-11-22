@@ -26,6 +26,10 @@ namespace oe {
 		std::string chunkName;
 		std::vector<std::string> meshNames;
 
+		const float RAY_EPSILON = 0.00001f;
+
+		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;
+
 
 	public:
 		TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates);
@@ -35,10 +39,9 @@ namespace oe {
 
 
 		/// <summary>
-		/// Removes Mesh and node from the engine
+		/// Removes the stored mesh does not cleanup the mesh in renderer tough
 		/// </summary>
 		void clear();
-
 
 		void meshCleanup();
 
@@ -48,10 +51,15 @@ namespace oe {
 		/// </summary>
 		void renderChunk();
 
+		/// <summary>
+		/// Traces the ray if it has hit the mesh
+		/// </summary>
+		/// <param name="ray"></param>
+		/// <param name="outPos">Returns the hit Position of Ray if function return true</param>
+		/// <returns>True if it has hit something</returns>
+		bool traceRay(const Ray& ray, glm::vec3& outPos) const;
+
 		VoxelCoordinates getChunkCoordinates() const;
-
-		std::vector<std::pair<VoxelCoordinates, MeshCell*>> getChunkMesh() const;
-
 	};
 }
 #endif // !MESH_CHUNK_H
