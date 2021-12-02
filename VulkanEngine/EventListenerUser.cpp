@@ -215,12 +215,16 @@ namespace oe {
 			break;
 
 		case GLFW_KEY_3:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT);
-			std::cout << "Changed editing Mode to ENTITY_PLACEMENT_SINGLE_PLACEMENT" << std::endl;
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TREE_PLACEMENT_SINGLE);
+			std::cout << "Changed editing Mode to TREE_PLACEMENT_SINGLE" << std::endl;
 			getRendererForwardPointer()->updateCmdBuffers();
 			break;
-		
 		case GLFW_KEY_4:
+			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::BILLBOARD_PLACEMENT_SINGLE);
+			std::cout << "Changed editing Mode to BILLBOARD_PLACEMENT_SINGLE " << std::endl;
+			getRendererForwardPointer()->updateCmdBuffers();
+			break;
+		case GLFW_KEY_5:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
 			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH "<< std::endl;
 			getRendererForwardPointer()->updateCmdBuffers();

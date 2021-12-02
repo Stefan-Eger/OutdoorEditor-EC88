@@ -9,7 +9,6 @@ namespace oe {
 			
 			if (distribution(generator)) { continue; }
 
-			//TODO Propabilities
 			VEMesh* pMesh = nullptr;
 			VEMaterial* pMaterial = nullptr;
 

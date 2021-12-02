@@ -108,6 +108,11 @@ namespace ve {
 		case VEEntity::VE_ENTITY_TYPE_CUBEMAP2:
 			type = VESubrender::VE_SUBRENDERER_TYPE_CUBEMAP2;
 			break;*/
+
+
+		case VEEntity::VE_ENTITY_TYPE_BILLBOARD:
+			type = VESubrender::VE_SUBRENDERER_TYPE_BILLBOARD;
+			break;
 		case VEEntity::VE_ENTITY_TYPE_NORMAL_WITH_ALPHA:
 			type = VESubrender::VE_SUBRENDERER_TYPE_DN_ALPHA;
 			break;

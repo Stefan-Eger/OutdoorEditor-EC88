@@ -24,6 +24,7 @@
 #include "NatureEntity_t.h"
 #include "NatureEntity.h"
 #include "NatureEntityTree.h"
+#include "NatureEntityBillboard.h"
 #include "NatureEntityDatabase.h"
 
 #include "OutdoorEditor.h"

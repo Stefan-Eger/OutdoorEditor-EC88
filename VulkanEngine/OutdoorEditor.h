@@ -15,7 +15,9 @@ namespace oe {
 			TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH,
 			TERRAIN_EDITING_VOLUME_DRILL,
 			TERRAIN_EDITING_TEXTURE_SPHERE_FULL,
-			ENTITY_PLACEMENT_SINGLE_PLACEMENT
+			TREE_PLACEMENT_SINGLE,
+			BILLBOARD_PLACEMENT_SINGLE
+
 		};
 
 	private:
@@ -40,6 +42,7 @@ namespace oe {
 		const float RAY_DISTANCE_MAX = 40.0f;
 
 		void addTreeAt(const std::string& entityName, const glm::vec3& pos);
+		void addBillboardAt(const std::string& entityName, const glm::vec3& pos);
 
 		void removeEntitiesAt(const glm::vec3& pos);
 

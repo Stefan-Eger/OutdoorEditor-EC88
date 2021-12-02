@@ -1,18 +1,35 @@
 #include "OEInclude.h"
 namespace oe {
-	void OutdoorEditor::addTreeAt(const std::string& entityName, const glm::vec3& pos)
+	void OutdoorEditor::addTreeAt(const std::string& treeName, const glm::vec3& pos)
 	{
-		std::string VEentityName = entityName + '_' + std::to_string(entityCounter++);
+		std::string VEentityName = treeName + '_' + std::to_string(entityCounter++);
 		if (entities.contains(VEentityName)) return;
 
-		NatureEntity_t* infoTrunk = enitityDatabase->getEntity(entityName+"_Trunk");
-		NatureEntity_t* infoLeafs = enitityDatabase->getEntity(entityName + "_Leafs");
+		NatureEntity_t* infoTrunk = enitityDatabase->getEntity(treeName+"_Trunk");
+		NatureEntity_t* infoLeafs = enitityDatabase->getEntity(treeName + "_Leafs");
 		NatureEntity* newEntity = new NatureEntityTree(pos, infoTrunk, infoLeafs);
 
 		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
 		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
 		newEntity->createEntity(VEentityName, parentEntity);
 		//parentEntity->multiplyTransform(glm::translate(pos));
+		parentEntity->setPosition(pos);
+
+		entities.emplace(VEentityName, newEntity);
+	}
+	void OutdoorEditor::addBillboardAt(const std::string& billboardName, const glm::vec3& pos)
+	{
+		std::string VEentityName = billboardName + '_' + std::to_string(entityCounter++);
+		if (entities.contains(VEentityName)) return;
+
+		NatureEntity_t* billboardInfo = enitityDatabase->getEntity(billboardName);
+		NatureEntity* newEntity = new NatureEntityBillboard(pos, billboardInfo);
+
+		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
+		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
+		newEntity->createEntity(VEentityName, parentEntity);
+		//TODO RESIZE BILLBOARDS
+		//parentEntity->multiplyTransform(glm::scale(glm::vec3(0.5f,0.5f,0.5f)));
 		parentEntity->setPosition(pos);
 
 		entities.emplace(VEentityName, newEntity);
@@ -149,12 +166,15 @@ namespace oe {
 			removeEntitiesAt(hitPos);
 			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
 			break;
-		case oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT: //TODO different models -> create Enums
+		case oeEditingModes::TREE_PLACEMENT_SINGLE: //TODO different models -> create Enums
 			if (invertOperation) {
 				removeEntitiesAt(hitPos);
 				break;
 			}
 			addTreeAt("Pine_Tree", hitPos);
+			break;
+		case oeEditingModes::BILLBOARD_PLACEMENT_SINGLE:
+			addBillboardAt("Bill_Board_Grass", hitPos);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
 			removeEntitiesAt(hitPos);
@@ -207,7 +227,7 @@ namespace oe {
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
 				brushName = typeid(EditingBrushDrill).name();
 				break;
-			case oeEditingModes::ENTITY_PLACEMENT_SINGLE_PLACEMENT:
+			case oeEditingModes::TREE_PLACEMENT_SINGLE:
 				brushName = typeid(EditingBrushDrill).name(); 
 				break;
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:

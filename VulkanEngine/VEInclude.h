@@ -32,6 +32,7 @@
 #include "VESubrenderFW_Shadow.h"
 #include "VESubrenderFW_Trilinear.h"
 #include "VESubrenderFW_DN_Alpha.h"
+#include "VESubrenderFW_Billboard.h"
 #include "VERenderer.h"
 #include "VERendererForward.h"
 

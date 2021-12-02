@@ -184,6 +184,7 @@
     <ClInclude Include="EventListenerUser.h" />
     <ClInclude Include="MarchingCubes.h" />
     <ClInclude Include="NatureEntity.h" />
+    <ClInclude Include="NatureEntityBillboard.h" />
     <ClInclude Include="NatureEntityDatabase.h" />
     <ClInclude Include="NatureEntityTree.h" />
     <ClInclude Include="NatureEntity_t.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="VEEventListenerNuklearDebug.h" />
     <ClInclude Include="VEMaterial.h" />
     <ClInclude Include="VESubrenderFW.h" />
+    <ClInclude Include="VESubrenderFW_Billboard.h" />
     <ClInclude Include="VESubrenderFW_Nuklear.h" />
     <ClInclude Include="VESubrenderFW_Skyplane.h" />
     <ClInclude Include="VESubrenderFW_C1.h" />
@@ -240,6 +242,7 @@
     <ClCompile Include="CLIntersect.cpp" />
     <ClCompile Include="MarchingCubes.cpp" />
     <ClCompile Include="NatureEntity.cpp" />
+    <ClCompile Include="NatureEntityBillboard.cpp" />
     <ClCompile Include="NatureEntityDatabase.cpp" />
     <ClCompile Include="NatureEntityTree.cpp" />
     <ClCompile Include="NatureEntity_t.cpp" />
@@ -248,6 +251,7 @@
     <ClCompile Include="OutdoorEditorEngine.cpp" />
     <ClCompile Include="OutdoorEditorInfo.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="VESubrenderFW_Billboard.cpp" />
     <ClCompile Include="VESubrenderFW_DN_Alpha.cpp" />
     <ClCompile Include="VESubrenderFW_Trilinear.cpp" />
     <ClCompile Include="VHFunctions.cpp" />

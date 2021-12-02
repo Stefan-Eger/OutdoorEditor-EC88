@@ -190,7 +190,8 @@ namespace ve {
 			VE_ENTITY_TYPE_SKYPLANE,			///<A plane for sky boxes
 			VE_ENTITY_TYPE_TERRAIN_HEIGHTMAP,	///<A heightmap for terrain modelling
 			VE_ENTITY_TYPE_VOXEL_TERRAIN,
-			VE_ENTITY_TYPE_NORMAL_WITH_ALPHA
+			VE_ENTITY_TYPE_NORMAL_WITH_ALPHA,
+			VE_ENTITY_TYPE_BILLBOARD
 		};
 
 		///Data that is updated for each object

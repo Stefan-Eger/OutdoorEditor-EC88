@@ -257,6 +257,12 @@
     <ClInclude Include="NatureEntityTree.h">
       <Filter>Header Files\OutdoorEditor\Models</Filter>
     </ClInclude>
+    <ClInclude Include="NatureEntityBillboard.h">
+      <Filter>Header Files\OutdoorEditor\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="VESubrenderFW_Billboard.h">
+      <Filter>Header Files\VESubrender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VEEngine.cpp">
@@ -429,6 +435,12 @@
     </ClCompile>
     <ClCompile Include="NatureEntityTree.cpp">
       <Filter>Source Files\OutdoorEditor\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="NatureEntityBillboard.cpp">
+      <Filter>Source Files\OutdoorEditor\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="VESubrenderFW_Billboard.cpp">
+      <Filter>Source Files\VESubrender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
