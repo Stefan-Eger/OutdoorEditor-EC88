@@ -64,7 +64,6 @@ namespace oe {
 			VECHECKPOINTER(cube_mesh = getSceneManagerPointer()->createMesh(cubeName + "_Mesh", cube.second->vertices, cube.second->indices));
 			//VEMaterial* cube_material = cube->material;
 
-			//TODO Make small Material Database
 			//VESubrendererFW_D -> Texture is not rendered yet only to test vertex normals
 			VEMaterial* cube_material;
 			VECHECKPOINTER(cube_material = getSceneManagerPointer()->createMaterial("_Material"));

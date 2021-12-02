@@ -95,7 +95,7 @@ namespace ve {
 		//-------------------------------------------------------------------------------------
 		//Load assets
 
-		const aiScene *	loadAssets(	std::string basedir, std::string filename, uint32_t aiFlags,
+		aiScene *	loadAssets(	std::string basedir, std::string filename, uint32_t aiFlags,
 									std::vector<VEMesh*> &meshes, std::vector<VEMaterial*> &materials);
 		VESceneNode *	loadModel(	std::string entityName, std::string basedir, std::string filename, 
 									uint32_t aiFlags=0, VESceneNode *parent=nullptr);

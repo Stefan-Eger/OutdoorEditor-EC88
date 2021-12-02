@@ -1,14 +1,13 @@
 #include "OEInclude.h"
 namespace oe {
-	void OutdoorEditor::addEntityAt(const std::string& entityName, const glm::vec3& pos)
+	void OutdoorEditor::addTreeAt(const std::string& entityName, const glm::vec3& pos)
 	{
 		std::string VEentityName = entityName + '_' + std::to_string(entityCounter++);
 		if (entities.contains(VEentityName)) return;
 
-		NatureEntity_t* info = enitityDatabase->getEntity(entityName);
-		NatureEntity* newEntity = new NatureEntity(pos, info);
-
-		
+		NatureEntity_t* infoTrunk = enitityDatabase->getEntity(entityName+"_Trunk");
+		NatureEntity_t* infoLeafs = enitityDatabase->getEntity(entityName + "_Leafs");
+		NatureEntity* newEntity = new NatureEntityTree(pos, infoTrunk, infoLeafs);
 
 		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
 		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
@@ -155,7 +154,7 @@ namespace oe {
 				removeEntitiesAt(hitPos);
 				break;
 			}
-			addEntityAt("Pine_Tree", hitPos);
+			addTreeAt("Pine_Tree", hitPos);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
 			removeEntitiesAt(hitPos);
@@ -215,7 +214,7 @@ namespace oe {
 				brushName = typeid(EditingBrushSphereSmooth).name();
 				break;
 			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL: //TODO IMPLEMENT
-				activeBrush = nullptr;
+				brushName = typeid(EditingBrushSphereFull).name();
 				break;
 			default:
 				std::cout << "Warning: Unknown Editing Mode" << std::endl;
@@ -238,3 +237,18 @@ namespace oe {
 
 
 };
+
+/*
+//https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Fixed_functions (01.12.21)
+VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
+colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+colorBlendAttachment.blendEnable = VK_TRUE;
+colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+
+colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+
+*/

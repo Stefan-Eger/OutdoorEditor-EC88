@@ -12,13 +12,7 @@ namespace ve {
 
 
 	class VESubrenderFW_Trilinear : public VESubrenderFW {
-		VkResult createCustomGraphicsPipeline(VkDevice device,
-			std::vector<std::string> shaderFileNames,
-			VkExtent2D swapChainExtent,
-			VkPipelineLayout pipelineLayout,
-			VkRenderPass renderPass,
-			std::vector<VkDynamicState> dynamicStates,
-			VkPipeline* graphicsPipeline);
+		
 
 	public:
 		static BrushCircle brushCircle;
@@ -37,7 +31,6 @@ namespace ve {
 			std::vector<VkDescriptorSet> descriptorSetsShadow) override;
 
 		virtual void initSubrenderer() override;
-		virtual void setDynamicPipelineState(VkCommandBuffer commandBuffer, uint32_t numPass) override;
 		virtual void addEntity(VEEntity* pEntity) override;
 	};
 

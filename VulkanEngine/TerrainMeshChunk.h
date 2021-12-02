@@ -31,6 +31,7 @@ namespace oe {
 		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;
 
 
+		//TODO Make small Material Database
 	public:
 		TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates);
 		~TerrainMeshChunk();

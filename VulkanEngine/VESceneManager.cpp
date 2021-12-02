@@ -92,7 +92,7 @@ namespace ve {
 	* \param[out] materials A list of pointers to the loaded materials
 	*
 	*/
-	const aiScene* VESceneManager::loadAssets(std::string basedir, std::string filename,
+	aiScene* VESceneManager::loadAssets(std::string basedir, std::string filename,
 		uint32_t aiFlags,
 		std::vector<VEMesh*> &meshes,
 		std::vector<VEMaterial*> &materials) {
@@ -119,7 +119,7 @@ namespace ve {
 		createMeshes(pScene, filekey, meshes);					//create new meshes if any
 		createMaterials(pScene, basedir, filekey, materials);	//create new materials if any
 
-		return pScene;
+		return importer.GetOrphanedScene();
 	}
 
 
@@ -217,7 +217,7 @@ namespace ve {
 			glm::mat4 *pMatrix = (glm::mat4*) &node->mTransformation;
 
 			VEEntity *pEnt = createEntity2(pObject->getName() + "/Entity_" + std::to_string(i), //create the new entity
-				VEEntity::VE_ENTITY_TYPE_NORMAL,
+				VEEntity::VE_ENTITY_TYPE_NORMAL_WITH_ALPHA,
 				pMesh, pMaterial, pObject, *pMatrix);
 		}
 

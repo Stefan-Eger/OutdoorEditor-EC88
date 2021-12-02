@@ -49,6 +49,7 @@ namespace ve {
 			VE_SUBRENDERER_TYPE_TERRAIN_WITH_HEIGHTMAP,		///<A tesselated terrain using a height map
 			VE_SUBRENDERER_TYPE_NUKLEAR,					///<A Nuklear based GUI
 			VE_SUBRENDERER_TYPE_SHADOW,						///<Draw entities for the shadow pass
+			VE_SUBRENDERER_TYPE_DN_ALPHA,
 			VE_SUBRENDERER_TYPE_TRILINEAR_MAPPING
 		};
 

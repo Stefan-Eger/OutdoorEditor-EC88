@@ -29,7 +29,7 @@ namespace oe {
 					// => 4*radius*length and a shortcut by using PI instead of 2*Pi results in 2 * radius * length
 					// so in the end we want f = 2*r^2 because this is the maximum the length can achieve
 					float frequency = (2.0f * radius * radius);
-					float nextStrength = std::cos((static_cast<float>(M_PI) / frequency) * radius*length)*strength;
+					float nextStrength =  std::cos((static_cast<float>(M_PI) / frequency) * radius*length)*strength;
 
 					ret.push_back(std::make_pair(nextPos, nextStrength));
 				}

@@ -248,6 +248,15 @@
     <ClInclude Include="EditingBrushSphereSmooth.h">
       <Filter>Header Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClInclude>
+    <ClInclude Include="VESubrenderFW_DN_Alpha.h">
+      <Filter>Header Files\VESubrender</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NatureEntityTree.h">
+      <Filter>Header Files\OutdoorEditor\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VEEngine.cpp">
@@ -415,6 +424,12 @@
     <ClCompile Include="EditingBrushSphereSmooth.cpp">
       <Filter>Source Files\OutdoorEditor\EditingTools\Brushes</Filter>
     </ClCompile>
+    <ClCompile Include="VESubrenderFW_DN_Alpha.cpp">
+      <Filter>Source Files\VESubrender</Filter>
+    </ClCompile>
+    <ClCompile Include="NatureEntityTree.cpp">
+      <Filter>Source Files\OutdoorEditor\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VHFunctions.inl">
@@ -425,5 +440,8 @@
     <Text Include="TODO.txt">
       <Filter>Header Files\OutdoorEditor</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VulkanEngine.rc" />
   </ItemGroup>
 </Project>

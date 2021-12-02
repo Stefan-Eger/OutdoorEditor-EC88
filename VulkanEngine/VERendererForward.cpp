@@ -212,6 +212,7 @@ namespace ve {
 		addSubrenderer(new VESubrenderFW_Shadow());
 		addSubrenderer(new VESubrenderFW_Nuklear());
 		addSubrenderer(new VESubrenderFW_Trilinear());
+		addSubrenderer(new VESubrenderFW_DN_Alpha());
 	}
 
 

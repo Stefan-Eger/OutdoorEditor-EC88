@@ -39,7 +39,7 @@ namespace oe {
 
 		const float RAY_DISTANCE_MAX = 40.0f;
 
-		void addEntityAt(const std::string& entityName, const glm::vec3& pos);
+		void addTreeAt(const std::string& entityName, const glm::vec3& pos);
 
 		void removeEntitiesAt(const glm::vec3& pos);
 

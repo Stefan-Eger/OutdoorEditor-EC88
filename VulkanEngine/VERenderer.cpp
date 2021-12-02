@@ -108,13 +108,17 @@ namespace ve {
 		case VEEntity::VE_ENTITY_TYPE_CUBEMAP2:
 			type = VESubrender::VE_SUBRENDERER_TYPE_CUBEMAP2;
 			break;*/
-		case VEEntity::VE_ENTITY_TYPE_SKYPLANE:
-			type = VESubrender::VE_SUBRENDERER_TYPE_SKYPLANE;
-			break;
-		case VEEntity::VE_ENTITY_TYPE_TERRAIN_HEIGHTMAP:
+		case VEEntity::VE_ENTITY_TYPE_NORMAL_WITH_ALPHA:
+			type = VESubrender::VE_SUBRENDERER_TYPE_DN_ALPHA;
 			break;
 		case VEEntity::VE_ENTITY_TYPE_VOXEL_TERRAIN:
 			type = VESubrender::VE_SUBRENDERER_TYPE_TRILINEAR_MAPPING;
+			break;
+		case VEEntity::VE_ENTITY_TYPE_SKYPLANE:
+			type = VESubrender::VE_SUBRENDERER_TYPE_SKYPLANE;
+			break;
+		
+		case VEEntity::VE_ENTITY_TYPE_TERRAIN_HEIGHTMAP:
 			break;
 		default: return;
 		}

@@ -185,7 +185,9 @@
     <ClInclude Include="MarchingCubes.h" />
     <ClInclude Include="NatureEntity.h" />
     <ClInclude Include="NatureEntityDatabase.h" />
+    <ClInclude Include="NatureEntityTree.h" />
     <ClInclude Include="NatureEntity_t.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TerrainManager.h" />
     <ClInclude Include="TerrainMeshChunk.h" />
     <ClInclude Include="OEInclude.h" />
@@ -213,6 +215,7 @@
     <ClInclude Include="VESubrender.h" />
     <ClInclude Include="VESubrenderFW_D.h" />
     <ClInclude Include="VESubrenderFW_Shadow.h" />
+    <ClInclude Include="VESubrenderFW_DN_Alpha.h" />
     <ClInclude Include="VESubrenderFW_Trilinear.h" />
     <ClInclude Include="VEWindow.h" />
     <ClInclude Include="VEWindowGLFW.h" />
@@ -238,12 +241,14 @@
     <ClCompile Include="MarchingCubes.cpp" />
     <ClCompile Include="NatureEntity.cpp" />
     <ClCompile Include="NatureEntityDatabase.cpp" />
+    <ClCompile Include="NatureEntityTree.cpp" />
     <ClCompile Include="NatureEntity_t.cpp" />
     <ClCompile Include="TerrainManager.cpp" />
     <ClCompile Include="TerrainMeshChunk.cpp" />
     <ClCompile Include="OutdoorEditorEngine.cpp" />
     <ClCompile Include="OutdoorEditorInfo.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="VESubrenderFW_DN_Alpha.cpp" />
     <ClCompile Include="VESubrenderFW_Trilinear.cpp" />
     <ClCompile Include="VHFunctions.cpp" />
     <ClCompile Include="VEDocumentation.cpp" />
@@ -287,6 +292,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VulkanEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
