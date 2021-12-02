@@ -4,7 +4,10 @@ namespace oe {
 	//copied from copyaiNode but with slight adjustments to enable branch building with probabilities
 	void NatureEntityTree::loadLeafs(const aiScene* pScene, std::vector<VEMesh*>& meshes, std::vector<VEMaterial*>& materials, aiNode* node, const std::string& entityName, VESceneNode* parent)
 	{
+
 		for (uint32_t i = 0; i < node->mNumMeshes; i++) {	//go through the meshes of the Assimp node
+			
+			if (distribution(generator)) { continue; }
 
 			//TODO Propabilities
 			VEMesh* pMesh = nullptr;
@@ -30,7 +33,7 @@ namespace oe {
 			loadLeafs(pScene, meshes, materials, node->mChildren[i], entityName, parent);
 		}
 	}
-	NatureEntityTree::NatureEntityTree(const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo) : NatureEntity(pos, modelInfo), leafsInfo{leafsInfo}{}
+	NatureEntityTree::NatureEntityTree(const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(pos, modelInfo), leafsInfo{ leafsInfo }, distribution{0.5}{}
 	NatureEntityTree::~NatureEntityTree()
 	{
 		NatureEntity::~NatureEntity();
@@ -41,6 +44,8 @@ namespace oe {
 	void NatureEntityTree::createEntity(const std::string& entityName, VESceneNode* parent)
 	{
 		NatureEntity::createEntity(entityName, parent);
+		
+		
 		std::vector<ve::VEMesh*> leafMeshes;
 		std::vector<ve::VEMaterial*> leafMaterials;
 
@@ -52,4 +57,5 @@ namespace oe {
 
 		delete scene; // We are now responsible for destroying the imported scene
 	}
+	
 }

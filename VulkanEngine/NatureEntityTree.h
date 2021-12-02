@@ -9,13 +9,17 @@ namespace oe {
 		std::vector<std::string> leafEntityNames;
 		int leafModelCounter = 0;
 
-		//TODO Random Number of leafs applied	
+
+		std::bernoulli_distribution distribution;		// for random bool values
+		std::default_random_engine generator{ 123 };	// generator for random numbers
+
 		void loadLeafs(const aiScene* pScene, std::vector<VEMesh*>& meshes,
 			std::vector<VEMaterial*>& materials, aiNode* node, const std::string& entityName, VESceneNode* parent);
-	public:
-		NatureEntityTree(const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo);
+	public:	
+		NatureEntityTree(const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio = 0.25);
 		virtual ~NatureEntityTree() override;
 		virtual void createEntity(const std::string& entityName, VESceneNode* parent) override;
+
 
 	};
 }
