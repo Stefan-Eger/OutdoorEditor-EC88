@@ -161,7 +161,7 @@ namespace ve {
 		vh::vhRenderCreateDescriptorSetLayout(	getRendererForwardPointer()->getDevice(),
 												{ 1 },
 												{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC },
-												{ VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT , },
+												{ VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_GEOMETRY_BIT | VK_SHADER_STAGE_FRAGMENT_BIT },
 												&m_descriptorSetLayoutPerObject);
 
 		vh::vhRenderCreateDescriptorSets(m_device, (uint32_t)m_swapChainImages.size(), m_descriptorSetLayoutShadow,   getDescriptorPool(), m_descriptorSetsShadow);
@@ -212,8 +212,8 @@ namespace ve {
 		addSubrenderer(new VESubrenderFW_Shadow());
 		addSubrenderer(new VESubrenderFW_Nuklear());
 		addSubrenderer(new VESubrenderFW_Trilinear());
-		addSubrenderer(new VESubrenderFW_DN_Alpha());
 		addSubrenderer(new VESubrenderFW_Billboard());
+		addSubrenderer(new VESubrenderFW_DN_Alpha());
 	}
 
 

@@ -29,7 +29,7 @@ namespace oe {
 		voxels[localCoordinates.X][localCoordinates.Y][localCoordinates.Z] = voxelValue;
 
 		//Check if there is a difference from the old value
-		if ((oldVal.density - voxelValue.density) != 0.0f) {
+		if ((oldVal.density - voxelValue.density) != 0.0f || (oldVal.terrainType - voxelValue.terrainType) != 0) {
 			voxelCounter += 0.0f != voxelValue.density  ? 1 : -1;
 			changedVoxels.push_back(localCoordinates);
 		}

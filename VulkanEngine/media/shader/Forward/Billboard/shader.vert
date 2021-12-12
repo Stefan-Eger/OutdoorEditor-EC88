@@ -20,5 +20,5 @@ out gl_PerVertex {
 };
 
 void main() {
-  gl_Position = cameraUBO.data.camProj * cameraUBO.data.camView * objectUBO.data.model * vec4(inPositionL, 1.0);
+  gl_Position = cameraUBO.data.camView * objectUBO.data.model * vec4(inPositionL, 1.0);
 }

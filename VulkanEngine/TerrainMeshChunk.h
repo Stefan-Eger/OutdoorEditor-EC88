@@ -7,12 +7,12 @@ namespace oe {
 	/// It is build upon small marching cubes to ensure multiple materials instead of just one, 
 	/// which would be applied to the chunk
 	/// </summary>
+	
 	struct MeshCell {
 		std::vector<vh::vhVertex> vertices;
 		std::vector<uint32_t> indices;
 		std::vector<glm::vec3> surfaceNormals;
-
-		VEMaterial* material;
+		std::size_t material;
 	};
 
 	class TerrainMeshChunk
@@ -22,6 +22,16 @@ namespace oe {
 		//stores all cube coordinates to access the map
 		std::unordered_map<VoxelCoordinates, MeshCell*> cubes;
 
+		//https://3dtextures.me/ (12.12.21)
+		//All textures from this site except grass
+		//Little collection of textures
+		const std::map < std::size_t, std::tuple < std::string, std::string, std::string >> terrainMaterials = {
+			{0, { "Grass", "media/models/editor/TerrainTextures/Grass", "grass.png"} },
+			{1, { "Dirt", "media/models/editor/TerrainTextures/Dirt", "dirt_color.jpg"} },
+			{2, { "Wet_Dirt", "media/models/editor/TerrainTextures/Wet", "wet_color.jpg"} },
+			{3, { "Mud", "media/models/editor/TerrainTextures/Mud", "mud_color.jpg"} }
+		};
+		
 		//for cleanup
 		std::string chunkName;
 		std::vector<std::string> meshNames;
@@ -31,13 +41,12 @@ namespace oe {
 		bool rayTriangleIntersection(const Ray& ray, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& surfaceNormal, glm::vec3& outPos) const;
 
 
-		//TODO Make small Material Database
 	public:
 		TerrainMeshChunk(const VoxelCoordinates& chunkCoordinates);
 		~TerrainMeshChunk();
 		
 		void insertOrAssignCube(const VoxelCoordinates& cellPos, MeshCell* cell);
-
+		VEMaterial* getTerrainMaterial(const std::size_t& material) const;
 
 		/// <summary>
 		/// Removes the stored mesh does not cleanup the mesh in renderer tough

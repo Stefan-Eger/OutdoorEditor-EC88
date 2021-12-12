@@ -3,10 +3,10 @@
 namespace oe {
 	struct VoxelPoint {
 		float density;
-		uint32_t terrainType;
+		std::size_t terrainType;
 
 		VoxelPoint();
-		VoxelPoint(const float& density, const uint32_t& terrainType);
+		VoxelPoint(const float& density, const std::size_t& terrainType);
 
 		static VoxelPoint Empty();
 	};

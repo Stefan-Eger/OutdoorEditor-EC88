@@ -10,6 +10,9 @@ namespace oe {
 
 		Ray createRayThroughPixel(const float& cursorX, const float& cursorY ) const;
 
+
+		bool mouseMoveBrush(const float& x, const float& y) const;
+		bool mouseMoveCameraMovement(const float& x, const float& y, const float& dt);
 		
 	protected:
 

@@ -74,7 +74,7 @@ void main() {
     float shadowFactor = 1.0;
 	
 	
-	if(fragAlpha < 0.9){ discard; } 
+	//if(fragAlpha < 0.9){ discard; } 
 	
     if( lightType == LIGHT_DIR ) {
         sIdx = shadowIdxDirectional(cameraUBO.data.param,
@@ -119,5 +119,5 @@ void main() {
         result += fragColor * ambcol;
     }
 
-    outColor = vec4( fragColor, 1.0 );
+    outColor = vec4( fragColor, fragAlpha );
 }

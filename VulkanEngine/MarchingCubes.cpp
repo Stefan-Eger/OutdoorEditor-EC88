@@ -17,62 +17,73 @@ namespace oe {
 		return cubeIndex;
 	}
 
-	void MarchingCubes::edgeTableLookup(const int& cubeIndex, const GridCube& cube, glm::vec3* vertList, glm::vec3* normList) const
+	void MarchingCubes::edgeTableLookup(const int& cubeIndex, const GridCube& cube, glm::vec3* vertList, std::size_t* materialList, glm::vec3* normList) const
 	{
 		/* Find the vertices where the surface intersects the cube */
 		if (EDGE_TABLE[cubeIndex] & 1) {
-			vertList[0] = interpolateVertices(cube.vertices[0], cube.vertices[1], cube.voxelVal[0].density, cube.voxelVal[1].density);
-			normList[0] = interpolateNormals(cube.voxelNormals[0], cube.voxelNormals[1], cube.voxelVal[0].density, cube.voxelVal[1].density);
+			vertList[0] = interpolatePositions(cube.vertices[0], cube.vertices[1], cube.voxelVal[0].density, cube.voxelVal[1].density);
+			normList[0] = interpolateVectors(cube.voxelNormals[0], cube.voxelNormals[1], cube.voxelVal[0].density, cube.voxelVal[1].density);
+			materialList[0] = cube.voxelVal[0].terrainType > cube.voxelVal[1].terrainType ? cube.voxelVal[0].terrainType : cube.voxelVal[1].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 2) {
-			vertList[1] = interpolateVertices(cube.vertices[1], cube.vertices[2], cube.voxelVal[1].density, cube.voxelVal[2].density);
-			normList[1] = interpolateNormals(cube.voxelNormals[1], cube.voxelNormals[2], cube.voxelVal[1].density, cube.voxelVal[2].density);
+			vertList[1] = interpolatePositions(cube.vertices[1], cube.vertices[2], cube.voxelVal[1].density, cube.voxelVal[2].density);
+			normList[1] = interpolateVectors(cube.voxelNormals[1], cube.voxelNormals[2], cube.voxelVal[1].density, cube.voxelVal[2].density);
+			materialList[1] = cube.voxelVal[1].terrainType > cube.voxelVal[2].terrainType ? cube.voxelVal[1].terrainType : cube.voxelVal[2].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 4) {
-			vertList[2] = interpolateVertices(cube.vertices[2], cube.vertices[3], cube.voxelVal[2].density, cube.voxelVal[3].density);
-			normList[2] = interpolateNormals(cube.voxelNormals[2], cube.voxelNormals[3], cube.voxelVal[2].density, cube.voxelVal[3].density);
+			vertList[2] = interpolatePositions(cube.vertices[2], cube.vertices[3], cube.voxelVal[2].density, cube.voxelVal[3].density);
+			normList[2] = interpolateVectors(cube.voxelNormals[2], cube.voxelNormals[3], cube.voxelVal[2].density, cube.voxelVal[3].density);
+			materialList[2] = cube.voxelVal[2].terrainType > cube.voxelVal[3].terrainType ? cube.voxelVal[2].terrainType : cube.voxelVal[3].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 8) {
-			vertList[3] = interpolateVertices(cube.vertices[3], cube.vertices[0], cube.voxelVal[3].density, cube.voxelVal[0].density);
-			normList[3] = interpolateNormals(cube.voxelNormals[3], cube.voxelNormals[0], cube.voxelVal[3].density, cube.voxelVal[0].density);
+			vertList[3] = interpolatePositions(cube.vertices[3], cube.vertices[0], cube.voxelVal[3].density, cube.voxelVal[0].density);
+			normList[3] = interpolateVectors(cube.voxelNormals[3], cube.voxelNormals[0], cube.voxelVal[3].density, cube.voxelVal[0].density);
+			materialList[3] = cube.voxelVal[3].terrainType > cube.voxelVal[0].terrainType ? cube.voxelVal[3].terrainType : cube.voxelVal[0].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 16) {
-			vertList[4] = interpolateVertices(cube.vertices[4], cube.vertices[5], cube.voxelVal[4].density, cube.voxelVal[5].density);
-			normList[4] = interpolateNormals(cube.voxelNormals[4], cube.voxelNormals[5], cube.voxelVal[4].density, cube.voxelVal[5].density);
+			vertList[4] = interpolatePositions(cube.vertices[4], cube.vertices[5], cube.voxelVal[4].density, cube.voxelVal[5].density);
+			normList[4] = interpolateVectors(cube.voxelNormals[4], cube.voxelNormals[5], cube.voxelVal[4].density, cube.voxelVal[5].density);
+			materialList[4] = cube.voxelVal[4].terrainType > cube.voxelVal[5].terrainType ? cube.voxelVal[4].terrainType : cube.voxelVal[5].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 32) {
-			vertList[5] = interpolateVertices(cube.vertices[5], cube.vertices[6], cube.voxelVal[5].density, cube.voxelVal[6].density);
-			normList[5] = interpolateNormals(cube.voxelNormals[5], cube.voxelNormals[6], cube.voxelVal[5].density, cube.voxelVal[6].density);
+			vertList[5] = interpolatePositions(cube.vertices[5], cube.vertices[6], cube.voxelVal[5].density, cube.voxelVal[6].density);
+			normList[5] = interpolateVectors(cube.voxelNormals[5], cube.voxelNormals[6], cube.voxelVal[5].density, cube.voxelVal[6].density);
+			materialList[5] = cube.voxelVal[5].terrainType > cube.voxelVal[6].terrainType ? cube.voxelVal[5].terrainType : cube.voxelVal[6].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 64) {
-			vertList[6] = interpolateVertices(cube.vertices[6], cube.vertices[7], cube.voxelVal[6].density, cube.voxelVal[7].density);
-			normList[6] = interpolateNormals(cube.voxelNormals[6], cube.voxelNormals[7], cube.voxelVal[6].density, cube.voxelVal[7].density);
+			vertList[6] = interpolatePositions(cube.vertices[6], cube.vertices[7], cube.voxelVal[6].density, cube.voxelVal[7].density);
+			normList[6] = interpolateVectors(cube.voxelNormals[6], cube.voxelNormals[7], cube.voxelVal[6].density, cube.voxelVal[7].density);
+			materialList[6] = cube.voxelVal[6].terrainType > cube.voxelVal[7].terrainType ? cube.voxelVal[6].terrainType : cube.voxelVal[7].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 128) {
-			vertList[7] = interpolateVertices(cube.vertices[7], cube.vertices[4], cube.voxelVal[7].density, cube.voxelVal[4].density);
-			normList[7] = interpolateNormals(cube.voxelNormals[7], cube.voxelNormals[4], cube.voxelVal[7].density, cube.voxelVal[4].density);
+			vertList[7] = interpolatePositions(cube.vertices[7], cube.vertices[4], cube.voxelVal[7].density, cube.voxelVal[4].density);
+			normList[7] = interpolateVectors(cube.voxelNormals[7], cube.voxelNormals[4], cube.voxelVal[7].density, cube.voxelVal[4].density);
+			materialList[7] = cube.voxelVal[7].terrainType > cube.voxelVal[4].terrainType ? cube.voxelVal[7].terrainType : cube.voxelVal[4].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 256) {
-			vertList[8] = interpolateVertices(cube.vertices[0], cube.vertices[4], cube.voxelVal[0].density, cube.voxelVal[4].density);
-			normList[8] = interpolateNormals(cube.voxelNormals[0], cube.voxelNormals[4], cube.voxelVal[0].density, cube.voxelVal[4].density);
+			vertList[8] = interpolatePositions(cube.vertices[0], cube.vertices[4], cube.voxelVal[0].density, cube.voxelVal[4].density);
+			normList[8] = interpolateVectors(cube.voxelNormals[0], cube.voxelNormals[4], cube.voxelVal[0].density, cube.voxelVal[4].density);
+			materialList[8] = cube.voxelVal[0].terrainType > cube.voxelVal[4].terrainType ? cube.voxelVal[0].terrainType : cube.voxelVal[4].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 512) {
-			vertList[9] = interpolateVertices(cube.vertices[1], cube.vertices[5], cube.voxelVal[1].density, cube.voxelVal[5].density);
-			normList[9] = interpolateNormals(cube.voxelNormals[1], cube.voxelNormals[5], cube.voxelVal[1].density, cube.voxelVal[5].density);
+			vertList[9] = interpolatePositions(cube.vertices[1], cube.vertices[5], cube.voxelVal[1].density, cube.voxelVal[5].density);
+			normList[9] = interpolateVectors(cube.voxelNormals[1], cube.voxelNormals[5], cube.voxelVal[1].density, cube.voxelVal[5].density);
+			materialList[9] = cube.voxelVal[1].terrainType > cube.voxelVal[5].terrainType ? cube.voxelVal[1].terrainType : cube.voxelVal[5].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 1024) {
-			vertList[10] = interpolateVertices(cube.vertices[2], cube.vertices[6], cube.voxelVal[2].density, cube.voxelVal[6].density);
-			normList[10] = interpolateNormals(cube.voxelNormals[2], cube.voxelNormals[6], cube.voxelVal[2].density, cube.voxelVal[6].density);
+			vertList[10] = interpolatePositions(cube.vertices[2], cube.vertices[6], cube.voxelVal[2].density, cube.voxelVal[6].density);
+			normList[10] = interpolateVectors(cube.voxelNormals[2], cube.voxelNormals[6], cube.voxelVal[2].density, cube.voxelVal[6].density);
+			materialList[10] = cube.voxelVal[2].terrainType > cube.voxelVal[6].terrainType ? cube.voxelVal[2].terrainType : cube.voxelVal[6].terrainType;
 		}
 		if (EDGE_TABLE[cubeIndex] & 2048) {
-			vertList[11] = interpolateVertices(cube.vertices[3], cube.vertices[7], cube.voxelVal[3].density, cube.voxelVal[7].density);
-			normList[11] = interpolateNormals(cube.voxelNormals[3], cube.voxelNormals[7], cube.voxelVal[3].density, cube.voxelVal[7].density);
+			vertList[11] = interpolatePositions(cube.vertices[3], cube.vertices[7], cube.voxelVal[3].density, cube.voxelVal[7].density);
+			normList[11] = interpolateVectors(cube.voxelNormals[3], cube.voxelNormals[7], cube.voxelVal[3].density, cube.voxelVal[7].density);
+			materialList[11] = cube.voxelVal[3].terrainType > cube.voxelVal[7].terrainType ? cube.voxelVal[3].terrainType : cube.voxelVal[7].terrainType;
 		}
 	}
 
-	glm::vec3 MarchingCubes::interpolateVertices(const VoxelCoordinates& v1, const VoxelCoordinates& v2, const float& d1, const float& d2) const
+	glm::vec3 MarchingCubes::interpolatePositions(const VoxelCoordinates& v1, const VoxelCoordinates& v2, const float& d1, const float& d2) const
 	{
-
 			if (std::abs(ISO_LEVEL - d1) < EPSILON)
 				return(v1.toVec3());
 			if (std::abs(ISO_LEVEL - d2) < EPSILON)
@@ -84,7 +95,7 @@ namespace oe {
 		return (v1.toVec3() + mu * (v2.toVec3() - v1.toVec3()));
 	}
 
-	glm::vec3 MarchingCubes::interpolateNormals(const glm::vec3& n1, const glm::vec3& n2, const float& d1, const float& d2) const
+	glm::vec3 MarchingCubes::interpolateVectors(const glm::vec3& n1, const glm::vec3& n2, const float& d1, const float& d2) const
 	{
 		if (std::abs(ISO_LEVEL - d1) < EPSILON)
 			return(n1);
@@ -154,13 +165,14 @@ namespace oe {
 					cubeIndex = determineCubeIndex(cube);
 
 					glm::vec3 vertList[12] = {};
+					std::size_t terrainMaterial[12] = {};
 					glm::vec3 normList[12] = {};
 					/* Cube is entirely in/out of the surface -> nothing will be drawn next Cube */
 					if (EDGE_TABLE[cubeIndex] == 0) continue;
 
-					edgeTableLookup(cubeIndex, cube, vertList, normList);
+					edgeTableLookup(cubeIndex, cube, vertList, terrainMaterial, normList);
 
-					generateTriangles(cubeIndex, vertList, normList, VoxelCoordinates(x, y, z), mc);
+					generateTriangles(cubeIndex, vertList, terrainMaterial, normList, VoxelCoordinates(x, y, z), mc);
 				}
 			}
 		}
@@ -179,35 +191,43 @@ namespace oe {
 		cubeIndex = determineCubeIndex(cube);
 
 		glm::vec3 vertList[12] = {};
+		std::size_t terrainMaterial[12] = {};
 		glm::vec3 normList[12] = {};
 
-		edgeTableLookup(cubeIndex, cube, vertList, normList);
+		edgeTableLookup(cubeIndex, cube, vertList, terrainMaterial, normList);
 
-		generateTriangles(cubeIndex, vertList, normList, cellCoordinates, mc);
+		generateTriangles(cubeIndex, vertList, terrainMaterial, normList, cellCoordinates, mc);
 	}
 
-	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, glm::vec3* normList, const VoxelCoordinates& cellCoordinates, TerrainMeshChunk* mc) const
+	void MarchingCubes::generateTriangles(const int& cubeIndex,  glm::vec3* vertList, std::size_t* materialList, glm::vec3* normList, const VoxelCoordinates& cellCoordinates, TerrainMeshChunk* mc) const
 	{
 
 		std::vector<vh::vhVertex> vertices;
 		std::vector<uint32_t> indices;
 		std::vector<glm::vec3> surfaceNormals;
 
+		std::size_t dominantMat = 0;
+		std::unordered_map<std::size_t, std::size_t> materialsCounter;
+
 		for(int i = 0; TRI_TABLE[cubeIndex][i] != -1; i += 3) {
 			vh::vhVertex vertice0, vertice1, vertice2;
+			std::size_t mat0, mat1, mat2;
 
 			vertice0.pos = *(vertList + TRI_TABLE[cubeIndex][i]);
 			vertice0.normal = *(normList + TRI_TABLE[cubeIndex][i]);
+			mat0 = *(materialList + TRI_TABLE[cubeIndex][i]);
 
 			vertice1.pos = *(vertList + TRI_TABLE[cubeIndex][i+1]);
 			vertice1.normal = *(normList + TRI_TABLE[cubeIndex][i+1]);
+			mat1 = *(materialList + TRI_TABLE[cubeIndex][i+1]);
 
 			vertice2.pos = *(vertList + TRI_TABLE[cubeIndex][i+2]);
 			vertice2.normal = *(normList + TRI_TABLE[cubeIndex][i+2]);
-
+			mat2 = *(materialList + TRI_TABLE[cubeIndex][i+2]);
 
 			glm::vec3 surfaceNormal = glm::normalize(glm::cross((vertice2.pos - vertice0.pos), (vertice1.pos - vertice0.pos)));
 
+			
 			vertices.push_back(vertice0);
 			vertices.push_back(vertice1);
 			vertices.push_back(vertice2);
@@ -217,9 +237,28 @@ namespace oe {
 			indices.push_back(i+2);
 
 			surfaceNormals.push_back(surfaceNormal);
-		}
 
-		mc->insertOrAssignCube(cellCoordinates, new MeshCell{vertices, indices, surfaceNormals, nullptr});
+			if (!materialsCounter.contains(mat0))
+				materialsCounter.emplace(mat0, 0);
+
+			if (!materialsCounter.contains(mat1))
+				materialsCounter.emplace(mat1, 0);
+
+			if (!materialsCounter.contains(mat2))
+				materialsCounter.emplace(mat2, 0);
+
+			++materialsCounter.at(mat0);
+			++materialsCounter.at(mat1);
+			++materialsCounter.at(mat2);
+
+		}
+		if (0 < materialsCounter.size()) {
+			dominantMat = std::max_element(materialsCounter.begin(), materialsCounter.end(),
+				[](const std::pair<std::size_t, std::size_t>& p1, const std::pair<std::size_t, std::size_t>& p2) {
+				return p1.second < p2.second;
+			})->first;
+		}
+		mc->insertOrAssignCube(cellCoordinates, new MeshCell{ vertices, indices, surfaceNormals, dominantMat });
 	}
 	MarchingCubes::MarchingCubes(VoxelManager* const voxelManager) : TerrainGenerator(voxelManager) {}
 	MarchingCubes::~MarchingCubes() {}

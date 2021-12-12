@@ -29,6 +29,21 @@ namespace oe {
 		
 		auto isAssigned = cubes.insert_or_assign(cellPos, cell);
 	}
+
+	VEMaterial* TerrainMeshChunk::getTerrainMaterial(const std::size_t& material) const
+	{
+		VEMaterial* ret;
+		auto terrainMat = terrainMaterials.at(material);
+
+		std::string matName = std::get<0>(terrainMat);
+		std::string baseDir = std::get<1>(terrainMat);
+		std::string fileName = std::get<2>(terrainMat);
+
+		VECHECKPOINTER(ret = getSceneManagerPointer()->createMaterial(matName + "_Material"));
+		VECHECKPOINTER(ret->mapDiffuse = getSceneManagerPointer()->createTexture(matName + "_Texture_1", baseDir, fileName));
+
+		return ret;
+	}
 	
 
 	void TerrainMeshChunk::meshCleanup() {
@@ -62,13 +77,8 @@ namespace oe {
 			//Actual Engine Mesh generation (Creates only a mesh if there are vertices)
 			VEMesh* cube_mesh = nullptr;
 			VECHECKPOINTER(cube_mesh = getSceneManagerPointer()->createMesh(cubeName + "_Mesh", cube.second->vertices, cube.second->indices));
-			//VEMaterial* cube_material = cube->material;
-
-			//VESubrendererFW_D -> Texture is not rendered yet only to test vertex normals
-			VEMaterial* cube_material;
-			VECHECKPOINTER(cube_material = getSceneManagerPointer()->createMaterial("_Material"));
-			VECHECKPOINTER(cube_material->mapDiffuse = getSceneManagerPointer()->createTexture("_Texture_1", "media/models/editor/TerrainTextures", "grass.png"));
-			cube_material->color = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
+			
+			VEMaterial* cube_material = getTerrainMaterial(cube.second->material);
 
 			//CreateCube Entity
 			VEEntity* entity;

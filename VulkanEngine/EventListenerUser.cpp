@@ -30,6 +30,63 @@ namespace oe {
 		Ray r(cameraPos, direction);
 		return r;
 	}
+
+	bool EventListenerUser::mouseMoveBrush(const float& x, const float& y) const
+	{
+		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
+		if (brush == nullptr) { return true; }
+
+		Ray r = createRayThroughPixel(x, y);
+
+		glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
+		bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
+		if (isHit) {
+			VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
+
+
+			getRendererForwardPointer()->updateCmdBuffers();
+		}
+		return false;
+	}
+
+	bool EventListenerUser::mouseMoveCameraMovement(const float& x, const float& y, const float& dt)
+	{
+		if (!m_rightButtonClicked) return false;		//only do something if left mouse button is pressed
+
+		if (!m_usePrevCursorPosition) {				//can I use the previous cursor position ?
+			m_cursorPrevX = x;
+			m_cursorPrevY = y;
+			m_usePrevCursorPosition = true;
+			return true;
+		}
+
+		float dx = x - m_cursorPrevX;				//motion of cursor in x and y direction
+		float dy = y - m_cursorPrevY;
+
+		m_cursorPrevX = x;							//remember this for next iteration
+		m_cursorPrevY = y;
+
+		VECamera* pCamera = getSceneManagerPointer()->getCamera();
+		VESceneNode* pParent = pCamera->getParent();
+
+		float slow = 0.5;		//camera rotation speed
+
+		//dx
+		float angledx = slow * dt * dx;
+		glm::vec4 rot4dx = glm::vec4(0.0, 1.0, 0.0, 1.0);
+		glm::vec3 rot3dx = glm::vec3(rot4dx.x, rot4dx.y, rot4dx.z);
+		glm::mat4 rotatedx = glm::rotate(glm::mat4(1.0), angledx, rot3dx);
+
+		//dy
+		float angledy = slow * dt * dy;			//pitch angle
+		glm::vec4 rot4dy = pCamera->getTransform() * glm::vec4(1.0, 0.0, 0.0, 1.0); //x axis from local to parent space!
+		glm::vec3 rot3dy = glm::vec3(rot4dy.x, rot4dy.y, rot4dy.z);
+		glm::mat4 rotatedy = glm::rotate(glm::mat4(1.0), angledy, rot3dy);
+
+		pCamera->multiplyTransform(rotatedx * rotatedy);
+
+		return false;
+	}
 	
 	bool EventListenerUser::onMouseScroll(veEvent event)
 	{
@@ -54,25 +111,14 @@ namespace oe {
 	}
 	bool EventListenerUser::onMouseMove(veEvent event)
 	{
-		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
-		if (brush == nullptr) { return false; }
-		
-
 		float x = event.fdata1;
 		float y = event.fdata2;
+		float dt = (float)event.dt;
 
+		bool brush = mouseMoveBrush(x,y);
+		bool camMove = mouseMoveCameraMovement(x,y,dt);
 
-		Ray r = createRayThroughPixel(x, y);
-
-		glm::vec3 hitPos(0.0f, 0.0f, 0.0f);
-		bool isHit = OutdoorEditorInfo::editor->traceRay(r, hitPos);
-		if (isHit) {
-			VESubrenderFW_Trilinear::brushCircle.mouseHitPos = hitPos;
-
-			
-			getRendererForwardPointer()->updateCmdBuffers();
-		}
-		return true;
+		return (brush || camMove);
 	}
 
 
@@ -202,6 +248,17 @@ namespace oe {
 		case GLFW_KEY_SPACE:						
 			translate = pCamera->getTransform() * glm::vec4(0.0, 1.0, 0.0, 1.0); //up
 			break;
+
+		case GLFW_KEY_V:
+			OutdoorEditorInfo::editor->setActiveMaterial(OutdoorEditor::oeTerrainMaterial::OE_TEXTURE_GRASS);
+			break;
+		case GLFW_KEY_B:
+			OutdoorEditorInfo::editor->setActiveMaterial(OutdoorEditor::oeTerrainMaterial::OE_TEXTURE_DIRT);
+			break;
+		case GLFW_KEY_N:
+			OutdoorEditorInfo::editor->setActiveMaterial(OutdoorEditor::oeTerrainMaterial::OE_TEXTURE_MUD);
+			break;
+
 		case GLFW_KEY_1:
 			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL);
 			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_FULL" << std::endl;

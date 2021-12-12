@@ -19,6 +19,12 @@ namespace oe {
 			BILLBOARD_PLACEMENT_SINGLE
 
 		};
+		enum class oeTerrainMaterial {
+			OE_TEXTURE_GRASS,
+			OE_TEXTURE_DIRT,
+			OE_TEXTURE_WET_DIRT,
+			OE_TEXTURE_MUD
+		};
 
 	private:
 		//Managers
@@ -41,11 +47,14 @@ namespace oe {
 
 		const float RAY_DISTANCE_MAX = 40.0f;
 
+		//Selected Texture
+		std::size_t activeMaterial;
+
 		void addTreeAt(const std::string& entityName, const glm::vec3& pos);
 		void addBillboardAt(const std::string& entityName, const glm::vec3& pos);
-
 		void removeEntitiesAt(const glm::vec3& pos);
 
+		void changeTerrainMaterial(const glm::vec3& hitPos);
 		void modifyTerrainVolumeWithActiveBrush(const glm::vec3& hitPos, bool subtractVolume = false);
 		
 	public:
@@ -67,6 +76,7 @@ namespace oe {
 
 		oeEditingModes getEditingMode() const;
 		void setEditingMode(const oeEditingModes& mode);
+		void setActiveMaterial(const oeTerrainMaterial& terrainMaterial);
 		EditingBrush* getActiveBrush() const;
 
 

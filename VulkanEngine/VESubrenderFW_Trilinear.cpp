@@ -41,7 +41,7 @@ namespace ve {
 			{ "media/shader/Forward/Trilinear/vert.spv", "media/shader/Forward/Trilinear/frag.spv" },
 			getRendererForwardPointer()->getSwapChainExtent(),
 			m_pipelineLayout, getRendererForwardPointer()->getRenderPass(),
-			{ },
+			{ VK_DYNAMIC_STATE_BLEND_CONSTANTS },
 			&m_pipelines[0]);
 
 		if (m_maps.empty()) m_maps.resize(1);
@@ -61,6 +61,17 @@ namespace ve {
 	{
 		VESubrenderFW::bindDescriptorSetsPerFrame(commandBuffer, imageIndex, pCamera, pLight, descriptorSetsShadow);
 		vkCmdPushConstants(commandBuffer, m_pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(BrushCircle), &brushCircle);
+	}
+	void VESubrenderFW_Trilinear::setDynamicPipelineState(VkCommandBuffer commandBuffer, uint32_t numPass)
+	{
+		if (numPass == 0) {
+			float blendConstants[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+			vkCmdSetBlendConstants(commandBuffer, blendConstants);
+			return;
+		}
+
+		float blendConstants[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		vkCmdSetBlendConstants(commandBuffer, blendConstants);
 	}
 
 	BrushCircle VESubrenderFW_Trilinear::brushCircle{

@@ -32,6 +32,7 @@ namespace ve {
 
 		virtual void initSubrenderer() override;
 		virtual void addEntity(VEEntity* pEntity) override;
+		void setDynamicPipelineState(VkCommandBuffer commandBuffer, uint32_t numPass);
 	};
 
 }

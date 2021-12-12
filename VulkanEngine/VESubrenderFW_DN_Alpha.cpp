@@ -167,17 +167,15 @@ namespace ve {
 			{}, &m_pipelineLayout);
 
 		m_pipelines.resize(1);
-		vh::vhPipeCreateGraphicsPipeline(getRendererForwardPointer()->getDevice(),
+		createCustomGraphicsPipeline(getRendererForwardPointer()->getDevice(),
 			{ "media/shader/Forward/DN_Alpha/vert.spv", "media/shader/Forward/DN_Alpha/frag.spv" },
 			getRendererForwardPointer()->getSwapChainExtent(),
 			m_pipelineLayout, getRendererForwardPointer()->getRenderPass(),
-			{ },
+			{ VK_DYNAMIC_STATE_BLEND_CONSTANTS },
 			&m_pipelines[0]);
 
 		if (m_maps.empty()) m_maps.resize(2);
 	}
-
-	
 	void VESubrenderFW_DN_Alpha::addEntity(VEEntity* pEntity){
 		std::vector<VkDescriptorImageInfo> maps = {
 			pEntity->m_pMaterial->mapDiffuse->m_imageInfo,
@@ -186,5 +184,16 @@ namespace ve {
 
 		addMaps(pEntity, maps);
 		VESubrender::addEntity(pEntity);
+	}
+	void VESubrenderFW_DN_Alpha::setDynamicPipelineState(VkCommandBuffer commandBuffer, uint32_t numPass)
+	{
+		if (numPass == 0) {
+			float blendConstants[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+			vkCmdSetBlendConstants(commandBuffer, blendConstants);
+			return;
+		}
+
+		float blendConstants[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		vkCmdSetBlendConstants(commandBuffer, blendConstants);
 	}
 }

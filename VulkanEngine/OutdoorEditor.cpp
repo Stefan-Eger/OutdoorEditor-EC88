@@ -33,6 +33,7 @@ namespace oe {
 		parentEntity->setPosition(pos);
 
 		entities.emplace(VEentityName, newEntity);
+		std::cout << "Billboard placed" << std::endl;
 	}
 	void OutdoorEditor::removeEntitiesAt(const glm::vec3& pos)
 	{
@@ -49,6 +50,20 @@ namespace oe {
 		}
 	}
 
+	void OutdoorEditor::changeTerrainMaterial(const glm::vec3& hitPos)
+	{
+		activeBrush->setStrength(1.0f);
+
+		auto affected = activeBrush->getAffected(hitPos);
+
+		for (const auto& a : affected) {
+			VoxelPoint oldVoxel = voxelManager->getVoxel(a.first);
+			VoxelPoint voxel = VoxelPoint(oldVoxel.density, activeMaterial);
+			voxelManager->setVoxel(a.first, voxel);
+		}
+		refresh();
+	}
+
 	void OutdoorEditor::modifyTerrainVolumeWithActiveBrush(const glm::vec3& hitPos, bool subtractVolume)
 	{
 		float strength = subtractVolume ? 0.0f : 1.0f;
@@ -60,11 +75,11 @@ namespace oe {
 			VoxelPoint oldVoxel = voxelManager->getVoxel(a.first);
 
 			if (!subtractVolume && (oldVoxel.density < a.second)) {
-				VoxelPoint voxel = VoxelPoint(a.second, 0);
+				VoxelPoint voxel = VoxelPoint(a.second, activeMaterial);
 				voxelManager->setVoxel(a.first, voxel);
 			}
 			if (subtractVolume && (a.second < oldVoxel.density)) {
-				VoxelPoint voxel = VoxelPoint(a.second, 0);
+				VoxelPoint voxel = VoxelPoint(a.second, activeMaterial);
 				voxelManager->setVoxel(a.first, voxel);
 			}
 		}
@@ -81,6 +96,7 @@ namespace oe {
 		brushes.push_back(new EditingBrushSphereSmooth(3.0f, 1.0f));
 		entityCounter = 0;
 		activeBrush = brushes.at(0);
+		activeMaterial = 0;
 		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL;
 	}
 	OutdoorEditor::~OutdoorEditor(){
@@ -181,24 +197,12 @@ namespace oe {
 			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
+			changeTerrainMaterial(hitPos);
 			break;
 		default:
 			std::cout << "Warning: Unknown Editing Mode" << std::endl;
 			break;
 		}
-
-		
-		/*
-		VoxelPoint voxel = subtractVolume ? VoxelPoint(0.0f,0) : VoxelPoint(1.0f, 0);
-		glm::vec3 newPos = subtractVolume ? glm::round(hitPos) : glm::round(hitPos - direction * 0.3f);
-
-		VoxelCoordinates modifyVoxel(newPos.x, newPos.y, newPos.z);
-
-		std::cout << "MODIFY VOXEL: " << modifyVoxel.X << ", " << modifyVoxel.Y << ", " << modifyVoxel.Z << std::endl;
-
-		voxelManager->setVoxel(modifyVoxel, voxel);
-		refresh();
-		*/
 	}
 	TerrainManager* OutdoorEditor::getTerrainManager() const
 	{
@@ -230,10 +234,13 @@ namespace oe {
 			case oeEditingModes::TREE_PLACEMENT_SINGLE:
 				brushName = typeid(EditingBrushDrill).name(); 
 				break;
+			case oeEditingModes::BILLBOARD_PLACEMENT_SINGLE:
+				brushName = typeid(EditingBrushDrill).name();
+				break;
 			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
 				brushName = typeid(EditingBrushSphereSmooth).name();
 				break;
-			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL: //TODO IMPLEMENT
+			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
 				brushName = typeid(EditingBrushSphereFull).name();
 				break;
 			default:
@@ -250,6 +257,11 @@ namespace oe {
 
 	}
 
+	void OutdoorEditor::setActiveMaterial(const oeTerrainMaterial& terrainMaterial)
+	{
+		activeMaterial = static_cast<std::size_t>(terrainMaterial);
+	}
+
 	EditingBrush* OutdoorEditor::getActiveBrush() const
 	{
 		return activeBrush;
@@ -257,18 +269,3 @@ namespace oe {
 
 
 };
-
-/*
-//https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Fixed_functions (01.12.21)
-VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
-colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-colorBlendAttachment.blendEnable = VK_TRUE;
-colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
-colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
-
-colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
-colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
-colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
-
-*/
