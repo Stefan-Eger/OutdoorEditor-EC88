@@ -250,13 +250,13 @@ namespace oe {
 			break;
 
 		case GLFW_KEY_V:
-			OutdoorEditorInfo::editor->setActiveMaterial(OutdoorEditor::oeTerrainMaterial::OE_TEXTURE_GRASS);
+			OutdoorEditorInfo::editor->setActiveMaterial(oeTerrainMaterial::OE_TEXTURE_GRASS);
 			break;
 		case GLFW_KEY_B:
-			OutdoorEditorInfo::editor->setActiveMaterial(OutdoorEditor::oeTerrainMaterial::OE_TEXTURE_DIRT);
+			OutdoorEditorInfo::editor->setActiveMaterial(oeTerrainMaterial::OE_TEXTURE_DIRT);
 			break;
 		case GLFW_KEY_N:
-			OutdoorEditorInfo::editor->setActiveMaterial(OutdoorEditor::oeTerrainMaterial::OE_TEXTURE_MUD);
+			OutdoorEditorInfo::editor->setActiveMaterial(oeTerrainMaterial::OE_TEXTURE_MUD);
 			break;
 
 		case GLFW_KEY_1:

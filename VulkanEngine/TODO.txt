@@ -36,13 +36,13 @@ Bugfixing
 4.1) Create a Tree Model -> Done (21.11.21)
 4.2) Implement Model Via VVE -> Done (27.11.21)
 4.3) Place Model in Editor -> Done (27.11.21)
-4.4) Create Shader for Trees that take alpha values into account
-4.5) Make Random Tree Algorithm (One Model -> Multiple Trees)
-4.6) Create Grass Billboards
+4.4) Create Shader for Trees that take alpha values into account -> Problem
+4.5) Make Random Tree Algorithm (One Model -> Multiple Trees) -> Done
+4.6) Create Grass Billboards -> Done
 4.7) Implement LODs for all models
 4.8) Create more models in blender
 
-(5) Implement SurfaceNets)
+( 5) Implement SurfaceNets)
 
 6) Implement Rivers
 6.1) Create River Mesh Algorithm

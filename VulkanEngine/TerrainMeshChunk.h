@@ -2,12 +2,18 @@
 #define TERRAIN_MESH_CHUNK_H
 
 namespace oe {
+
+	enum class oeTerrainMaterial {
+		OE_TEXTURE_GRASS,
+		OE_TEXTURE_DIRT,
+		OE_TEXTURE_WET_DIRT,
+		OE_TEXTURE_MUD
+	};
 	/// <summary>
 	/// This Cube contains the Mesh information of a Cube that is marching between the voxel Data 
 	/// It is build upon small marching cubes to ensure multiple materials instead of just one, 
 	/// which would be applied to the chunk
 	/// </summary>
-	
 	struct MeshCell {
 		std::vector<vh::vhVertex> vertices;
 		std::vector<uint32_t> indices;

@@ -19,12 +19,7 @@ namespace oe {
 			BILLBOARD_PLACEMENT_SINGLE
 
 		};
-		enum class oeTerrainMaterial {
-			OE_TEXTURE_GRASS,
-			OE_TEXTURE_DIRT,
-			OE_TEXTURE_WET_DIRT,
-			OE_TEXTURE_MUD
-		};
+
 
 	private:
 		//Managers
