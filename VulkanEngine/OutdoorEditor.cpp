@@ -30,10 +30,9 @@ namespace oe {
 		newEntity->createEntity(VEentityName, parentEntity);
 		//TODO RESIZE BILLBOARDS
 		//parentEntity->multiplyTransform(glm::scale(glm::vec3(0.5f,0.5f,0.5f)));
-		parentEntity->setPosition(pos);
+		parentEntity->setPosition(pos); 
 
 		entities.emplace(VEentityName, newEntity);
-		std::cout << "Billboard placed" << std::endl;
 	}
 	void OutdoorEditor::removeEntitiesAt(const glm::vec3& pos)
 	{
@@ -97,11 +96,14 @@ namespace oe {
 		entityCounter = 0;
 		activeBrush = brushes.at(0);
 		activeMaterial = 0;
-		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL;
+		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE;
+		activeBrushMode = oeBrushModes::BRUSH_DRILL;
+
+		editModeChanged = false;
 	}
 	OutdoorEditor::~OutdoorEditor(){
 
-		for (const auto& b : brushes) {
+		for (auto& b : brushes) {
 			delete b;
 		}
 		brushes.clear();
@@ -174,29 +176,21 @@ namespace oe {
 	{
 		switch (activeMode)
 		{
-		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL:
+		case oeEditingModes::TERRAIN_EDITING_VOLUME:
 			removeEntitiesAt(hitPos);
 			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
 			break;
-		case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
-			removeEntitiesAt(hitPos);
-			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
-			break;
-		case oeEditingModes::TREE_PLACEMENT_SINGLE: //TODO different models -> create Enums
+		case oeEditingModes::TREE_PLACEMENT: //TODO different models -> create Enums
 			if (invertOperation) {
 				removeEntitiesAt(hitPos);
 				break;
 			}
 			addTreeAt("Pine_Tree", hitPos);
 			break;
-		case oeEditingModes::BILLBOARD_PLACEMENT_SINGLE:
+		case oeEditingModes::BILLBOARD_PLACEMENT:
 			addBillboardAt("Bill_Board_Grass", hitPos);
 			break;
-		case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
-			removeEntitiesAt(hitPos);
-			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
-			break;
-		case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
+		case oeEditingModes::TERRAIN_EDITING_TEXTURE:
 			changeTerrainMaterial(hitPos);
 			break;
 		default:
@@ -221,40 +215,26 @@ namespace oe {
 
 	void OutdoorEditor::setEditingMode(const oeEditingModes& mode){
 		activeMode = mode;
-
+		editModeChanged = true;
 		const char* brushName = "";
 		switch (activeMode)
 		{
-			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL:
-				brushName = typeid(EditingBrushSphereFull).name();
+			case oeEditingModes::TERRAIN_EDITING_VOLUME:
+				setBrushMode(oeBrushModes::BRUSH_SPHERE_FULL);
 				break;
-			case oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL:
-				brushName = typeid(EditingBrushDrill).name();
+			case oeEditingModes::TREE_PLACEMENT:
+				setBrushMode(oeBrushModes::BRUSH_DRILL);
 				break;
-			case oeEditingModes::TREE_PLACEMENT_SINGLE:
-				brushName = typeid(EditingBrushDrill).name(); 
+			case oeEditingModes::BILLBOARD_PLACEMENT:
+				setBrushMode(oeBrushModes::BRUSH_DRILL);
 				break;
-			case oeEditingModes::BILLBOARD_PLACEMENT_SINGLE:
-				brushName = typeid(EditingBrushDrill).name();
-				break;
-			case oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH:
-				brushName = typeid(EditingBrushSphereSmooth).name();
-				break;
-			case oeEditingModes::TERRAIN_EDITING_TEXTURE_SPHERE_FULL:
-				brushName = typeid(EditingBrushSphereFull).name();
+			case oeEditingModes::TERRAIN_EDITING_TEXTURE:
+				setBrushMode(oeBrushModes::BRUSH_SPHERE_FULL);
 				break;
 			default:
 				std::cout << "Warning: Unknown Editing Mode" << std::endl;
 				break;
 		}
-
-		for (const auto& brush : brushes) {
-			if (typeid(*brush).name() == brushName) {
-				activeBrush = brush;
-				break;
-			}
-		}
-
 	}
 
 	void OutdoorEditor::setActiveMaterial(const oeTerrainMaterial& terrainMaterial)
@@ -265,6 +245,43 @@ namespace oe {
 	EditingBrush* OutdoorEditor::getActiveBrush() const
 	{
 		return activeBrush;
+	}
+
+	void OutdoorEditor::setBrushMode(const oeBrushModes& brushMode)
+	{
+
+		const char* brushName = "";
+		if (activeMode == oeEditingModes::TERRAIN_EDITING_VOLUME || editModeChanged) {
+			this->activeBrushMode = brushMode;
+			editModeChanged = false;
+			switch (brushMode)
+			{
+			case oeBrushModes::BRUSH_DRILL:
+				brushName = typeid(EditingBrushDrill).name();
+				
+				break;
+			case oeBrushModes::BRUSH_SPHERE_FULL:
+				brushName = typeid(EditingBrushSphereFull).name();
+				break;
+			case oeBrushModes::BRUSH_SPHERE_SMOOTH:
+				brushName = typeid(EditingBrushSphereSmooth).name();
+				break;
+			default:
+				std::cout << "Warning: Unknown Brush Mode" << std::endl;
+				break;
+			}
+		}
+		for (const auto& brush : brushes) {
+			if (typeid(*brush).name() == brushName) {
+				activeBrush = brush;
+				break;
+			}
+		}
+	}
+
+	OutdoorEditor::oeBrushModes OutdoorEditor::getBrushMode() const
+	{
+		return activeBrushMode;
 	}
 
 

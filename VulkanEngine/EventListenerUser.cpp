@@ -90,6 +90,7 @@ namespace oe {
 	
 	bool EventListenerUser::onMouseScroll(veEvent event)
 	{
+		if (OutdoorEditorInfo::editor == nullptr) return false;
 		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
 		if (brush == nullptr) { return false; }
 
@@ -111,6 +112,7 @@ namespace oe {
 	}
 	bool EventListenerUser::onMouseMove(veEvent event)
 	{
+		if (OutdoorEditorInfo::editor == nullptr) return false;
 		float x = event.fdata1;
 		float y = event.fdata2;
 		float dt = (float)event.dt;
@@ -126,6 +128,7 @@ namespace oe {
 	//https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays (26.10.21)
 	bool EventListenerUser::onMouseButton(veEvent event)
 	{
+		if (OutdoorEditorInfo::editor == nullptr) return false;
 		if (event.idata3 == GLFW_PRESS) {
 			m_usePrevCursorPosition = false;
 			if (event.idata1 == GLFW_MOUSE_BUTTON_LEFT) {
@@ -248,7 +251,8 @@ namespace oe {
 		case GLFW_KEY_SPACE:						
 			translate = pCamera->getTransform() * glm::vec4(0.0, 1.0, 0.0, 1.0); //up
 			break;
-
+		//////////////////////////////////////////////////////////////////////////////////////////////
+			//MOVE TO GUI
 		case GLFW_KEY_V:
 			OutdoorEditorInfo::editor->setActiveMaterial(oeTerrainMaterial::OE_TEXTURE_GRASS);
 			break;
@@ -259,42 +263,43 @@ namespace oe {
 			OutdoorEditorInfo::editor->setActiveMaterial(oeTerrainMaterial::OE_TEXTURE_MUD);
 			break;
 
-		case GLFW_KEY_1:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL);
-			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_FULL" << std::endl;
-			getRendererForwardPointer()->updateCmdBuffers();
-			break;
+		//case GLFW_KEY_1:
+		//	OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_FULL);
+		//	std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_FULL" << std::endl;
+		//	getRendererForwardPointer()->updateCmdBuffers();
+		//	break;
 
-		case GLFW_KEY_2:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL);
-			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_DRILL" << std::endl;
-			getRendererForwardPointer()->updateCmdBuffers();
-			break;
+		//case GLFW_KEY_2:
+		//	OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_DRILL);
+		//	std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_DRILL" << std::endl;
+		//	getRendererForwardPointer()->updateCmdBuffers();
+		//	break;
 
-		case GLFW_KEY_3:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TREE_PLACEMENT_SINGLE);
-			std::cout << "Changed editing Mode to TREE_PLACEMENT_SINGLE" << std::endl;
-			getRendererForwardPointer()->updateCmdBuffers();
-			break;
-		case GLFW_KEY_4:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::BILLBOARD_PLACEMENT_SINGLE);
-			std::cout << "Changed editing Mode to BILLBOARD_PLACEMENT_SINGLE " << std::endl;
-			getRendererForwardPointer()->updateCmdBuffers();
-			break;
-		case GLFW_KEY_5:
-			OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
-			std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH "<< std::endl;
-			getRendererForwardPointer()->updateCmdBuffers();
-			break;
-
+		//case GLFW_KEY_3:
+		//	OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TREE_PLACEMENT_SINGLE);
+		//	std::cout << "Changed editing Mode to TREE_PLACEMENT_SINGLE" << std::endl;
+		//	getRendererForwardPointer()->updateCmdBuffers();
+		//	break;
+		//case GLFW_KEY_4:
+		//	OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::BILLBOARD_PLACEMENT_SINGLE);
+		//	std::cout << "Changed editing Mode to BILLBOARD_PLACEMENT_SINGLE " << std::endl;
+		//	getRendererForwardPointer()->updateCmdBuffers();
+		//	break;
+		//case GLFW_KEY_5:
+		//	OutdoorEditorInfo::editor->setEditingMode(OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH);
+		//	std::cout << "Changed editing Mode to TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH "<< std::endl;
+		//	getRendererForwardPointer()->updateCmdBuffers();
+		//	break;
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		
 		default:
 			return false;
 		};
-		auto brush = OutdoorEditorInfo::editor->getActiveBrush();
+		/*auto brush = OutdoorEditorInfo::editor->getActiveBrush();
 		VESubrenderFW_Trilinear::brushCircle.isActive = brush == nullptr ? VK_FALSE : VK_TRUE;
 		if (brush != nullptr) {
 			VESubrenderFW_Trilinear::brushCircle.radius = brush->getRadius();
-		}
+		}*/
 		
 
 		if (pParent == nullptr) {

@@ -36,7 +36,7 @@ Bugfixing
 4.1) Create a Tree Model -> Done (21.11.21)
 4.2) Implement Model Via VVE -> Done (27.11.21)
 4.3) Place Model in Editor -> Done (27.11.21)
-4.4) Create Shader for Trees that take alpha values into account -> Problem
+4.4) Create Shader for Trees that take alpha values into account -> Done-ish (20.12.21)
 4.5) Make Random Tree Algorithm (One Model -> Multiple Trees) -> Done
 4.6) Create Grass Billboards -> Done
 4.7) Implement LODs for all models
@@ -50,6 +50,15 @@ Bugfixing
 6.3) Create River Shader
 
 7) Implement Nice GUI
+
+DI-> GUI
+MI-> GUI
+DO-> Save, Load
+FR-> Save, Load, Rivers
+SA-> Rivers
+
+Rest -> Document (Bachelor Arbeit), add more Models
+
 
 
 --------------------------------------------------------------------------------

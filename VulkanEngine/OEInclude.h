@@ -4,7 +4,6 @@
 #include "VEInclude.h"
 #include <unordered_set>
 #include "Ray.h"
-#include "EventListenerGUI.h"
 #include "EventListenerUser.h"
 #include "VoxelCoordinates.h"
 #include "VoxelPoint.h"
@@ -31,6 +30,8 @@
 
 
 #include "OutdoorEditorInfo.h"
+#include "EventListenerGUI.h"
+
 #include "OutdoorEditorEngine.h"
 
 

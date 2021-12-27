@@ -11,13 +11,19 @@ namespace oe {
 		/// Sphere_... -> Brush
 		/// </summary>
 		enum class oeEditingModes {
-			TERRAIN_EDITING_VOLUME_SPHERE_FULL,
-			TERRAIN_EDITING_VOLUME_SPHERE_SMOOTH,
-			TERRAIN_EDITING_VOLUME_DRILL,
-			TERRAIN_EDITING_TEXTURE_SPHERE_FULL,
-			TREE_PLACEMENT_SINGLE,
-			BILLBOARD_PLACEMENT_SINGLE
+			TERRAIN_EDITING_VOLUME,
+			TERRAIN_EDITING_TEXTURE,
+			TREE_PLACEMENT,
+			BILLBOARD_PLACEMENT,
+			OBJECT_PLACEMENT
 
+		};
+
+		enum class oeBrushModes
+		{
+			BRUSH_SPHERE_FULL,
+			BRUSH_SPHERE_SMOOTH,
+			BRUSH_DRILL,
 		};
 
 
@@ -34,7 +40,11 @@ namespace oe {
 		//Brushes
 		std::vector<EditingBrush*> brushes;
 		EditingBrush* activeBrush;
+
 		oeEditingModes activeMode;
+		bool editModeChanged;
+
+		oeBrushModes activeBrushMode;
 
 		//Constants
 		const std::size_t CHUNKS_CHANGED_VOXELS_THRESHOLD = 15;
@@ -62,7 +72,7 @@ namespace oe {
 
 		bool traceRay(const Ray& ray, glm::vec3& outPos) const;
 
-		void handleInput(const glm::vec3& hitPos, const glm::vec3& direction, bool subtractVolume = false);
+		void handleInput(const glm::vec3& hitPos, const glm::vec3& direction, bool invertOperation = false);
 
 		/////////////////////////////////////////////////////////////////////////
 		//Editor-Components
@@ -74,6 +84,12 @@ namespace oe {
 		void setActiveMaterial(const oeTerrainMaterial& terrainMaterial);
 		EditingBrush* getActiveBrush() const;
 
+		/// <summary>
+		/// Only works if edit Mode == TERRAIN_EDITING_VOLUME
+		/// </summary>
+		/// <param name="brushMode"></param>
+		void setBrushMode(const oeBrushModes& brushMode );
+		oeBrushModes getBrushMode() const;
 
 	};
 }

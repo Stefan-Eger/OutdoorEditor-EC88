@@ -5,8 +5,8 @@ namespace oe {
 	void OutdoorEditorEngine::registerEventListeners() {
 		//VEEngine::registerEventListeners();
 
-		registerEventListener(new EventListenerUser("StandardEventListener"));
 		registerEventListener(new EventListenerGUI("GUI"), { veEvent::VE_EVENT_DRAW_OVERLAY });
+		registerEventListener(new EventListenerUser("StandardEventListener"));
 	}
 	void OutdoorEditorEngine::loadLevel(uint32_t numLevel) {
 		VEEngine::loadLevel(numLevel);			//create standard cameras and lights

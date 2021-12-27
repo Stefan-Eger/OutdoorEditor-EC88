@@ -5,8 +5,10 @@ namespace oe {
 
 	void OutdoorEditorInfo::exit()
 	{
-		if(editor != nullptr)
+		if (editor != nullptr) {
 			delete editor;
+			editor = nullptr;
+		}
 	}
 
 }
