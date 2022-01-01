@@ -3,11 +3,9 @@
 namespace oe {
 	class NatureEntityBillboard : public NatureEntity
 	{
-		std::string entityName = "";
 	public:
-		NatureEntityBillboard(const glm::vec3& pos, NatureEntity_t* modelInfo);
-		virtual ~NatureEntityBillboard() override;
-		virtual void createEntity(const std::string& entityName, VESceneNode* parent) override;
+		NatureEntityBillboard(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo);
+		virtual void createEntity( VESceneNode* parent) override;
 	};
 }
 

@@ -9,6 +9,9 @@ namespace oe {
 		VoxelPoint(const float& density, const std::size_t& terrainType);
 
 		static VoxelPoint Empty();
+
+
+		nlohmann::json& save(nlohmann::json& serializer) const;
 	};
 }
 

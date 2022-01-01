@@ -1,53 +1,5 @@
 #include "OEInclude.h"
 namespace oe {
-	void OutdoorEditor::addTreeAt(const std::string& treeName, const glm::vec3& pos)
-	{
-		std::string VEentityName = treeName + '_' + std::to_string(entityCounter++);
-		if (entities.contains(VEentityName)) return;
-
-		NatureEntity_t* infoTrunk = enitityDatabase->getEntity(treeName+"_Trunk");
-		NatureEntity_t* infoLeafs = enitityDatabase->getEntity(treeName + "_Leafs");
-		NatureEntity* newEntity = new NatureEntityTree(pos, infoTrunk, infoLeafs);
-
-		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
-		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
-		newEntity->createEntity(VEentityName, parentEntity);
-		//parentEntity->multiplyTransform(glm::translate(pos));
-		parentEntity->setPosition(pos);
-
-		entities.emplace(VEentityName, newEntity);
-	}
-	void OutdoorEditor::addBillboardAt(const std::string& billboardName, const glm::vec3& pos)
-	{
-		std::string VEentityName = billboardName + '_' + std::to_string(entityCounter++);
-		if (entities.contains(VEentityName)) return;
-
-		NatureEntity_t* billboardInfo = enitityDatabase->getEntity(billboardName);
-		NatureEntity* newEntity = new NatureEntityBillboard(pos, billboardInfo);
-
-		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
-		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
-		newEntity->createEntity(VEentityName, parentEntity);
-		//TODO RESIZE BILLBOARDS
-		//parentEntity->multiplyTransform(glm::scale(glm::vec3(0.5f,0.5f,0.5f)));
-		parentEntity->setPosition(pos); 
-
-		entities.emplace(VEentityName, newEntity);
-	}
-	void OutdoorEditor::removeEntitiesAt(const glm::vec3& pos)
-	{
-		for (auto it = entities.begin(); it != entities.end();) {
-			float currentDistance = glm::length(it->second->getPos() - pos);
-			float distance = activeBrush->getRadius();
-			if (currentDistance < distance) {
-				delete it->second;
-				it = entities.erase(it);
-			}
-			else {
-				++it;
-			}
-		}
-	}
 
 	void OutdoorEditor::changeTerrainMaterial(const glm::vec3& hitPos)
 	{
@@ -57,7 +9,7 @@ namespace oe {
 
 		for (const auto& a : affected) {
 			VoxelPoint oldVoxel = voxelManager->getVoxel(a.first);
-			VoxelPoint voxel = VoxelPoint(oldVoxel.density, activeMaterial);
+			VoxelPoint voxel = VoxelPoint(oldVoxel.density, selectedMaterial);
 			voxelManager->setVoxel(a.first, voxel);
 		}
 		refresh();
@@ -74,11 +26,11 @@ namespace oe {
 			VoxelPoint oldVoxel = voxelManager->getVoxel(a.first);
 
 			if (!subtractVolume && (oldVoxel.density < a.second)) {
-				VoxelPoint voxel = VoxelPoint(a.second, activeMaterial);
+				VoxelPoint voxel = VoxelPoint(a.second, selectedMaterial);
 				voxelManager->setVoxel(a.first, voxel);
 			}
 			if (subtractVolume && (a.second < oldVoxel.density)) {
-				VoxelPoint voxel = VoxelPoint(a.second, activeMaterial);
+				VoxelPoint voxel = VoxelPoint(a.second, selectedMaterial);
 				voxelManager->setVoxel(a.first, voxel);
 			}
 		}
@@ -88,17 +40,16 @@ namespace oe {
 	OutdoorEditor::OutdoorEditor() {
 		voxelManager = new VoxelManager();
 		terrainManager = new TerrainManager(new MarchingCubes(voxelManager));
-		enitityDatabase = new NatureEntityDatabase();
+		entityManager = new NatureEntityManager();
 
 		brushes.push_back(new EditingBrushSphereFull(2.0f, 1.0f));
 		brushes.push_back(new EditingBrushDrill(0.3f));
 		brushes.push_back(new EditingBrushSphereSmooth(3.0f, 1.0f));
-		entityCounter = 0;
 		activeBrush = brushes.at(0);
-		activeMaterial = 0;
+		selectedMaterial = 0;
 		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE;
 		activeBrushMode = oeBrushModes::BRUSH_DRILL;
-
+		selectedModel = oeEntityModel::PINE_TREE;
 		editModeChanged = false;
 	}
 	OutdoorEditor::~OutdoorEditor(){
@@ -107,7 +58,7 @@ namespace oe {
 			delete b;
 		}
 		brushes.clear();
-		delete enitityDatabase;
+		delete entityManager;
 		delete terrainManager;
 		delete voxelManager;
 	}
@@ -177,18 +128,16 @@ namespace oe {
 		switch (activeMode)
 		{
 		case oeEditingModes::TERRAIN_EDITING_VOLUME:
-			removeEntitiesAt(hitPos);
+			entityManager->removeEntitiesAt(hitPos, activeBrush->getRadius());
 			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
 			break;
-		case oeEditingModes::TREE_PLACEMENT: //TODO different models -> create Enums
+		case oeEditingModes::TREE_PLACEMENT:
+		case oeEditingModes::BILLBOARD_PLACEMENT:
 			if (invertOperation) {
-				removeEntitiesAt(hitPos);
+				entityManager->removeEntitiesAt(hitPos, activeBrush->getRadius());
 				break;
 			}
-			addTreeAt("Pine_Tree", hitPos);
-			break;
-		case oeEditingModes::BILLBOARD_PLACEMENT:
-			addBillboardAt("Bill_Board_Grass", hitPos);
+			entityManager->addNatureEntity(selectedModel, hitPos);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_TEXTURE:
 			changeTerrainMaterial(hitPos);
@@ -239,12 +188,17 @@ namespace oe {
 
 	void OutdoorEditor::setActiveMaterial(const oeTerrainMaterial& terrainMaterial)
 	{
-		activeMaterial = static_cast<std::size_t>(terrainMaterial);
+		selectedMaterial = static_cast<std::size_t>(terrainMaterial);
 	}
 
 	EditingBrush* OutdoorEditor::getActiveBrush() const
 	{
 		return activeBrush;
+	}
+
+	void OutdoorEditor::setActiveModel(const oeEntityModel& model)
+	{
+		selectedModel = model;
 	}
 
 	void OutdoorEditor::setBrushMode(const oeBrushModes& brushMode)
@@ -284,5 +238,57 @@ namespace oe {
 		return activeBrushMode;
 	}
 
+	void OutdoorEditor::save(const std::string& path, const std::string& filename) const
+	{
+		//Open File
+		std::ofstream ofs(path + "/" + filename + ".json", std::ios::out);
+		//JSON Serializer
+		nlohmann::json serialize;
+		nlohmann::json voxelData;
+		nlohmann::json entityData;
 
+		auto timeNow = vh::vhTimeNow();
+
+		std::cout << "Saving in Progress..." << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+		//Write VoxelData
+		serialize["VoxelData"] = voxelManager->save(voxelData);
+		std::cout << "Voxel Data Saved" << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+
+		//Write Models
+		serialize["EntityData"] = entityManager->save(entityData);
+		std::cout << "Nature Entities Saved" << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+		
+		//Write JSON Data to File
+		ofs << std::setw(2) << serialize;
+
+		//Close File
+		ofs.close();
+		std::cout << "Save Finished "<< std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+	}
+
+	void OutdoorEditor::load(const std::string& path, const std::string& filename)
+	{
+
+		//Import Data
+		std::ifstream file(path + "/" + filename + ".json", std::ios::in);
+		nlohmann::json deserialize;
+		file >> deserialize;
+		file.close();
+
+		//Update with Imported VoxelData
+		/*
+		voxelManager->clear();
+
+		voxelManager->addChunk();
+		voxelManager->setVoxel();
+		voxelManager->setVoxel();
+		*/
+			
+		//Update with Imported Entities
+
+	}
 };

@@ -74,6 +74,14 @@ namespace oe {
 		return nullptr;
 	}
 
+	void VoxelManager::clear()
+	{
+		for (const auto& chunk : chunks) {
+			delete chunk.second;
+		}
+		chunks.clear();
+	}
+
 	std::vector<VoxelCoordinates> VoxelManager::getAllChunks2Refresh() const
 	{
 		std::vector<VoxelCoordinates> ret;
@@ -84,4 +92,19 @@ namespace oe {
 		}
 		return ret;
 	}
+	nlohmann::json& VoxelManager::save(nlohmann::json& serializer) const
+	{
+		nlohmann::json voxelChunk, chunkData;
+		for (const auto& chunk : chunks) {
+
+			voxelChunk["ChunkCoordinates"] = { chunk.first.X, chunk.first.Y, chunk.first.Z };
+			voxelChunk["VoxelChunk"] = chunk.second->save(chunkData);
+			
+			serializer.push_back(voxelChunk);
+			voxelChunk.clear();
+		}
+
+		return serializer;
+	}
+	
 }

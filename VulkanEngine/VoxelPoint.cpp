@@ -14,5 +14,14 @@ namespace oe {
 	{
 		return VoxelPoint(0.0f, 0);	
 	}
+
+	nlohmann::json& VoxelPoint::save(nlohmann::json& serializer) const
+	{
+		serializer["density"] = density;
+		serializer["terrainType"] = terrainType;
+
+		return serializer;
+	}
+
 	
 }

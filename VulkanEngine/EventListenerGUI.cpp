@@ -14,6 +14,8 @@ namespace oe {
 		float windowWidth = window.width * (2.0f / 5.0f);
 
 		if (nk_begin(ctx, "Outdoor Editor", nk_rect(0, 0, windowWidth, windowHeight), NK_WINDOW_TITLE | NK_WINDOW_SCALABLE | NK_WINDOW_BORDER | NK_WINDOW_MINIMIZABLE | NK_WINDOW_SCROLL_AUTO_HIDE)) {
+			
+			//EDIT OPTIONS
 			drawEditModes(ctx);
 
 			if (m_editingmode == OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME) 
@@ -22,13 +24,29 @@ namespace oe {
 			if (m_editingmode == OutdoorEditor::oeEditingModes::TERRAIN_EDITING_VOLUME || m_editingmode == OutdoorEditor::oeEditingModes::TERRAIN_EDITING_TEXTURE)
 				drawTerrainMaterials(ctx);
 
+			if (m_editingmode == OutdoorEditor::oeEditingModes::TREE_PLACEMENT) {
+				drawAvailableTrees(ctx);
+
+			}
+			if (m_editingmode == OutdoorEditor::oeEditingModes::BILLBOARD_PLACEMENT) {
+				drawAvailableBillboards(ctx);
+			}
 			auto brush = OutdoorEditorInfo::editor->getActiveBrush();
 			VESubrenderFW_Trilinear::brushCircle.isActive = brush == nullptr ? VK_FALSE : VK_TRUE;
 
 			if (brush != nullptr) {
 				VESubrenderFW_Trilinear::brushCircle.radius = brush->getRadius();
 			}
+
+			//SAVE AND LOAD
 			
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 2);
+			if (nk_button_label(ctx, "Save")) {
+				OutdoorEditorInfo::editor->save(".", "TEST_SAVE");
+			}
+			if (nk_button_label(ctx, "Load")) {
+				OutdoorEditorInfo::editor->load(".", "TEST_SAVE");
+			}
 		}
 		
 		nk_end(ctx);
@@ -110,6 +128,34 @@ namespace oe {
 		
 			OutdoorEditorInfo::editor->setActiveMaterial(m_activeMaterial);
 
+			nk_tree_pop(ctx);
+		}
+	}
+
+	void EventListenerGUI::drawAvailableTrees(nk_context* ctx)
+	{
+		if (nk_tree_push(ctx, NK_TREE_TAB, "Trees", NK_MINIMIZED)) {
+
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Pine Tree", m_activeModel == oeEntityModel::PINE_TREE)) {
+				m_activeModel = oeEntityModel::PINE_TREE;
+			}
+
+			OutdoorEditorInfo::editor->setActiveModel(m_activeModel);
+			nk_tree_pop(ctx);
+		}
+	}
+
+	void EventListenerGUI::drawAvailableBillboards(nk_context* ctx)
+	{
+		if (nk_tree_push(ctx, NK_TREE_TAB, "Billboards", NK_MINIMIZED)) {
+
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Grass 01", m_activeModel == oeEntityModel::BILLBOARD_GRASS_01)) {
+				m_activeModel = oeEntityModel::BILLBOARD_GRASS_01;
+			}
+
+			OutdoorEditorInfo::editor->setActiveModel(m_activeModel);
 			nk_tree_pop(ctx);
 		}
 	}

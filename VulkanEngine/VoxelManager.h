@@ -37,7 +37,13 @@ namespace oe {
 
 		VoxelChunkData* findChunk(const VoxelCoordinates& chunkCoordinates) const;
 
+
+		void clear();
+
 		std::vector<VoxelCoordinates> getAllChunks2Refresh() const;
+
+		nlohmann::json& save(nlohmann::json& serializer) const;
+
 	};
 }
 #endif // !VOXEL_MANAGER_H

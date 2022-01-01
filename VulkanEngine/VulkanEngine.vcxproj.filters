@@ -93,6 +93,9 @@
     <Filter Include="Header Files\OutdoorEditor\Models">
       <UniqueIdentifier>{f47badd4-5828-483e-87df-ca3ed602db6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\OutdoorEditor\External">
+      <UniqueIdentifier>{8c0b2720-e20f-4fbf-8e4e-8a47126ec954}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VEEngine.h">
@@ -262,6 +265,12 @@
     </ClInclude>
     <ClInclude Include="VESubrenderFW_Billboard.h">
       <Filter>Header Files\VESubrender</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Header Files\OutdoorEditor\External</Filter>
+    </ClInclude>
+    <ClInclude Include="NatureEntityManager.h">
+      <Filter>Header Files\OutdoorEditor\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +450,9 @@
     </ClCompile>
     <ClCompile Include="VESubrenderFW_Billboard.cpp">
       <Filter>Source Files\VESubrender</Filter>
+    </ClCompile>
+    <ClCompile Include="NatureEntityManager.cpp">
+      <Filter>Source Files\OutdoorEditor\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

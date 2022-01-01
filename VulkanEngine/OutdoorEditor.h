@@ -31,12 +31,8 @@ namespace oe {
 		//Managers
 		VoxelManager* voxelManager;
 		TerrainManager* terrainManager;
-		NatureEntityDatabase* enitityDatabase;
+		NatureEntityManager* entityManager;
 		
-		//Entity management
-		std::unordered_map<std::string, NatureEntity*> entities;
-		std::size_t entityCounter;
-
 		//Brushes
 		std::vector<EditingBrush*> brushes;
 		EditingBrush* activeBrush;
@@ -52,12 +48,13 @@ namespace oe {
 
 		const float RAY_DISTANCE_MAX = 40.0f;
 
-		//Selected Texture
-		std::size_t activeMaterial;
+		//Selected Texture for Terrain
+		std::size_t selectedMaterial;
 
-		void addTreeAt(const std::string& entityName, const glm::vec3& pos);
-		void addBillboardAt(const std::string& entityName, const glm::vec3& pos);
-		void removeEntitiesAt(const glm::vec3& pos);
+		//Selected Model to Place
+		oeEntityModel selectedModel;
+
+		
 
 		void changeTerrainMaterial(const glm::vec3& hitPos);
 		void modifyTerrainVolumeWithActiveBrush(const glm::vec3& hitPos, bool subtractVolume = false);
@@ -84,12 +81,19 @@ namespace oe {
 		void setActiveMaterial(const oeTerrainMaterial& terrainMaterial);
 		EditingBrush* getActiveBrush() const;
 
+		void setActiveModel(const oeEntityModel& model);
+
 		/// <summary>
 		/// Only works if edit Mode == TERRAIN_EDITING_VOLUME
 		/// </summary>
 		/// <param name="brushMode"></param>
 		void setBrushMode(const oeBrushModes& brushMode );
 		oeBrushModes getBrushMode() const;
+
+		//https://github.com/nlohmann/json (31.12.21)
+		//uses json.hpp to write and parse json files
+		void save(const std::string& path, const std::string& filename) const;
+		void load(const std::string& path, const std::string& filename);
 
 	};
 }

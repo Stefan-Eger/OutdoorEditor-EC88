@@ -1,11 +1,9 @@
 #include "OEInclude.h"
 
 namespace oe {
-	NatureEntityBillboard::NatureEntityBillboard(const glm::vec3& pos, NatureEntity_t* modelInfo) : NatureEntity(pos, modelInfo){}
-	NatureEntityBillboard::~NatureEntityBillboard(){
-		getSceneManagerPointer()->deleteSceneNodeAndChildren(entityName);
-	}
-	void NatureEntityBillboard::createEntity(const std::string& entityName, VESceneNode* parent)
+	NatureEntityBillboard::NatureEntityBillboard(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo) : NatureEntity(entityName, entityType, pos, modelInfo){}
+	
+	void NatureEntityBillboard::createEntity(VESceneNode* parent)
 	{
 		std::vector<vh::vhVertex> vertices;
 		std::vector<uint32_t> indices;
@@ -17,6 +15,8 @@ namespace oe {
 
 		vertices.push_back(billboard_vertice);
 		indices.push_back(index);
+
+		std::string entityName = getEntityName();
 
 		VEMesh* billmesh;
 		VECHECKPOINTER(billmesh = getSceneManagerPointer()->createMesh(entityName + "_Mesh", vertices, indices));
@@ -30,7 +30,6 @@ namespace oe {
 		//getRenderer()->addEntityToSubrenderer(x); //Extend Entity Type enum for further subrenderes
 		VEEntity* entity;
 		VECHECKPOINTER(entity = getSceneManagerPointer()->createEntity(entityName, VEEntity::veEntityType::VE_ENTITY_TYPE_BILLBOARD, billmesh, billMaterial, parent));
-		this->entityName = entityName;
 
 	}
 }

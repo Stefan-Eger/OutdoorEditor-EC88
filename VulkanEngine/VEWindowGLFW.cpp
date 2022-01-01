@@ -179,8 +179,8 @@ namespace ve {
 		glfwGetCursorPos(window, &xpos, &ypos);
 
 		veEvent event(veEvent::VE_EVENT_SUBSYSTEM_GLFW, veEvent::VE_EVENT_MOUSEBUTTON);
-		event.fdata1 = xpos;
-		event.fdata2 = ypos;
+		event.fdata1 = static_cast<float>(xpos);
+		event.fdata2 = static_cast<float>(ypos);
 		event.idata1 = button;
 		event.idata3 = action;
 		event.idata4 = mods;

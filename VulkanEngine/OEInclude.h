@@ -3,6 +3,7 @@
 
 #include "VEInclude.h"
 #include <unordered_set>
+#include "json.hpp" //https://github.com/nlohmann/json (31.12.21)
 #include "Ray.h"
 #include "EventListenerUser.h"
 #include "VoxelCoordinates.h"
@@ -25,6 +26,7 @@
 #include "NatureEntityTree.h"
 #include "NatureEntityBillboard.h"
 #include "NatureEntityDatabase.h"
+#include "NatureEntityManager.h"
 
 #include "OutdoorEditor.h"
 

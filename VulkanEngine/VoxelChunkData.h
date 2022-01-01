@@ -37,6 +37,9 @@ namespace oe {
 
 		const std::vector<VoxelCoordinates>& getChangedVoxels() const;
 		void clearChangedVoxels();
+
+
+		nlohmann::json& save(nlohmann::json& serializer) const;
 	};
 }
 #endif // !VOXEL_CHUNK_DATA_H
