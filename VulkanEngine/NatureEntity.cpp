@@ -1,7 +1,7 @@
 #include "OEInclude.h"
 
 namespace oe {
-	NatureEntity::NatureEntity(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo) : entityName{ entityName }, entityType{entityType}, pos{ pos }, modelInfo{ modelInfo }{}
+	NatureEntity::NatureEntity(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* modelInfo) : entityName{ entityName }, pos{ pos }, modelInfo{ modelInfo }{}
 	NatureEntity::~NatureEntity(){
 		getSceneManagerPointer()->deleteSceneNodeAndChildren(entityName);
 	}
@@ -21,7 +21,4 @@ namespace oe {
 		return entityName;
 	}
 
-	std::string NatureEntity::getEntityType() const {
-		return entityType;
-	}
 }

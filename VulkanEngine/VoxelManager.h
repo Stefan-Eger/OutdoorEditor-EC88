@@ -13,13 +13,13 @@ namespace oe {
 		static VoxelCoordinates world2Local(const VoxelCoordinates& worldCoordinates);
 		static VoxelCoordinates local2World(const VoxelCoordinates& localCoordinates, const VoxelCoordinates& chunkCoordinates);
 
-		void addChunk(const VoxelCoordinates& chunkCoordinates);
+		VoxelChunkData* addChunk(const VoxelCoordinates& chunkCoordinates);
 		/// <summary>
 		/// Fills the Chunk with the filler reference Grass for example
 		/// </summary>
 		/// <param name="chunkCoordinates"></param>
 		/// <param name="filler"></param>
-		void addChunk(const VoxelCoordinates& chunkCoordinates, const VoxelPoint& filler);
+		VoxelChunkData* addChunk(const VoxelCoordinates& chunkCoordinates, const VoxelPoint& filler);
 
 		/// <summary>
 		/// Sets a Voxel if Chunk exists and generates new chunk immediately
@@ -43,6 +43,7 @@ namespace oe {
 		std::vector<VoxelCoordinates> getAllChunks2Refresh() const;
 
 		nlohmann::json& save(nlohmann::json& serializer) const;
+		void load(nlohmann::json& serializer);
 
 	};
 }

@@ -8,10 +8,9 @@ namespace oe {
 		NatureEntity_t* modelInfo;
 
 		std::string entityName;
-		std::string entityType;
 		
 	public:
-		NatureEntity(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo);
+		NatureEntity(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* modelInfo);
 		virtual	~NatureEntity();
 
 		virtual void createEntity(VESceneNode* parent);
@@ -19,7 +18,6 @@ namespace oe {
 		NatureEntity_t* getModelInfo() const;
 		glm::vec3 getPos() const;
 		std::string getEntityName() const;
-		std::string getEntityType() const;
 	};
 }
 #endif // !NATURE_ENTITY_H

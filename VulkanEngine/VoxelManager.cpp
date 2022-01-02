@@ -33,13 +33,17 @@ namespace oe {
 		return VoxelCoordinates(x, y, z);
 	}
 
-	void VoxelManager::addChunk(const VoxelCoordinates& chunkCoordinates) {
-		chunks.emplace(chunkCoordinates, new VoxelChunkData());
+	VoxelChunkData* VoxelManager::addChunk(const VoxelCoordinates& chunkCoordinates) {
+		VoxelChunkData* chunkData = new VoxelChunkData();
+		chunks.emplace(chunkCoordinates, chunkData);
+		return chunkData;
 	}
 
-	void VoxelManager::addChunk(const VoxelCoordinates& chunkCoordinates, const VoxelPoint& filler)
+	VoxelChunkData* VoxelManager::addChunk(const VoxelCoordinates& chunkCoordinates, const VoxelPoint& filler)
 	{
-		chunks.emplace(chunkCoordinates, new VoxelChunkData(filler));
+		VoxelChunkData* chunkData = new VoxelChunkData(filler);
+		chunks.emplace(chunkCoordinates, chunkData);
+		return chunkData;
 	}
 
 	void VoxelManager::setVoxel(const VoxelCoordinates& worldCoordinates, const VoxelPoint& voxelValue) {
@@ -102,9 +106,25 @@ namespace oe {
 			
 			serializer.push_back(voxelChunk);
 			voxelChunk.clear();
+			chunkData.clear();
 		}
 
 		return serializer;
+	}
+
+	void VoxelManager::load(nlohmann::json& data)
+	{
+		clear();
+		for (nlohmann::json::iterator it = data.begin(); it != data.end(); ++it) {
+			VoxelCoordinates chunkPos;
+			chunkPos.X = (*it)["ChunkCoordinates"].at(0).get<VoxelCoordinates::value_type>();
+			chunkPos.Y = (*it)["ChunkCoordinates"].at(1).get<VoxelCoordinates::value_type>();
+			chunkPos.Z = (*it)["ChunkCoordinates"].at(2).get<VoxelCoordinates::value_type>();
+
+			VoxelChunkData* chunk = addChunk(chunkPos);
+			nlohmann::json chunkData = (*it)["VoxelChunk"];
+			chunk->load(chunkData);
+		}
 	}
 	
 }

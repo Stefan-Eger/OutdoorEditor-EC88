@@ -16,7 +16,7 @@ namespace oe {
 		void loadLeafs(const aiScene* pScene, std::vector<VEMesh*>& meshes, std::vector<VEMaterial*>& materials, aiNode* node, 
 			const std::string& entityName, VESceneNode* parent);
 	public:	
-		NatureEntityTree(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio = 0.25);
+		NatureEntityTree(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio = 0.25);
 		virtual ~NatureEntityTree() override;
 		virtual void createEntity(VESceneNode* parent) override;
 

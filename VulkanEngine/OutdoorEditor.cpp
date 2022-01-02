@@ -273,22 +273,45 @@ namespace oe {
 	void OutdoorEditor::load(const std::string& path, const std::string& filename)
 	{
 
-		//Import Data
+		auto timeNow = vh::vhTimeNow();
+		std::cout << "Loading in Progress..." << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+		std::cout << "Import File..." << std::endl;
+		//Import Data from file
 		std::ifstream file(path + "/" + filename + ".json", std::ios::in);
 		nlohmann::json deserialize;
 		file >> deserialize;
 		file.close();
 
+		std::cout << "File Data Imported" << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+		std::cout << "Update Voxels..." << std::endl;
+
 		//Update with Imported VoxelData
-		/*
-		voxelManager->clear();
+		nlohmann::json voxelData;
+		voxelData = deserialize["VoxelData"];
+		voxelManager->load(voxelData);
+		terrainManager->clear();
 
-		voxelManager->addChunk();
-		voxelManager->setVoxel();
-		voxelManager->setVoxel();
-		*/
-			
+
+		std::cout << "Voxels Updated" << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+		std::cout << "Update Models..." << std::endl;
+
+
 		//Update with Imported Entities
+		nlohmann::json entityData;
+		entityData = deserialize["EntityData"];
+		entityManager->load(entityData);
 
+
+		std::cout << "Models Updated" << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
+		std::cout << "Refresh Terrain" << std::endl;
+
+		refresh();
+
+		std::cout << "Loading Finished " << std::endl;
+		std::cout << "Time Duration[" << vh::vhTimeDuration(timeNow) << "]" << std::endl;
 	}
 };

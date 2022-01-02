@@ -1,7 +1,7 @@
 #include "OEInclude.h"
 
 namespace oe {
-	NatureEntityBillboard::NatureEntityBillboard(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo) : NatureEntity(entityName, entityType, pos, modelInfo){}
+	NatureEntityBillboard::NatureEntityBillboard(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* modelInfo) : NatureEntity(entityName, pos, modelInfo){}
 	
 	void NatureEntityBillboard::createEntity(VESceneNode* parent)
 	{

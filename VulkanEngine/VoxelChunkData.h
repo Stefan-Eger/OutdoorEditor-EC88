@@ -40,6 +40,7 @@ namespace oe {
 
 
 		nlohmann::json& save(nlohmann::json& serializer) const;
+		void load(nlohmann::json& data);
 	};
 }
 #endif // !VOXEL_CHUNK_DATA_H

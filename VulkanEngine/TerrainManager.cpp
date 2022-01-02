@@ -17,6 +17,13 @@ namespace oe {
 			this->generator = generator;
 		}
 	}
+	void TerrainManager::clear()
+	{
+		for (const auto& chunk : terrain) {
+			delete chunk.second;
+		}
+		terrain.clear();
+	}
 	void TerrainManager::addChunkMesh(const VoxelCoordinates& chunkPos)
 	{
 		TerrainMeshChunk* chunk = new TerrainMeshChunk(chunkPos);

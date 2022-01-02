@@ -90,6 +90,8 @@ namespace oe {
 		void setBrushMode(const oeBrushModes& brushMode );
 		oeBrushModes getBrushMode() const;
 
+		/////////////////////////////////////////////////////////////////////////
+		//Saving Scene
 		//https://github.com/nlohmann/json (31.12.21)
 		//uses json.hpp to write and parse json files
 		void save(const std::string& path, const std::string& filename) const;

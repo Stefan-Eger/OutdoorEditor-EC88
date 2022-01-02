@@ -32,7 +32,7 @@ namespace oe {
 			loadLeafs(pScene, meshes, materials, node->mChildren[i], entityName, parent);
 		}
 	}
-	NatureEntityTree::NatureEntityTree(const std::string& entityName, const std::string& entityType, const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(entityName, entityType, pos, modelInfo), leafsInfo{ leafsInfo }, distribution{0.5}{}
+	NatureEntityTree::NatureEntityTree(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(entityName, pos, modelInfo), leafsInfo{ leafsInfo }, distribution{0.5}{}
 	NatureEntityTree::~NatureEntityTree()
 	{
 		NatureEntity::~NatureEntity();
@@ -53,7 +53,6 @@ namespace oe {
 		
 		loadLeafs(scene, leafMeshes, leafMaterials, pRoot, getEntityName(), parent);
 		
-
 		delete scene; // We are now responsible for destroying the imported scene
 	}
 	

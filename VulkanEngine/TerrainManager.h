@@ -29,6 +29,7 @@ namespace oe {
 		TerrainMeshChunk* findChunk(const VoxelCoordinates& chunkPos);
 
 		void setGenerator(TerrainGenerator* generator);
+		void clear();
 	};
 }
 #endif // !TERRAIN_MANAGER_H

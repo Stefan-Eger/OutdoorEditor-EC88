@@ -11,11 +11,11 @@ namespace oe {
 
 	class NatureEntityManager
 	{
-
 		NatureEntityDatabase* enitityDatabase;
 
 		//Entity management
-		std::unordered_map<std::string, NatureEntity*> entities;
+		//<Entity name, <entityType,entity>>
+		std::unordered_map<std::string, std::pair<oeEntityModel, NatureEntity*>> entities;
 		std::size_t entityCounter;
 
 		const std::vector<std::string> modelType = {
@@ -23,8 +23,8 @@ namespace oe {
 			"Bill_Board_Grass"
 		};
 
-		void addTreeAt(const std::string& treeName, const glm::vec3& pos);
-		void addBillboardAt(const std::string& billboardName, const glm::vec3& pos);
+		void addTreeAt(const oeEntityModel& type, const std::string& treeName, const glm::vec3& pos);
+		void addBillboardAt(const oeEntityModel& type, const std::string& billboardName, const glm::vec3& pos);
 
 	public:
 		NatureEntityManager();
@@ -33,7 +33,10 @@ namespace oe {
 		void addNatureEntity(const oeEntityModel& entity, const glm::vec3& pos );
 		void removeEntitiesAt(const glm::vec3& pos, const float& radius);
 
+		void clear();
+
 		nlohmann::json& save(nlohmann::json& serializer) const;
+		void load(nlohmann::json& serializer);
 
 	};
 }
