@@ -6,7 +6,6 @@ namespace oe {
 	{
 		glm::vec3 pos;
 		NatureEntity_t* modelInfo;
-
 		std::string entityName;
 		
 	public:

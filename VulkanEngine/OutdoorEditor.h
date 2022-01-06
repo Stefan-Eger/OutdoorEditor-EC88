@@ -40,7 +40,10 @@ namespace oe {
 		oeEditingModes activeMode;
 		bool editModeChanged;
 
+		//active Selections
 		oeBrushModes activeBrushMode;
+		oeEntityModel selectedModel;
+		std::size_t selectedMaterial;
 
 		//Constants
 		const std::size_t CHUNKS_CHANGED_VOXELS_THRESHOLD = 15;
@@ -48,11 +51,7 @@ namespace oe {
 
 		const float RAY_DISTANCE_MAX = 40.0f;
 
-		//Selected Texture for Terrain
-		std::size_t selectedMaterial;
 
-		//Selected Model to Place
-		oeEntityModel selectedModel;
 
 		
 
