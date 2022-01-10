@@ -217,7 +217,7 @@ namespace ve {
 			glm::mat4 *pMatrix = (glm::mat4*) &node->mTransformation;
 
 			VEEntity *pEnt = createEntity2(pObject->getName() + "/Entity_" + std::to_string(i), //create the new entity
-				VEEntity::VE_ENTITY_TYPE_NORMAL_WITH_ALPHA,
+				VEEntity::VE_ENTITY_TYPE_NORMAL,
 				pMesh, pMaterial, pObject, *pMatrix);
 		}
 

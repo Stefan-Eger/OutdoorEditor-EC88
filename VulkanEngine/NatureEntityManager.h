@@ -4,9 +4,13 @@
 namespace oe {
 
 	enum class oeEntityModel {
-		PINE_TREE,
-		BILLBOARD_GRASS_01
-
+		PINE_TREE_01,
+		PINE_TREE_02,
+		OAK_TREE_01,
+		BILLBOARD_GRASS_01,
+		STONE_01,
+		STONE_02,
+		STONE_03
 	};
 
 	class NatureEntityManager
@@ -18,13 +22,19 @@ namespace oe {
 		std::unordered_map<std::string, std::pair<oeEntityModel, NatureEntity*>> entities;
 		std::size_t entityCounter;
 
-		const std::vector<std::string> modelType = {
-			"Pine_Tree",
-			"Bill_Board_Grass"
+		const std::vector<std::string> modelTypes = {
+			"Pine_Tree_01",
+			"Pine_Tree_02",
+			"Oak_Tree_01",
+			"Bill_Board_Grass",
+			"Stone_01",
+			"Stone_02",
+			"Stone_03"
 		};
 
 		void addTreeAt(const oeEntityModel& type, const std::string& treeName, const glm::vec3& pos);
 		void addBillboardAt(const oeEntityModel& type, const std::string& billboardName, const glm::vec3& pos);
+		void addObject(const oeEntityModel& type, const std::string& objectName, const glm::vec3& pos);
 
 	public:
 		NatureEntityManager();

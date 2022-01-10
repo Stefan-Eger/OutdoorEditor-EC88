@@ -31,6 +31,10 @@ namespace oe {
 			if (m_editingmode == OutdoorEditor::oeEditingModes::BILLBOARD_PLACEMENT) {
 				drawAvailableBillboards(ctx);
 			}
+			if (m_editingmode == OutdoorEditor::oeEditingModes::OBJECT_PLACEMENT) {
+				drawAvailableStones(ctx);
+			}
+
 			auto brush = OutdoorEditorInfo::editor->getActiveBrush();
 			VESubrenderFW_Trilinear::brushCircle.isActive = brush == nullptr ? VK_FALSE : VK_TRUE;
 
@@ -39,7 +43,6 @@ namespace oe {
 			}
 
 			//SAVE AND LOAD
-			
 			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 2);
 			if (nk_button_label(ctx, "Save")) {
 				OutdoorEditorInfo::editor->save(".", "TEST_SAVE");
@@ -137,10 +140,38 @@ namespace oe {
 		if (nk_tree_push(ctx, NK_TREE_TAB, "Trees", NK_MINIMIZED)) {
 
 			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
-			if (nk_option_label(ctx, "Pine Tree", m_activeModel == oeEntityModel::PINE_TREE)) {
-				m_activeModel = oeEntityModel::PINE_TREE;
+			if (nk_option_label(ctx, "Pine Tree 01", m_activeModel == oeEntityModel::PINE_TREE_01)) {
+				m_activeModel = oeEntityModel::PINE_TREE_01;
 			}
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Pine Tree 02", m_activeModel == oeEntityModel::PINE_TREE_02)) {
+				m_activeModel = oeEntityModel::PINE_TREE_02;
+			}
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Oak Tree 01", m_activeModel == oeEntityModel::OAK_TREE_01)) {
+				m_activeModel = oeEntityModel::OAK_TREE_01;
+			}
+			OutdoorEditorInfo::editor->setActiveModel(m_activeModel);
+			nk_tree_pop(ctx);
+		}
+	}
 
+	void EventListenerGUI::drawAvailableStones(nk_context* ctx)
+	{
+		if (nk_tree_push(ctx, NK_TREE_TAB, "Stones", NK_MINIMIZED)) {
+
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Stone 01", m_activeModel == oeEntityModel::STONE_01)) {
+				m_activeModel = oeEntityModel::STONE_01;
+			}
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Stone 02", m_activeModel == oeEntityModel::STONE_02)) {
+				m_activeModel = oeEntityModel::STONE_02;
+			}
+			nk_layout_row_dynamic(ctx, OPTION_LABEL_SIZE, 1);
+			if (nk_option_label(ctx, "Stone 03", m_activeModel == oeEntityModel::STONE_03)) {
+				m_activeModel = oeEntityModel::STONE_03;
+			}
 			OutdoorEditorInfo::editor->setActiveModel(m_activeModel);
 			nk_tree_pop(ctx);
 		}

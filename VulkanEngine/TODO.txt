@@ -42,7 +42,14 @@ Bugfixing
 4.7) Implement LODs for all models
 4.8) Create more models in blender
 
-( 5) Implement SurfaceNets)
+-> 2 Bushes
+-> 2 Stones
+-> 2 Pines
+-> 2 Oaks https://freecutout.com/oak-leaf-texture/
+https://www.cgbookcase.com/textures/oak-leaf-02
+https://www.cgbookcase.com/textures/oak-leaf-01
+
+(5) Implement SurfaceNets)
 
 6) Implement Rivers
 6.1) Create River Mesh Algorithm

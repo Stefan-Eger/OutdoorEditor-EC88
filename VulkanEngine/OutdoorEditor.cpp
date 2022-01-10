@@ -49,7 +49,7 @@ namespace oe {
 		selectedMaterial = 0;
 		activeMode = oeEditingModes::TERRAIN_EDITING_TEXTURE;
 		activeBrushMode = oeBrushModes::BRUSH_DRILL;
-		selectedModel = oeEntityModel::PINE_TREE;
+		selectedModel = oeEntityModel::PINE_TREE_01;
 		editModeChanged = false;
 	}
 	OutdoorEditor::~OutdoorEditor(){
@@ -133,6 +133,7 @@ namespace oe {
 			break;
 		case oeEditingModes::TREE_PLACEMENT:
 		case oeEditingModes::BILLBOARD_PLACEMENT:
+		case oeEditingModes::OBJECT_PLACEMENT:
 			if (invertOperation) {
 				entityManager->removeEntitiesAt(hitPos, activeBrush->getRadius());
 				break;
@@ -177,11 +178,14 @@ namespace oe {
 			case oeEditingModes::BILLBOARD_PLACEMENT:
 				setBrushMode(oeBrushModes::BRUSH_DRILL);
 				break;
+			case oeEditingModes::OBJECT_PLACEMENT:
+				setBrushMode(oeBrushModes::BRUSH_DRILL);
+				break;
 			case oeEditingModes::TERRAIN_EDITING_TEXTURE:
 				setBrushMode(oeBrushModes::BRUSH_SPHERE_FULL);
 				break;
 			default:
-				std::cout << "Warning: Unknown Editing Mode" << std::endl;
+				std::cout << "Warning: Unknown Editing Mode Outdoor Editor" << std::endl;
 				break;
 		}
 	}

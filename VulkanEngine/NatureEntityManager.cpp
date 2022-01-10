@@ -48,17 +48,46 @@ namespace oe {
 
 		entities.emplace(VEentityName, std::make_pair(type, newEntity));
 	}
+	void NatureEntityManager::addObject(const oeEntityModel& type, const std::string& objectName, const glm::vec3& pos)
+	{
+		std::string VEentityName = objectName + '_' + std::to_string(entityCounter++);
+		if (entities.contains(VEentityName)) return;
+
+		NatureEntity_t* infoObj = enitityDatabase->getEntity(objectName);
+		NatureEntity* newEntity = new NatureEntity(VEentityName, pos, infoObj);
+
+		auto pScene = getSceneManagerPointer()->getSceneNode("Scene");
+		VESceneNode* parentEntity = getSceneManagerPointer()->createSceneNode(VEentityName + "_Parent", pScene);
+		newEntity->createEntity(parentEntity);
+		//parentEntity->multiplyTransform(glm::translate(pos));
+		parentEntity->setPosition(pos);
+	}
 	void NatureEntityManager::addNatureEntity(const oeEntityModel& entity, const glm::vec3& pos)
 	{
 		int index = static_cast<int>(entity);
-		std::string databaseName = modelType.at(index);
+		std::string databaseName = modelTypes.at(index);
 		switch (entity)
 		{
-		case oeEntityModel::PINE_TREE:
+		case oeEntityModel::PINE_TREE_01:
+			addTreeAt(entity, databaseName, pos);
+			break;
+		case oeEntityModel::PINE_TREE_02:
+			addTreeAt(entity, databaseName, pos);
+			break;
+		case oeEntityModel::OAK_TREE_01:
 			addTreeAt(entity, databaseName, pos);
 			break;
 		case oeEntityModel::BILLBOARD_GRASS_01:
 			addBillboardAt(entity, databaseName, pos);
+			break;
+		case oeEntityModel::STONE_01:
+			addObject(entity, databaseName, pos);
+			break;
+		case oeEntityModel::STONE_02:
+			addObject(entity, databaseName, pos);
+			break;
+		case oeEntityModel::STONE_03:
+			addObject(entity, databaseName, pos);
 			break;
 		default:
 			break;
