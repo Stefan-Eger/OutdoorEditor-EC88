@@ -131,14 +131,12 @@ namespace oe {
 			entityManager->removeEntitiesAt(hitPos, activeBrush->getRadius());
 			modifyTerrainVolumeWithActiveBrush(hitPos, invertOperation);
 			break;
-		case oeEditingModes::TREE_PLACEMENT:
-		case oeEditingModes::BILLBOARD_PLACEMENT:
 		case oeEditingModes::OBJECT_PLACEMENT:
 			if (invertOperation) {
 				entityManager->removeEntitiesAt(hitPos, activeBrush->getRadius());
 				break;
 			}
-			entityManager->addNatureEntity(selectedModel, hitPos);
+			entityManager->addNatureEntity(selectedModel, hitPos, direction);
 			break;
 		case oeEditingModes::TERRAIN_EDITING_TEXTURE:
 			changeTerrainMaterial(hitPos);
@@ -171,12 +169,6 @@ namespace oe {
 		{
 			case oeEditingModes::TERRAIN_EDITING_VOLUME:
 				setBrushMode(oeBrushModes::BRUSH_SPHERE_FULL);
-				break;
-			case oeEditingModes::TREE_PLACEMENT:
-				setBrushMode(oeBrushModes::BRUSH_DRILL);
-				break;
-			case oeEditingModes::BILLBOARD_PLACEMENT:
-				setBrushMode(oeBrushModes::BRUSH_DRILL);
 				break;
 			case oeEditingModes::OBJECT_PLACEMENT:
 				setBrushMode(oeBrushModes::BRUSH_DRILL);

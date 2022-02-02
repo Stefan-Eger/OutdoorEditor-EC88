@@ -7,7 +7,8 @@ namespace oe {
 		OE_TEXTURE_GRASS,
 		OE_TEXTURE_DIRT,
 		OE_TEXTURE_WET_DIRT,
-		OE_TEXTURE_MUD
+		OE_TEXTURE_MUD,
+		OE_TEXTURE_STONE
 	};
 	/// <summary>
 	/// This Cube contains the Mesh information of a Cube that is marching between the voxel Data 
@@ -35,7 +36,9 @@ namespace oe {
 			{0, { "Grass", "media/models/editor/TerrainTextures/Grass", "grass.png"} },
 			{1, { "Dirt", "media/models/editor/TerrainTextures/Dirt", "dirt_color.jpg"} },
 			{2, { "Wet_Dirt", "media/models/editor/TerrainTextures/Wet", "wet_color.jpg"} },
-			{3, { "Mud", "media/models/editor/TerrainTextures/Mud", "mud_color.jpg"} }
+			{3, { "Mud", "media/models/editor/TerrainTextures/Mud", "mud_color.jpg"} },
+			{4, { "Stone", "media/models/editor/TerrainTextures/Stone", "stone_color.jpg"} }
+
 		};
 		
 		//for cleanup

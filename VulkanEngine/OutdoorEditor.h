@@ -13,8 +13,6 @@ namespace oe {
 		enum class oeEditingModes {
 			TERRAIN_EDITING_VOLUME,
 			TERRAIN_EDITING_TEXTURE,
-			TREE_PLACEMENT,
-			BILLBOARD_PLACEMENT,
 			OBJECT_PLACEMENT
 
 		};

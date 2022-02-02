@@ -7,7 +7,10 @@ namespace oe {
 		std::string baseDirectory;
 		//Should be an obj File
 		std::string modelFileName;
+		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		uint32_t aiFlags = aiProcess_FlipUVs | aiProcess_FlipWindingOrder;
+
+
 	};
 }
 #endif

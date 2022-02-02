@@ -2,7 +2,7 @@
 namespace oe {
 
 	//copied from copyaiNode but with slight adjustments to enable branch building with probabilities
-	void NatureEntityTree::loadLeafs(const aiScene* pScene, std::vector<VEMesh*>& meshes, std::vector<VEMaterial*>& materials, aiNode* node, const std::string& entityName, VESceneNode* parent)
+	void NatureEntityLeafs::loadLeafs(const aiScene* pScene, std::vector<VEMesh*>& meshes, std::vector<VEMaterial*>& materials, aiNode* node, const std::string& entityName, VESceneNode* parent)
 	{
 
 		for (uint32_t i = 0; i < node->mNumMeshes; i++) {	//go through the meshes of the Assimp node
@@ -32,26 +32,29 @@ namespace oe {
 			loadLeafs(pScene, meshes, materials, node->mChildren[i], entityName, parent);
 		}
 	}
-	NatureEntityTree::NatureEntityTree(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* modelInfo, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(entityName, pos, modelInfo), leafsInfo{ leafsInfo }, distribution{0.5}{}
-	NatureEntityTree::~NatureEntityTree()
+	NatureEntityLeafs::NatureEntityLeafs(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(entityName, pos, glm::vec3(0.0f,0.0f,0.0f), leafsInfo), distribution{0.5}{}
+	NatureEntityLeafs::~NatureEntityLeafs()
 	{
 		NatureEntity::~NatureEntity();
 		for (const auto& name : leafEntityNames) {
 			getSceneManagerPointer()->deleteSceneNodeAndChildren(name);
 		}
 	}
-	void NatureEntityTree::createEntity(VESceneNode* parent)
+	void NatureEntityLeafs::createEntity(VESceneNode* parent)
 	{
-		NatureEntity::createEntity(parent);
-		
-		
 		std::vector<ve::VEMesh*> leafMeshes;
 		std::vector<ve::VEMaterial*> leafMaterials;
+
+		NatureEntity_t* leafsInfo = getModelInfo();
+		glm::vec3 pos = getPos();
 
 		aiScene* scene = getSceneManagerPointer()->loadAssets(leafsInfo->baseDirectory, leafsInfo->modelFileName, leafsInfo->aiFlags, leafMeshes, leafMaterials);
 		aiNode* pRoot = scene->mRootNode;
 		
 		loadLeafs(scene, leafMeshes, leafMaterials, pRoot, getEntityName(), parent);
+
+		parent->multiplyTransform(glm::scale(leafsInfo->scale));
+		parent->setPosition(pos);
 		
 		delete scene; // We are now responsible for destroying the imported scene
 	}

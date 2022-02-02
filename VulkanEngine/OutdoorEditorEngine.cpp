@@ -66,7 +66,7 @@ namespace oe {
 			for (auto y = 0; y < WORLD_CHUNKS_HEIGHT; ++y) {
 				for (auto z = 0; z < WORLD_CHUNKS_DEPTH; ++z) {
 					if (y - 1 < 0) {
-						voxelManager->addChunk(VoxelCoordinates(x, y - 1, z), VoxelPoint(1.0f, 1));
+						voxelManager->addChunk(VoxelCoordinates(x, y - 1, z), VoxelPoint(1.0f, 0));
 					}
 					else {
 						voxelManager->addChunk(VoxelCoordinates(x, y - 1, z));

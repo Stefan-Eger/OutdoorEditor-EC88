@@ -23,8 +23,9 @@
 
 #include "NatureEntity_t.h"
 #include "NatureEntity.h"
-#include "NatureEntityTree.h"
+#include "NatureEntityLeafs.h"
 #include "NatureEntityBillboard.h"
+#include "NatureEntityModel.h"
 #include "NatureEntityDatabase.h"
 #include "NatureEntityManager.h"
 

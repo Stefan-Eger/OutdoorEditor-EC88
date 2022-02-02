@@ -16,8 +16,10 @@ namespace oe {
 		void drawEditModes(nk_context* ctx);
 		void drawTerrainMaterials(nk_context* ctx);
 		void drawAvailableTrees(nk_context* ctx);
+		void drawAvailableBushes(nk_context* ctx);
 		void drawAvailableStones(nk_context* ctx);
 		void drawAvailableBillboards(nk_context* ctx);
+		void drawAvailableAnimals(nk_context* ctx);
 	protected:
 		virtual void onDrawOverlay(veEvent event) override;
 

@@ -188,7 +188,8 @@
     <ClInclude Include="NatureEntityBillboard.h" />
     <ClInclude Include="NatureEntityDatabase.h" />
     <ClInclude Include="NatureEntityManager.h" />
-    <ClInclude Include="NatureEntityTree.h" />
+    <ClInclude Include="NatureEntityLeafs.h" />
+    <ClInclude Include="NatureEntityModel.h" />
     <ClInclude Include="NatureEntity_t.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TerrainManager.h" />
@@ -247,7 +248,8 @@
     <ClCompile Include="NatureEntityBillboard.cpp" />
     <ClCompile Include="NatureEntityDatabase.cpp" />
     <ClCompile Include="NatureEntityManager.cpp" />
-    <ClCompile Include="NatureEntityTree.cpp" />
+    <ClCompile Include="NatureEntityLeafs.cpp" />
+    <ClCompile Include="NatureEntityModel.cpp" />
     <ClCompile Include="NatureEntity_t.cpp" />
     <ClCompile Include="TerrainManager.cpp" />
     <ClCompile Include="TerrainMeshChunk.cpp" />

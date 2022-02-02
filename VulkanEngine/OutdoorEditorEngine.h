@@ -6,9 +6,9 @@ using namespace ve;
 namespace oe {
 	class OutdoorEditorEngine : public VEEngine {
 
-		const int WORLD_CHUNKS_WIDTH = 5;
+		const int WORLD_CHUNKS_WIDTH = 6;
 		const int WORLD_CHUNKS_HEIGHT = 2;
-		const int WORLD_CHUNKS_DEPTH = 5;
+		const int WORLD_CHUNKS_DEPTH = 6;
 
 	public:
 		OutdoorEditorEngine(bool debug = false) : VEEngine(debug) {};
