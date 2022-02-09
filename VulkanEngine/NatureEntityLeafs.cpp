@@ -32,7 +32,7 @@ namespace oe {
 			loadLeafs(pScene, meshes, materials, node->mChildren[i], entityName, parent);
 		}
 	}
-	NatureEntityLeafs::NatureEntityLeafs(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(entityName, pos, glm::vec3(0.0f,0.0f,0.0f), leafsInfo), distribution{0.5}{}
+	NatureEntityLeafs::NatureEntityLeafs(const std::string& entityName, const glm::vec3& pos, NatureEntity_t* leafsInfo, const double& branchCutOffRatio) : NatureEntity(entityName, pos, glm::vec3(0.0f,0.0f,0.0f), leafsInfo), distribution{ branchCutOffRatio }{}
 	NatureEntityLeafs::~NatureEntityLeafs()
 	{
 		NatureEntity::~NatureEntity();
